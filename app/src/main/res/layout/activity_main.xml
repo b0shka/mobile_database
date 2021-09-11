@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/line_search"
+        android:layout_width="285dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_line"
+        android:ems="10"
+        android:fontFamily="@font/montserrat"
+        android:hint="@string/hint_line_search"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/custom_button"
+        android:fontFamily="@font/montserrat_bold"
+        android:onClick="onClickSearch"
+        android:text="@string/button_search"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/line_search"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_button_menu"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/button_filter"
+        android:textColor="@color/white"
+        android:textSize="11dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_search"/>
+
+    <Button
+        android:id="@+id/open_db"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button_menu"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/button_open"
+        android:textColor="@color/white"
+        android:textSize="11dp"
+        app:layout_constraintStart_toEndOf="@+id/filter"
+        app:layout_constraintTop_toBottomOf="@+id/line_search"/>
+
+    <Button
+        android:id="@+id/create_db"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button_menu"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/button_create"
+        android:textColor="@color/white"
+        android:textSize="11dp"
+        app:layout_constraintStart_toEndOf="@+id/open_db"
+        app:layout_constraintTop_toBottomOf="@+id/line_search"/>
+
+    <ListView
+        android:id="@+id/list_users"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/main_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
