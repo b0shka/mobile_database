@@ -18,10 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView list_users;
     private EditText line_search;
     private Button search, filter, open_db, create_db;
-
-    //private Database database;
-    //private SQLiteDatabase db;
-    //private Cursor cursor;
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +31,15 @@ public class MainActivity extends AppCompatActivity {
         filter = findViewById(R.id.filter);
         open_db = findViewById(R.id.open_db);
         create_db = findViewById(R.id.create_db);
-        //database = new Database(this);
-
-        // Довавление в список элементов
-        String[] users = {"Alex", "Vanya", "Nastya"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, users);
-        list_users.setAdapter(adapter);
+        db = new Database(this);
 
         // Действие при нажатии на item
         list_users.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name_item = list_users.getItemAtPosition(position).toString();
                 Toast.makeText(MainActivity.this, "pos: " + position + " id: " + id + " name: " + name_item, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent("com.example.database.DataUser");
+                startActivity(intent);
             }
         });
 
@@ -54,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent("com.example.database.DataUsers");
+                    Intent intent = new Intent("com.example.database.Filter");
                     startActivity(intent);
                 }
             }
@@ -79,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db.open_db();
+
+        // Довавление в список элементов
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, db.get_db());
+        list_users.setAdapter(adapter);
+    }
+
     // Действие при нажатии на кнопку поиска
     public void onClickSearch(View view) {
         if (line_search.getText().toString().trim().equals(""))
@@ -87,28 +91,20 @@ public class MainActivity extends AppCompatActivity {
             String text_search = line_search.getText().toString();
             Toast.makeText(MainActivity.this, text_search, Toast.LENGTH_SHORT).show();
 
-            /*db = database.getWritableDatabase();
-            ContentValues content = new ContentValues();
+            db.insert_db(text_search, "Last name");
 
-            content.put(database.COLUMN_FIRST_NAME, text_search);
-            db.insert(database.TABLE_NAME, null, content);
-
-            cursor = db.query(database.TABLE_NAME, null, null, null, null, null, null);
-
-            if (cursor.moveToFirst()) {
-                int user_id = cursor.getColumnIndex(database.COLUMN_ID);
-                int first_name = cursor.getColumnIndex(database.COLUMN_FIRST_NAME);
-                int last_name = cursor.getColumnIndex(database.COLUMN_LAST_NAME);
-
-                do {
-                    Toast.makeText(MainActivity.this, "ID = " + cursor.getInt(user_id) + " first_name = " + cursor.getInt(first_name) + " last_name = " + cursor.getInt(last_name), Toast.LENGTH_LONG).show();
-                } while (cursor.moveToNext());
-            }
-            else
-                Toast.makeText(MainActivity.this, "ERROR", Toast.LENGTH_LONG).show();
-            cursor.close();*/
+            list_users.setAdapter(null);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, db.get_db());
+            list_users.setAdapter(adapter);
         }
 
         line_search.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close_db();
     }
 }

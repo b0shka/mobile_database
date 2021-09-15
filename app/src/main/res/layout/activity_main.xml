@@ -57,7 +57,7 @@
         android:id="@+id/open_db"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/custom_button_menu"
         android:fontFamily="@font/montserrat_bold"
@@ -65,13 +65,13 @@
         android:textColor="@color/white"
         android:textSize="11dp"
         app:layout_constraintStart_toEndOf="@+id/filter"
-        app:layout_constraintTop_toBottomOf="@+id/line_search"/>
+        app:layout_constraintTop_toBottomOf="@+id/line_search" />
 
     <Button
         android:id="@+id/create_db"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/custom_button_menu"
         android:fontFamily="@font/montserrat_bold"
@@ -79,7 +79,7 @@
         android:textColor="@color/white"
         android:textSize="11dp"
         app:layout_constraintStart_toEndOf="@+id/open_db"
-        app:layout_constraintTop_toBottomOf="@+id/line_search"/>
+        app:layout_constraintTop_toBottomOf="@+id/line_search" />
 
     <ListView
         android:id="@+id/list_users"

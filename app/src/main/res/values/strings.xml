@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Database</string>
-    <string name="button_search">Поиск</string>
-    <string name="button_filter">Фильтры</string>
-    <string name="button_open">Открыть</string>
-    <string name="button_create">Создать</string>
-    <string name="hint_line_search">Введите данные...</string>
-    <string name="empty_line">Вы ничего не ввели</string>
+	<string name="app_name">Database</string>
+	<string name="button_search">Поиск</string>
+	<string name="button_filter">Фильтры</string>
+	<string name="button_open">Открыть</string>
+	<string name="button_create">Создать</string>
+	<string name="hint_line_search">Введите данные...</string>
+	<string name="empty_line">Вы ничего не ввели</string>
 </resources>
