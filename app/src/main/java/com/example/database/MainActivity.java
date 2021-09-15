@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView list_users;
     private EditText line_search;
-    private Button search, filter, open_db, create_db;
+    private Button search, filter, open_db, create_db, add_user;
     private Database db;
 
     @Override
@@ -31,14 +31,19 @@ public class MainActivity extends AppCompatActivity {
         filter = findViewById(R.id.filter);
         open_db = findViewById(R.id.open_db);
         create_db = findViewById(R.id.create_db);
+        add_user = findViewById(R.id.add_user);
+
         db = new Database(this);
 
         // Действие при нажатии на item
         list_users.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name_item = list_users.getItemAtPosition(position).toString();
-                Toast.makeText(MainActivity.this, "pos: " + position + " id: " + id + " name: " + name_item, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent("com.example.database.DataUser");
+                //Toast.makeText(MainActivity.this, "pos: " + position + " id: " + id + " name: " + name_item, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DataUser.class);
+                intent.putExtra("mode", "read");
+                intent.putExtra("id", id);
+                intent.putExtra("name", name_item);
                 startActivity(intent);
             }
         });
@@ -54,21 +59,32 @@ public class MainActivity extends AppCompatActivity {
         );
 
         open_db.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "Open DB", Toast.LENGTH_SHORT).show();
-                    }
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(MainActivity.this, "Open DB", Toast.LENGTH_SHORT).show();
                 }
+            }
         );
 
         create_db.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "Create DB", Toast.LENGTH_SHORT).show();
-                    }
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(MainActivity.this, "Create DB", Toast.LENGTH_SHORT).show();
                 }
+            }
+        );
+
+        add_user.setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, DataUser.class);
+                    intent.putExtra("mode", "add");
+                    startActivity(intent);
+                }
+            }
         );
     }
 
@@ -91,12 +107,10 @@ public class MainActivity extends AppCompatActivity {
             String text_search = line_search.getText().toString();
             Toast.makeText(MainActivity.this, text_search, Toast.LENGTH_SHORT).show();
 
-            db.insert_db(text_search, "Last name");
-
-            list_users.setAdapter(null);
+            /*list_users.setAdapter(null);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, db.get_db());
-            list_users.setAdapter(adapter);
+            list_users.setAdapter(adapter);*/
         }
 
         line_search.setText("");

@@ -7,4 +7,110 @@
 	android:background="@color/main_color"
 	tools:context=".DataUser">
 
+	<Button
+		android:id="@+id/add_save_user"
+		android:layout_width="130dp"
+		android:layout_height="45dp"
+		android:layout_marginEnd="10dp"
+		android:layout_marginBottom="10dp"
+		android:background="@drawable/custom_button"
+		android:fontFamily="@font/montserrat_bold"
+		android:onClick="add_user"
+		android:textColor="@color/white"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
+
+	<EditText
+		android:id="@+id/firts_name"
+		android:layout_width="200dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="20dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:hint="@string/first_name"
+		android:inputType="textPersonName"
+		android:paddingLeft="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/title_activity" />
+
+	<EditText
+		android:id="@+id/last_name"
+		android:layout_width="200dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:hint="@string/last_name"
+		android:inputType="textPersonName"
+		android:paddingLeft="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/firts_name" />
+
+	<EditText
+		android:id="@+id/patronymic"
+		android:layout_width="200dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:hint="@string/patronymic"
+		android:inputType="textPersonName"
+		android:paddingLeft="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/last_name" />
+
+	<EditText
+		android:id="@+id/age"
+		android:layout_width="200dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:hint="@string/age"
+		android:inputType="textPersonName"
+		android:paddingLeft="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/patronymic" />
+
+	<EditText
+		android:id="@+id/birth"
+		android:layout_width="200dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:hint="@string/birth"
+		android:inputType="textPersonName"
+		android:paddingLeft="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/age" />
+
+	<TextView
+		android:id="@+id/title_activity"
+		android:layout_width="0dp"
+		android:layout_height="40dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="15dp"
+		android:fontFamily="@font/montserrat_bold"
+		android:textColor="@color/white"
+		android:textSize="25dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
