@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +30,8 @@ class DatabaseConst extends SQLiteOpenHelper {
 			COLUMN_FIRST_NAME + " VARCHAR(255)," +
 			COLUMN_LAST_NAME + " VARCHAR(255)," +
 			COLUMN_PATRONYMIC + " VARCHAR(255)," +
-			COLUMN_AGE + "INTEGER," +
-			COLUMN_BIRTH + "TEXT)";
+			COLUMN_AGE + " VARCHAR(255)," +
+			COLUMN_BIRTH + " TEXT)";
 	private static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
 	public DatabaseConst(Context context) {
@@ -50,6 +52,7 @@ class DatabaseConst extends SQLiteOpenHelper {
 }
 
 public class Database {
+	private final String TAG = this.getClass().getSimpleName();
 	private Context context;
 	private DatabaseConst database;
 	private SQLiteDatabase db;
@@ -63,18 +66,22 @@ public class Database {
 		db = database.getWritableDatabase();
 	}
 
-	public void insert_db(String first_name, String last_name, String patronymic, String age, String birth) {
-		ContentValues content = new ContentValues();
-		content.put(database.COLUMN_FIRST_NAME, first_name);
-		content.put(database.COLUMN_LAST_NAME, last_name);
-		content.put(database.COLUMN_PATRONYMIC, patronymic);
-		content.put(database.COLUMN_AGE, age);
-		content.put(database.COLUMN_BIRTH, birth);
+	public void add_user(String first_name, String last_name, String patronymic, String age, String birth) {
+		try {
+			ContentValues content = new ContentValues();
+			content.put(database.COLUMN_FIRST_NAME, first_name);
+			content.put(database.COLUMN_LAST_NAME, last_name);
+			content.put(database.COLUMN_PATRONYMIC, patronymic);
+			content.put(database.COLUMN_AGE, age);
+			content.put(database.COLUMN_BIRTH, birth);
 
-		db.insert(database.TABLE_NAME, null, content);
+			db.insert(database.TABLE_NAME, null, content);
+		} catch (SQLiteException error) {
+			Log.e(TAG, "[ERROR] " + error);
+		}
 	}
 
-	public List<String> get_db() {
+	public List<String> get_users() {
 		List<String> data_user = new ArrayList<>();
 		Cursor cursor = db.query(database.TABLE_NAME, null, null, null, null, null, null);
 

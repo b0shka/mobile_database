@@ -33,15 +33,13 @@ public class MainActivity extends AppCompatActivity {
         create_db = findViewById(R.id.create_db);
         add_user = findViewById(R.id.add_user);
 
-        db = new Database(this);
+        db = new Database(MainActivity.this);
 
         // Действие при нажатии на item
         list_users.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name_item = list_users.getItemAtPosition(position).toString();
-                //Toast.makeText(MainActivity.this, "pos: " + position + " id: " + id + " name: " + name_item, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, DataUser.class);
-                intent.putExtra("mode", "read");
                 intent.putExtra("id", id);
                 intent.putExtra("name", name_item);
                 startActivity(intent);
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent("com.example.database.Filter");
+                    Intent intent = new Intent(MainActivity.this, Filter.class);
                     startActivity(intent);
                 }
             }
@@ -80,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this, DataUser.class);
-                    intent.putExtra("mode", "add");
+                    Intent intent = new Intent(MainActivity.this, CreateUser.class);
                     startActivity(intent);
                 }
             }
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Довавление в список элементов
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, db.get_db());
+                android.R.layout.simple_list_item_1, db.get_users());
         list_users.setAdapter(adapter);
     }
 
@@ -106,11 +103,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             String text_search = line_search.getText().toString();
             Toast.makeText(MainActivity.this, text_search, Toast.LENGTH_SHORT).show();
-
-            /*list_users.setAdapter(null);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, db.get_db());
-            list_users.setAdapter(adapter);*/
         }
 
         line_search.setText("");

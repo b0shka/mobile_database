@@ -9,7 +9,9 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Database">
-
+		<activity
+			android:name=".CreateUser"
+			android:exported="true" />
 		<activity
 			android:name=".MainActivity"
 			android:exported="true">
@@ -30,7 +32,7 @@
 		</activity>
 		<activity
 			android:name=".DataUser"
-			android:exported="true" >
+			android:exported="true">
 			<intent-filter>
 				<action android:name="com.example.database.DataUser" />
 
