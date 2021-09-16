@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DataUser extends AppCompatActivity {
 
@@ -34,9 +37,13 @@ public class DataUser extends AppCompatActivity {
 
 		Intent arguments = getIntent();
 		String[] name = arguments.getStringExtra("name").split(" ");
+		ArrayList<String> list_data_user = db.get_data_user(name[0], name[1]);
 
 		field_first_name.setText(name[0]);
 		field_last_name.setText(name[1]);
+		field_patronymic.setText(list_data_user.get(0));
+		field_age.setText(list_data_user.get(1));
+		field_birth.setText(list_data_user.get(2));
 
 		back.setOnClickListener(
 			new View.OnClickListener() {
