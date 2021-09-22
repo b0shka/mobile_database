@@ -9,6 +9,8 @@
 	<string name="button_save_user">Сохранить</string>
 	<string name="button_add_user">Добавить</string>
 	<string name="button_back">Назад</string>
+	<string name="button_cancel">Отмена</string>
+	<string name="button_delete">Удалить</string>
 
 	<string name="hint_line_search">Введите данные...</string>
 	<string name="empty_line">Вы ничего не ввели</string>

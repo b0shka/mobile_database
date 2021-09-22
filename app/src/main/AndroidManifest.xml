@@ -10,6 +10,9 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Database">
 		<activity
+			android:name=".CreateDB"
+			android:exported="true" />
+		<activity
 			android:name=".CreateUser"
 			android:exported="true" />
 		<activity

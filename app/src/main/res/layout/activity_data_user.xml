@@ -19,7 +19,8 @@
 		android:text="@string/button_save_user"
 		android:textColor="@color/white"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent" />
+		app:layout_constraintEnd_toEndOf="parent"
+		tools:ignore="TouchTargetSizeCheck" />
 
 	<EditText
 		android:id="@+id/firts_name"
@@ -35,7 +36,8 @@
 		android:paddingLeft="10dp"
 		android:textColor="@color/white"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/title_data_user" />
+		app:layout_constraintTop_toBottomOf="@+id/title_data_user"
+		tools:ignore="TouchTargetSizeCheck" />
 
 	<EditText
 		android:id="@+id/last_name"
@@ -51,7 +53,8 @@
 		android:paddingLeft="10dp"
 		android:textColor="@color/white"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/firts_name" />
+		app:layout_constraintTop_toBottomOf="@+id/firts_name"
+		tools:ignore="TouchTargetSizeCheck" />
 
 	<EditText
 		android:id="@+id/patronymic"
@@ -67,7 +70,8 @@
 		android:paddingLeft="10dp"
 		android:textColor="@color/white"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/last_name" />
+		app:layout_constraintTop_toBottomOf="@+id/last_name"
+		tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
 	<EditText
 		android:id="@+id/age"
@@ -83,7 +87,8 @@
 		android:paddingLeft="10dp"
 		android:textColor="@color/white"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/patronymic" />
+		app:layout_constraintTop_toBottomOf="@+id/patronymic"
+		tools:ignore="TouchTargetSizeCheck" />
 
 	<EditText
 		android:id="@+id/birth"
@@ -99,7 +104,8 @@
 		android:paddingLeft="10dp"
 		android:textColor="@color/white"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/age" />
+		app:layout_constraintTop_toBottomOf="@+id/age"
+		tools:ignore="TouchTargetSizeCheck" />
 
 	<TextView
 		android:id="@+id/title_data_user"
@@ -124,6 +130,19 @@
 		android:layout_marginBottom="10dp"
 		android:background="@drawable/custom_button"
 		android:text="@string/button_back"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@+id/delete_user"
+		tools:ignore="TouchTargetSizeCheck" />
+
+	<Button
+		android:id="@+id/delete_user"
+		android:layout_width="110dp"
+		android:layout_height="45dp"
+		android:layout_marginEnd="10dp"
+		android:layout_marginBottom="10dp"
+		android:background="@drawable/custom_button"
+		android:onClick="delete"
+		android:text="@string/button_delete"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toStartOf="@+id/save_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import java.util.ArrayList;
 
 
@@ -30,7 +31,7 @@ public class Database extends SQLiteOpenHelper {
 			COLUMN_BIRTH + " TEXT)";
 	private static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-	private final String TAG = this.getClass().getSimpleName();
+	private static final String TAG = "APP_LOGS";
 	private Context context;
 	private SQLiteDatabase db;
 
@@ -65,6 +66,26 @@ public class Database extends SQLiteOpenHelper {
 		db.insert(TABLE_NAME, null, content);
 	}
 
+	public void update_user(ArrayList<String> new_data_user, String old_first_name, String old_last_name){
+		ContentValues content = new ContentValues();
+		content.put(COLUMN_FIRST_NAME, new_data_user.get(0));
+		content.put(COLUMN_LAST_NAME, new_data_user.get(1));
+		content.put(COLUMN_PATRONYMIC, new_data_user.get(2));
+		content.put(COLUMN_AGE, new_data_user.get(3));
+		content.put(COLUMN_BIRTH, new_data_user.get(4));
+
+		db.update(TABLE_NAME,
+				content,
+				COLUMN_FIRST_NAME + "= ? AND " + COLUMN_LAST_NAME + "= ?",
+				new String[] {old_first_name, old_last_name});
+	}
+
+	public void delete_user(ArrayList<String> delete_data_user) {
+		db.delete(TABLE_NAME,
+				COLUMN_FIRST_NAME + "= ? AND " + COLUMN_LAST_NAME + "= ? AND " + COLUMN_PATRONYMIC + "= ?",
+				new String[] {delete_data_user.get(0), delete_data_user.get(1), delete_data_user.get(2)});
+	}
+
 	public ArrayList<String> get_users() {
 		ArrayList<String> data_user = new ArrayList<>();
 		Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
@@ -82,28 +103,35 @@ public class Database extends SQLiteOpenHelper {
 
 	public ArrayList<String> get_data_user(String first_name, String last_name) {
 		ArrayList<String> list_data_user = new ArrayList<>();
-		/*Cursor cursor = db.query(TABLE_NAME,
-				new String[] {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH},
-				"COLUMN_FIRST_NAME = ? AND COLUMN_LAST_NAME = ?",
-				new String[] {first_name, last_name},
-				null,null,null);*/
 
-		Cursor cursor = db.rawQuery("SELECT patronymic, age, birth FROM users WHERE first_name = ? AND last_name = ?;", new String[] {first_name, last_name});
+		try {
+			String[] get_columns = {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH};
+			Cursor cursor = db.query(TABLE_NAME,
+					get_columns,
+					COLUMN_FIRST_NAME + " = ? AND " + COLUMN_LAST_NAME + " = ?",
+					new String[] {first_name, last_name},
+					null, null, null);
 
-		/*while (cursor.moveToNext()) {
-			String patronymic = cursor.getString(0);
-			String age = cursor.getString(1);
-			String birth = cursor.getString(2);
-			//@SuppressLint("Range") String patronymic = cursor.getString(cursor.getColumnIndex(COLUMN_PATRONYMIC));
-			//@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
-			//@SuppressLint("Range") String birth = cursor.getString(cursor.getColumnIndex(COLUMN_BIRTH));
+			//Cursor cursor = db.rawQuery("SELECT patronymic, age, birth FROM users WHERE first_name = ? AND last_name = ?;", new String[] {first_name, last_name});
 
-			list_data_user.add(patronymic);
-			list_data_user.add(age);
-			list_data_user.add(birth);
-		}*/
-		list_data_user.add("patronymic");
-		cursor.close();
+			while (cursor.moveToNext()) {
+				@SuppressLint("Range") String patronymic = cursor.getString(cursor.getColumnIndex(COLUMN_PATRONYMIC));
+				@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
+				@SuppressLint("Range") String birth = cursor.getString(cursor.getColumnIndex(COLUMN_BIRTH));
+
+				list_data_user.add(patronymic);
+				list_data_user.add(age);
+				list_data_user.add(birth);
+			}
+
+			cursor.close();
+
+		} catch (Exception e) {
+			String error_get_data_bd = "Ошибка при получении данных из БД";
+			Log.d(TAG, error_get_data_bd, e);
+			list_data_user.add("ERROR");
+		}
+
 		return list_data_user;
 	}
 

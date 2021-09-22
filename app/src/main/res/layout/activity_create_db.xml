@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/main_color"
+	tools:context=".CreateDB">
+
+	<Button
+		android:id="@+id/create_new_db"
+		android:layout_width="105dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/custom_button"
+		android:text="@string/button_create"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/name_db" />
+
+	<EditText
+		android:id="@+id/name_db"
+		android:layout_width="215dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="16dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:inputType="textPersonName"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<Button
+		android:id="@+id/cancel_create"
+		android:layout_width="100dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="10dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/custom_button"
+		android:text="@string/button_cancel"
+		app:layout_constraintStart_toEndOf="@+id/create_new_db"
+		app:layout_constraintTop_toBottomOf="@+id/name_db" />
+</androidx.constraintlayout.widget.ConstraintLayout>

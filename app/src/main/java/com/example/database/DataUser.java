@@ -1,15 +1,18 @@
 package com.example.database;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.List;
+
+import android.app.AlertDialog;
 
 
 public class DataUser extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class DataUser extends AppCompatActivity {
 	private TextView title_activity;
 	private Button save_user, back;
 	private Database db;
+	String[] name;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +39,6 @@ public class DataUser extends AppCompatActivity {
 
 		db = new Database(DataUser.this);
 
-		Intent arguments = getIntent();
-		String[] name = arguments.getStringExtra("name").split(" ");
-		ArrayList<String> list_data_user = db.get_data_user(name[0], name[1]);
-
-		field_first_name.setText(name[0]);
-		field_last_name.setText(name[1]);
-		field_patronymic.setText(list_data_user.get(0));
-		field_age.setText(list_data_user.get(1));
-		field_birth.setText(list_data_user.get(2));
-
 		back.setOnClickListener(
 			new View.OnClickListener() {
 				@Override
@@ -60,6 +54,16 @@ public class DataUser extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		db.open_db();
+
+		Intent arguments = getIntent();
+		name = arguments.getStringExtra("name").split(" ");
+		ArrayList<String> list_data_user = db.get_data_user(name[0], name[1]);
+
+		field_first_name.setText(name[0]);
+		field_last_name.setText(name[1]);
+		field_patronymic.setText(list_data_user.get(0));
+		field_age.setText(list_data_user.get(1));
+		field_birth.setText(list_data_user.get(2));
 	}
 
 	public void save_user(View view) {
@@ -69,10 +73,52 @@ public class DataUser extends AppCompatActivity {
 		String age = field_age.getText().toString();
 		String birth = field_birth.getText().toString();
 
-		//db.add_user(first_name, last_name, patronymic, age, birth);
+		ArrayList<String> new_data_user = new ArrayList<>();
+		new_data_user.add(first_name);
+		new_data_user.add(last_name);
+		new_data_user.add(patronymic);
+		new_data_user.add(age);
+		new_data_user.add(birth);
 
+		db.update_user(new_data_user, name[0], name[1]);
+
+		Toast.makeText(DataUser.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(DataUser.this, MainActivity.class);
 		startActivity(intent);
+	}
+
+	public void delete(View view) {
+		AlertDialog.Builder accept_window = new AlertDialog.Builder(DataUser.this);
+		accept_window.setMessage("Вы уверевы?").setCancelable(false)
+				.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						String first_name = field_first_name.getText().toString();
+						String last_name = field_last_name.getText().toString();
+						String patronymic = field_patronymic.getText().toString();
+
+						ArrayList<String> delete_data_user = new ArrayList<>();
+						delete_data_user.add(first_name);
+						delete_data_user.add(last_name);
+						delete_data_user.add(patronymic);
+
+						db.delete_user(delete_data_user);
+
+						Toast.makeText(DataUser.this, "Данные удалены", Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(DataUser.this, MainActivity.class);
+						startActivity(intent);
+					}
+				})
+				.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						dialogInterface.cancel();
+					}
+				});
+
+		AlertDialog alert = accept_window.create();
+		alert.setTitle("Удаление записи");
+		alert.show();
 	}
 
 	@Override
