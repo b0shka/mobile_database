@@ -30,7 +30,7 @@ public class CreateUser extends AppCompatActivity {
 		create_user = findViewById(R.id.save_user);
 		back = findViewById(R.id.back_from_create);
 
-		db = new Database(CreateUser.this, "server.db");
+		db = new Database(CreateUser.this);
 
 		back.setOnClickListener(
 			new View.OnClickListener() {

@@ -87,7 +87,7 @@
 
     <Button
         android:id="@+id/create_db"
-        android:layout_width="90dp"
+        android:layout_width="95dp"
         android:layout_height="37dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
@@ -100,33 +100,35 @@
         app:layout_constraintStart_toEndOf="@+id/open_db"
         app:layout_constraintTop_toBottomOf="@+id/line_search" />
 
-    <ListView
-        android:id="@+id/list_users"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/main_color"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter" />
+        app:srcCompat="@drawable/ic_add" />
 
-    <Button
-        android:id="@+id/add_user"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="18dp"
-        android:background="@drawable/custom_button_menu"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="@string/button_add"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <ListView
+        android:id="@+id/list_users"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="9dp"
+        android:background="@color/main_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings">
+
+    </ListView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="409dp"
+        android:layout_height="443dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="217dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

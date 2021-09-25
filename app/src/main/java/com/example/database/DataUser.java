@@ -35,7 +35,7 @@ public class DataUser extends AppCompatActivity {
 		save_user = findViewById(R.id.save_user);
 		back = findViewById(R.id.back_from_data_user);
 
-		db = new Database(DataUser.this, "server.db");
+		db = new Database(DataUser.this);
 
 		back.setOnClickListener(
 			new View.OnClickListener() {

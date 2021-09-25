@@ -145,4 +145,5 @@
 		android:text="@string/button_delete"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toStartOf="@+id/save_user" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

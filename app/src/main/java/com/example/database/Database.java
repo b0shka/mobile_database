@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 
 public class Database extends SQLiteOpenHelper {
-	//private static final String DB_NAME = "server.db";
 	private static final int DB_VERSION = 1;
+	private static String DB_PATH = "";
 	private static final String TABLE_NAME = "users";
 	private static final String COLUMN_ID = "_id";
 	private static final String COLUMN_FIRST_NAME = "first_name";
@@ -35,22 +35,23 @@ public class Database extends SQLiteOpenHelper {
 	private Context context;
 	private SQLiteDatabase db;
 
-	public Database(Context context, String DB_NAME) {
-		super(context, DB_NAME, null, DB_VERSION);
+	public Database(Context context) {
+		super(context, Variable.g_db_name, null, DB_VERSION);
 		this.context = context;
+		DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
 
-		//Variables.g_status_db = 1;
+		Variable.g_status_db = 1;
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
-		db.execSQL(SQL_CREATE_TABLE);
+		sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-		db.execSQL(SQL_DELETE_TABLE);
-		onCreate(db);
+		sqLiteDatabase.execSQL(SQL_DELETE_TABLE);
+		onCreate(sqLiteDatabase);
 	}
 
 	public void open_db() {
@@ -135,10 +136,6 @@ public class Database extends SQLiteOpenHelper {
 		}
 
 		return list_data_user;
-	}
-
-	public void create_db_file() {
-		db.execSQL(SQL_CREATE_TABLE);
 	}
 
 	public void close_db() {
