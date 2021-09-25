@@ -5,6 +5,7 @@
 	<string name="button_filter">Фильтры</string>
 	<string name="button_open">Открыть</string>
 	<string name="button_create">Создать</string>
+	<string name="button_settings">Настройки</string>
 	<string name="button_add">+</string>
 	<string name="button_save_user">Сохранить</string>
 	<string name="button_add_user">Добавить</string>
@@ -16,6 +17,8 @@
 	<string name="empty_line">Вы ничего не ввели</string>
 	<string name="title_data_user">Информация о пользователе</string>
 	<string name="title_create_user">Создание пользователя</string>
+	<string name="title_create_db">Создание БД</string>
+	<string name="hint_name_db">Введите название БД</string>
 
 	<string name="first_name">Имя</string>
 	<string name="last_name">Фамилия</string>

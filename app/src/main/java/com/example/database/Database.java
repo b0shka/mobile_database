@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 public class Database extends SQLiteOpenHelper {
-	private static final String DB_NAME = "server.db";
+	//private static final String DB_NAME = "server.db";
 	private static final int DB_VERSION = 1;
 	private static final String TABLE_NAME = "users";
 	private static final String COLUMN_ID = "_id";
@@ -35,9 +35,11 @@ public class Database extends SQLiteOpenHelper {
 	private Context context;
 	private SQLiteDatabase db;
 
-	public Database(Context context) {
+	public Database(Context context, String DB_NAME) {
 		super(context, DB_NAME, null, DB_VERSION);
 		this.context = context;
+
+		//Variables.g_status_db = 1;
 	}
 
 	@Override
@@ -133,6 +135,10 @@ public class Database extends SQLiteOpenHelper {
 		}
 
 		return list_data_user;
+	}
+
+	public void create_db_file() {
+		db.execSQL(SQL_CREATE_TABLE);
 	}
 
 	public void close_db() {

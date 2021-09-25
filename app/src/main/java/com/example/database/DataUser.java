@@ -1,7 +1,6 @@
 package com.example.database;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
-
 import android.app.AlertDialog;
 
 
@@ -37,7 +35,7 @@ public class DataUser extends AppCompatActivity {
 		save_user = findViewById(R.id.save_user);
 		back = findViewById(R.id.back_from_data_user);
 
-		db = new Database(DataUser.this);
+		db = new Database(DataUser.this, "server.db");
 
 		back.setOnClickListener(
 			new View.OnClickListener() {
