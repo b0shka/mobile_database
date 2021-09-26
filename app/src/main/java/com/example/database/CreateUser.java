@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class CreateUser extends AppCompatActivity {
@@ -14,7 +15,7 @@ public class CreateUser extends AppCompatActivity {
 	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth;
 	private TextView title_activity;
 	private Button create_user, back;
-	private Database db;
+	private Database database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class CreateUser extends AppCompatActivity {
 		create_user = findViewById(R.id.save_user);
 		back = findViewById(R.id.back_from_create);
 
-		db = new Database(CreateUser.this);
+		database = new Database(CreateUser.this);
 
 		back.setOnClickListener(
 			new View.OnClickListener() {
@@ -46,25 +47,34 @@ public class CreateUser extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		db.open_db();
+		database.open_db();
 	}
 
 	public void create_user(View view) {
 		String first_name = field_first_name.getText().toString();
-		String last_name = field_last_name.getText().toString();
-		String patronymic = field_patronymic.getText().toString();
-		String age = field_age.getText().toString();
-		String birth = field_birth.getText().toString();
+		if (first_name == "")
+			Toast.makeText(CreateUser.this, "Вы не написали имя", Toast.LENGTH_SHORT).show();
+		else {
+			String last_name = field_last_name.getText().toString();
+			String patronymic = field_patronymic.getText().toString();
+			String age = field_age.getText().toString();
+			String birth = field_birth.getText().toString();
 
-		db.add_user(first_name, last_name, patronymic, age, birth);
+			database.add_user(first_name, last_name, patronymic, age, birth);
+			Toast.makeText(CreateUser.this, "Запись успешно создана", Toast.LENGTH_SHORT).show();
 
-		Intent intent = new Intent(CreateUser.this, MainActivity.class);
-		startActivity(intent);
+			try {
+				Intent intent = new Intent(CreateUser.this, MainActivity.class);
+				startActivity(intent);
+			} catch (Exception e) {
+				Toast.makeText(CreateUser.this, e.toString(), Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		db.close_db();
+		database.close_db();
 	}
 }

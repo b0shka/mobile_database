@@ -18,7 +18,7 @@ public class DataUser extends AppCompatActivity {
 	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth;
 	private TextView title_activity;
 	private Button save_user, back;
-	private Database db;
+	private Database database;
 	String[] name;
 
 	@Override
@@ -35,7 +35,7 @@ public class DataUser extends AppCompatActivity {
 		save_user = findViewById(R.id.save_user);
 		back = findViewById(R.id.back_from_data_user);
 
-		db = new Database(DataUser.this);
+		database = new Database(DataUser.this);
 
 		back.setOnClickListener(
 			new View.OnClickListener() {
@@ -51,11 +51,11 @@ public class DataUser extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		db.open_db();
+		database.open_db();
 
 		Intent arguments = getIntent();
 		name = arguments.getStringExtra("name").split(" ");
-		ArrayList<String> list_data_user = db.get_data_user(name[0], name[1]);
+		ArrayList<String> list_data_user = database.get_data_user(name[0], name[1]);
 
 		field_first_name.setText(name[0]);
 		field_last_name.setText(name[1]);
@@ -78,7 +78,7 @@ public class DataUser extends AppCompatActivity {
 		new_data_user.add(age);
 		new_data_user.add(birth);
 
-		db.update_user(new_data_user, name[0], name[1]);
+		database.update_user(new_data_user, name[0], name[1]);
 
 		Toast.makeText(DataUser.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(DataUser.this, MainActivity.class);
@@ -100,7 +100,7 @@ public class DataUser extends AppCompatActivity {
 						delete_data_user.add(last_name);
 						delete_data_user.add(patronymic);
 
-						db.delete_user(delete_data_user);
+						database.delete_user(delete_data_user);
 
 						Toast.makeText(DataUser.this, "Данные удалены", Toast.LENGTH_SHORT).show();
 						Intent intent = new Intent(DataUser.this, MainActivity.class);
@@ -122,6 +122,6 @@ public class DataUser extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		db.close_db();
+		database.close_db();
 	}
 }

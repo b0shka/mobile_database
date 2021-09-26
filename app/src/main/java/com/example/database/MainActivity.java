@@ -1,6 +1,9 @@
 package com.example.database;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,14 +32,25 @@ public class MainActivity extends AppCompatActivity {
 	private EditText line_search;
 	private Button search, filter, open_db, create_db, settings;
 	private FloatingActionButton add_user;
-	private Database db;
-
+	private Database database;
 	private static final int ACTIVITY_CHOOSE_FILE = 123;
+
+	private RecyclerView menu_recycler;
+	private MenuAdapter menu_adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		List<Menu> menuList = new ArrayList<>();
+		menuList.add(new Menu(1, "Фильтры"));
+		menuList.add(new Menu(2, "Открыть"));
+		menuList.add(new Menu(3, "Создать"));
+		menuList.add(new Menu(4, "Закрыть"));
+		menuList.add(new Menu(5, "Настройки"));
+
+		setMenuRecycler(menuList);
 
 		line_search = findViewById(R.id.line_search);
 		search = findViewById(R.id.search);
@@ -45,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 		settings = findViewById(R.id.settings);
 		add_user = findViewById(R.id.add_user);
 
-		Variable.g_db_name = "server.db";
-		db = new Database(MainActivity.this);
+		if (Variable.g_db_name != "")
+			database = new Database(MainActivity.this);
 
 		// Действие при нажатии на item
 		list_users.setOnItemClickListener(new OnItemClickListener() {
@@ -90,7 +106,16 @@ public class MainActivity extends AppCompatActivity {
 					if (Variable.g_status_db == 0)
 						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
 					else {
-						Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+						if (Variable.g_status_db == 1) {
+							try {
+								database.copy_db("from_data");
+								Toast.makeText(MainActivity.this, "Copy DB complete", Toast.LENGTH_SHORT).show();
+							} catch (IOException e) {
+								e.printStackTrace();
+								Toast.makeText(MainActivity.this, "Error copy db", Toast.LENGTH_SHORT).show();
+							}
+						}
+						//Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
 					}
 				}
 			}
@@ -105,18 +130,51 @@ public class MainActivity extends AppCompatActivity {
 					else {
 						Intent intent = new Intent(MainActivity.this, CreateUser.class);
 						startActivity(intent);
-						add_users_to_list();
 					}
 				}
 			}
 		);
 	}
 
+	private void setMenuRecycler(List<Menu> menuList) {
+		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+		menu_recycler = findViewById(R.id.menu);
+		menu_recycler.setLayoutManager(layoutManager);
+
+		menu_adapter = new MenuAdapter(this, menuList);
+		menu_recycler.setAdapter(menu_adapter);
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		db.open_db();
-		add_users_to_list();
+
+		if (Variable.g_status_db == 1) {
+			database.open_db();
+			add_users_to_list();
+		}
+	}
+
+	// Действие при нажатии на кнопку поиска
+	public void on_search(View view) {
+		if (Variable.g_status_db == 0)
+			Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+		else {
+			if (line_search.getText().toString().trim().equals(""))
+				Toast.makeText(MainActivity.this, R.string.empty_line, Toast.LENGTH_LONG).show();
+			else {
+				String text_search = line_search.getText().toString();
+				Toast.makeText(MainActivity.this, text_search, Toast.LENGTH_SHORT).show();
+			}
+
+			line_search.setText("");
+		}
+	}
+
+	public void add_users_to_list() {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, database.get_users());
+		list_users.setAdapter(adapter);
 	}
 
 	public void onBrowse() {
@@ -141,38 +199,27 @@ public class MainActivity extends AppCompatActivity {
 				return;
 			}
 
-			String file_path = uri.getPath();
+			String file_path = uri.getPath().replace(':', '/').replaceFirst("document", "storage/self");
 			String[] list_file_path = file_path.split("/");
 			String file_name = list_file_path[list_file_path.length - 1];
 			Variable.g_db_name = file_name;
 			Variable.g_db_path = file_path;
-			Toast.makeText(MainActivity.this, file_name, Toast.LENGTH_SHORT).show();
+
+			database = new Database(MainActivity.this);
+			database.open_db();
+
+			try {
+				database.copy_db("to_data");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			add_users_to_list();
+			Toast.makeText(MainActivity.this, "База данных открыта", Toast.LENGTH_SHORT).show();
 
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
-	}
-
-	// Действие при нажатии на кнопку поиска
-	public void on_search(View view) {
-		if (Variable.g_status_db == 0)
-			Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
-		else {
-			if (line_search.getText().toString().trim().equals(""))
-				Toast.makeText(MainActivity.this, R.string.empty_line, Toast.LENGTH_LONG).show();
-			else {
-				String text_search = line_search.getText().toString();
-				Toast.makeText(MainActivity.this, text_search, Toast.LENGTH_SHORT).show();
-			}
-
-			line_search.setText("");
-		}
-	}
-
-	public void add_users_to_list() {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, db.get_users());
-		list_users.setAdapter(adapter);
 	}
 
 	public void on_create_db(View view) {
@@ -187,16 +234,15 @@ public class MainActivity extends AppCompatActivity {
 		create_new_db.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String name_new_db = name_db.getText().toString() + ".db";
+				Variable.g_db_name = name_db.getText().toString() + ".db";
 				dialog.dismiss();
 
-				Variable.g_db_name = name_new_db;
-				//db = new Database(MainActivity.this);
-				//db.open_db();
+				database = new Database(MainActivity.this);
+				database.open_db();
+				add_users_to_list();
 
 				Toast.makeText(MainActivity.this, "База данных успешно создана", Toast.LENGTH_SHORT).show();
-				add_users_to_list();
-				create_file();
+				//create_file();
 			}
 		});
 
@@ -233,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		db.close_db();
+
+		if (Variable.g_status_db == 1) {
+			database.close_db();
+		}
 	}
 }

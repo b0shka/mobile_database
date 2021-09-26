@@ -5,14 +5,24 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 
 public class Database extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
-	private static String DB_PATH = "";
+	private static String DB_PATH = "/data/data/com.example.database/databases/";
 	private static final String TABLE_NAME = "users";
 	private static final String COLUMN_ID = "_id";
 	private static final String COLUMN_FIRST_NAME = "first_name";
@@ -21,41 +31,62 @@ public class Database extends SQLiteOpenHelper {
 	private static final String COLUMN_AGE = "age";
 	private static final String COLUMN_BIRTH = "birth";
 
-	private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " +
-			TABLE_NAME + " (" +
-			COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-			COLUMN_FIRST_NAME + " VARCHAR(255)," +
-			COLUMN_LAST_NAME + " VARCHAR(255)," +
-			COLUMN_PATRONYMIC + " VARCHAR(255)," +
-			COLUMN_AGE + " VARCHAR(255)," +
-			COLUMN_BIRTH + " TEXT)";
-	private static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-
-	private static final String TAG = "APP_LOGS";
 	private Context context;
 	private SQLiteDatabase db;
 
 	public Database(Context context) {
 		super(context, Variable.g_db_name, null, DB_VERSION);
 		this.context = context;
-		DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
 
 		Variable.g_status_db = 1;
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
-		sqLiteDatabase.execSQL(SQL_CREATE_TABLE);
+		sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+				TABLE_NAME + " (" +
+				COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				COLUMN_FIRST_NAME + " VARCHAR(255)," +
+				COLUMN_LAST_NAME + " VARCHAR(255)," +
+				COLUMN_PATRONYMIC + " VARCHAR(255)," +
+				COLUMN_AGE + " VARCHAR(255)," +
+				COLUMN_BIRTH + " TEXT)");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-		sqLiteDatabase.execSQL(SQL_DELETE_TABLE);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 		onCreate(sqLiteDatabase);
 	}
 
 	public void open_db() {
 		db = this.getWritableDatabase();
+	}
+
+	public void copy_db(String mode) throws IOException {
+		File sourceFile = null;
+		File destFile = null;
+
+		if (mode == "to_data") {
+			sourceFile = new File(Variable.g_db_path + Variable.g_db_path);
+			destFile = new File(DB_PATH + Variable.g_db_name);
+		} else if (mode == "from_data") {
+			sourceFile = new File(DB_PATH + Variable.g_db_name);
+			destFile = new File(Variable.g_db_path + Variable.g_db_name);
+		}
+
+		InputStream in = new FileInputStream(sourceFile);
+		OutputStream out = new FileOutputStream(destFile);
+
+		byte[] buffer = new byte[1024];
+		int len;
+		while ((len = in.read(buffer)) > 0){
+			out.write(buffer, 0, len);
+		}
+
+		out.flush();
+		out.close();
+		in.close();
 	}
 
 	public void add_user(String first_name, String last_name, String patronymic, String age, String birth) {
@@ -131,7 +162,7 @@ public class Database extends SQLiteOpenHelper {
 
 		} catch (Exception e) {
 			String error_get_data_bd = "Ошибка при получении данных из БД";
-			Log.d(TAG, error_get_data_bd, e);
+			Log.d(Variable.TAG, error_get_data_bd, e);
 			list_data_user.add("ERROR");
 		}
 
