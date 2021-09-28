@@ -30,6 +30,22 @@ public class Database extends SQLiteOpenHelper {
 	private static final String COLUMN_PATRONYMIC = "patronymic";
 	private static final String COLUMN_AGE = "age";
 	private static final String COLUMN_BIRTH = "birth";
+	private static final String COLUMN_COUNTRY = "country";
+	private static final String COLUMN_ADDRESS = "address";
+	private static final String COLUMN_INDEX = "index_";
+	private static final String COLUMN_NUMBER_PHONE = "number_phone";
+	private static final String COLUMN_PASSPORT = "passport";
+	private static final String COLUMN_SNILS = "snils";
+	private static final String COLUMN_CAR = "car";
+	private static final String COLUMN_EDUCATION = "education";
+	private static final String COLUMN_PLACE_WORK = "place_work";
+	private static final String COLUMN_EMAIL = "email";
+	private static final String COLUMN_VK = "vk";
+	private static final String COLUMN_INSTAGRAM = "instagram";
+	private static final String COLUMN_TELEGRAM = "telegram";
+	private static final String COLUMN_OTHER_SOCIAL = "other_social";
+	private static final String COLUMN_RELATIVE = "relative";
+	private static final String COLUMN_OTHER = "other";
 
 	private Context context;
 	private SQLiteDatabase db;
@@ -50,7 +66,23 @@ public class Database extends SQLiteOpenHelper {
 				COLUMN_LAST_NAME + " VARCHAR(255)," +
 				COLUMN_PATRONYMIC + " VARCHAR(255)," +
 				COLUMN_AGE + " VARCHAR(255)," +
-				COLUMN_BIRTH + " TEXT)");
+				COLUMN_BIRTH + " VARCHAR(255)," +
+				COLUMN_COUNTRY + " VARCHAR(255)," +
+				COLUMN_ADDRESS + " VARCHAR(255)," +
+				COLUMN_INDEX + " VARCHAR(255)," +
+				COLUMN_NUMBER_PHONE + " VARCHAR(255)," +
+				COLUMN_PASSPORT + " TEXT," +
+				COLUMN_SNILS + " VARCHAR(255)," +
+				COLUMN_CAR + " VARCHAR(255)," +
+				COLUMN_EDUCATION + " VARCHAR(255)," +
+				COLUMN_PLACE_WORK + " VARCHAR(255)," +
+				COLUMN_EMAIL + " VARCHAR(255)," +
+				COLUMN_VK + " VARCHAR(255)," +
+				COLUMN_INSTAGRAM + " VARCHAR(255)," +
+				COLUMN_TELEGRAM + " VARCHAR(255)," +
+				COLUMN_OTHER_SOCIAL + " TEXT," +
+				COLUMN_RELATIVE + " TEXT," +
+				COLUMN_OTHER + " TEXT);");
 	}
 
 	@Override
@@ -89,25 +121,40 @@ public class Database extends SQLiteOpenHelper {
 		in.close();
 	}
 
-	public void add_user(String first_name, String last_name, String patronymic, String age, String birth) {
+	public ContentValues completion_content(ArrayList<String> list_data) {
 		ContentValues content = new ContentValues();
-		content.put(COLUMN_FIRST_NAME, first_name);
-		content.put(COLUMN_LAST_NAME, last_name);
-		content.put(COLUMN_PATRONYMIC, patronymic);
-		content.put(COLUMN_AGE, age);
-		content.put(COLUMN_BIRTH, birth);
+		content.put(COLUMN_FIRST_NAME, list_data.get(0));
+		content.put(COLUMN_LAST_NAME, list_data.get(1));
+		content.put(COLUMN_PATRONYMIC, list_data.get(2));
+		content.put(COLUMN_AGE, list_data.get(3));
+		content.put(COLUMN_BIRTH, list_data.get(4));
+		content.put(COLUMN_COUNTRY, list_data.get(5));
+		content.put(COLUMN_ADDRESS, list_data.get(6));
+		content.put(COLUMN_INDEX, list_data.get(7));
+		content.put(COLUMN_NUMBER_PHONE, list_data.get(8));
+		content.put(COLUMN_PASSPORT, list_data.get(9));
+		content.put(COLUMN_SNILS, list_data.get(10));
+		content.put(COLUMN_CAR, list_data.get(11));
+		content.put(COLUMN_EDUCATION, list_data.get(12));
+		content.put(COLUMN_PLACE_WORK, list_data.get(13));
+		content.put(COLUMN_EMAIL, list_data.get(14));
+		content.put(COLUMN_VK, list_data.get(15));
+		content.put(COLUMN_INSTAGRAM, list_data.get(16));
+		content.put(COLUMN_TELEGRAM, list_data.get(17));
+		content.put(COLUMN_OTHER_SOCIAL, list_data.get(18));
+		content.put(COLUMN_RELATIVE, list_data.get(19));
+		content.put(COLUMN_OTHER, list_data.get(20));
 
+		return content;
+	}
+
+	public void add_user(ArrayList<String> data_user) {
+		ContentValues content = completion_content(data_user);
 		db.insert(TABLE_NAME, null, content);
 	}
 
 	public void update_user(ArrayList<String> new_data_user, String old_first_name, String old_last_name){
-		ContentValues content = new ContentValues();
-		content.put(COLUMN_FIRST_NAME, new_data_user.get(0));
-		content.put(COLUMN_LAST_NAME, new_data_user.get(1));
-		content.put(COLUMN_PATRONYMIC, new_data_user.get(2));
-		content.put(COLUMN_AGE, new_data_user.get(3));
-		content.put(COLUMN_BIRTH, new_data_user.get(4));
-
+		ContentValues content = completion_content(new_data_user);
 		db.update(TABLE_NAME,
 				content,
 				COLUMN_FIRST_NAME + "= ? AND " + COLUMN_LAST_NAME + "= ?",
@@ -139,7 +186,7 @@ public class Database extends SQLiteOpenHelper {
 		ArrayList<String> list_data_user = new ArrayList<>();
 
 		try {
-			String[] get_columns = {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH};
+			String[] get_columns = {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH, COLUMN_COUNTRY, COLUMN_ADDRESS, COLUMN_INDEX, COLUMN_NUMBER_PHONE, COLUMN_PASSPORT, COLUMN_SNILS, COLUMN_CAR, COLUMN_EDUCATION, COLUMN_PLACE_WORK, COLUMN_EMAIL, COLUMN_VK, COLUMN_INSTAGRAM, COLUMN_TELEGRAM, COLUMN_OTHER_SOCIAL, COLUMN_RELATIVE, COLUMN_OTHER};
 			Cursor cursor = db.query(TABLE_NAME,
 					get_columns,
 					COLUMN_FIRST_NAME + " = ? AND " + COLUMN_LAST_NAME + " = ?",
@@ -152,10 +199,42 @@ public class Database extends SQLiteOpenHelper {
 				@SuppressLint("Range") String patronymic = cursor.getString(cursor.getColumnIndex(COLUMN_PATRONYMIC));
 				@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
 				@SuppressLint("Range") String birth = cursor.getString(cursor.getColumnIndex(COLUMN_BIRTH));
+				@SuppressLint("Range") String country = cursor.getString(cursor.getColumnIndex(COLUMN_COUNTRY));
+				@SuppressLint("Range") String address = cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS));
+				@SuppressLint("Range") String index = cursor.getString(cursor.getColumnIndex(COLUMN_INDEX));
+				@SuppressLint("Range") String number_phone = cursor.getString(cursor.getColumnIndex(COLUMN_NUMBER_PHONE));
+				@SuppressLint("Range") String passport = cursor.getString(cursor.getColumnIndex(COLUMN_PASSPORT));
+				@SuppressLint("Range") String snils = cursor.getString(cursor.getColumnIndex(COLUMN_SNILS));
+				@SuppressLint("Range") String car = cursor.getString(cursor.getColumnIndex(COLUMN_CAR));
+				@SuppressLint("Range") String education = cursor.getString(cursor.getColumnIndex(COLUMN_EDUCATION));
+				@SuppressLint("Range") String place_work = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_WORK));
+				@SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL));
+				@SuppressLint("Range") String vk = cursor.getString(cursor.getColumnIndex(COLUMN_VK));
+				@SuppressLint("Range") String instagram = cursor.getString(cursor.getColumnIndex(COLUMN_INSTAGRAM));
+				@SuppressLint("Range") String telegram = cursor.getString(cursor.getColumnIndex(COLUMN_TELEGRAM));
+				@SuppressLint("Range") String other_social = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER_SOCIAL));
+				@SuppressLint("Range") String relative = cursor.getString(cursor.getColumnIndex(COLUMN_RELATIVE));
+				@SuppressLint("Range") String other = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER));
 
 				list_data_user.add(patronymic);
 				list_data_user.add(age);
 				list_data_user.add(birth);
+				list_data_user.add(country);
+				list_data_user.add(address);
+				list_data_user.add(index);
+				list_data_user.add(number_phone);
+				list_data_user.add(passport);
+				list_data_user.add(snils);
+				list_data_user.add(car);
+				list_data_user.add(education);
+				list_data_user.add(place_work);
+				list_data_user.add(email);
+				list_data_user.add(vk);
+				list_data_user.add(instagram);
+				list_data_user.add(telegram);
+				list_data_user.add(other_social);
+				list_data_user.add(relative);
+				list_data_user.add(other);
 			}
 
 			cursor.close();

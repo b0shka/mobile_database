@@ -7,7 +7,7 @@
 	<string name="button_create">Создать</string>
 	<string name="button_settings">Настройки</string>
 	<string name="button_add">+</string>
-	<string name="button_save_user">Сохранить</string>
+	<string name="button_save">Сохранить</string>
 	<string name="button_add_user">Добавить</string>
 	<string name="button_back">Назад</string>
 	<string name="button_cancel">Отмена</string>
@@ -25,4 +25,21 @@
 	<string name="patronymic">Отчество</string>
 	<string name="age">Возраст</string>
 	<string name="birth">Дата рождения</string>
+	<string name="country">Страна, город</string>
+	<string name="address">Адрес</string>
+	<string name="index">Индекс</string>
+	<string name="number_phone">Номер телефона</string>
+	<string name="passport">Паспорт</string>
+	<string name="snils">Снилс</string>
+	<string name="car">Машина</string>
+	<string name="education">Образование</string>
+	<string name="place_work">Место работы</string>
+	<string name="email">Почта</string>
+	<string name="vk">ВКонтакте</string>
+	<string name="instagram">Инстаграм</string>
+	<string name="telegram">Телеграм</string>
+	<string name="other_social">Другие соц. сети</string>
+	<string name="relative">Родственники</string>
+	<string name="other">Остальное</string>
+
 </resources>

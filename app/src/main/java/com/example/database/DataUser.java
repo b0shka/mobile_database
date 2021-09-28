@@ -15,9 +15,8 @@ import android.app.AlertDialog;
 
 public class DataUser extends AppCompatActivity {
 
-	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth;
-	private TextView title_activity;
-	private Button save_user, back;
+	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_other;
+	private Button back;
 	private Database database;
 	String[] name;
 
@@ -26,13 +25,28 @@ public class DataUser extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data_user);
 
-		title_activity = findViewById(R.id.title_data_user);
 		field_first_name = findViewById(R.id.firts_name);
 		field_last_name = findViewById(R.id.last_name);
 		field_patronymic = findViewById(R.id.patronymic);
 		field_age = findViewById(R.id.age);
 		field_birth = findViewById(R.id.birth);
-		save_user = findViewById(R.id.save_user);
+		field_country = findViewById(R.id.country);
+		field_address = findViewById(R.id.address);
+		field_index = findViewById(R.id.index);
+		field_number_phone = findViewById(R.id.number_phone);
+		field_passport = findViewById(R.id.passport);
+		field_snils = findViewById(R.id.snils);
+		field_car = findViewById(R.id.car);
+		field_education = findViewById(R.id.education);
+		field_place_work = findViewById(R.id.place_work);
+		field_email = findViewById(R.id.email);
+		field_vk = findViewById(R.id.vk);
+		field_instagram = findViewById(R.id.instagram);
+		field_telegram = findViewById(R.id.telegram);
+		field_other_social = findViewById(R.id.other_social);
+		field_relative = findViewById(R.id.relative);
+		field_other = findViewById(R.id.other);
+
 		back = findViewById(R.id.back_from_data_user);
 
 		database = new Database(DataUser.this);
@@ -62,6 +76,22 @@ public class DataUser extends AppCompatActivity {
 		field_patronymic.setText(list_data_user.get(0));
 		field_age.setText(list_data_user.get(1));
 		field_birth.setText(list_data_user.get(2));
+		field_country.setText(list_data_user.get(3));
+		field_address.setText(list_data_user.get(4));
+		field_index.setText(list_data_user.get(5));
+		field_number_phone.setText(list_data_user.get(6));
+		field_passport.setText(list_data_user.get(7));
+		field_snils.setText(list_data_user.get(8));
+		field_car.setText(list_data_user.get(9));
+		field_education.setText(list_data_user.get(10));
+		field_place_work.setText(list_data_user.get(11));
+		field_email.setText(list_data_user.get(12));
+		field_vk.setText(list_data_user.get(13));
+		field_instagram.setText(list_data_user.get(14));
+		field_telegram.setText(list_data_user.get(15));
+		field_other_social.setText(list_data_user.get(16));
+		field_relative.setText(list_data_user.get(17));
+		field_other.setText(list_data_user.get(18));
 	}
 
 	public void save_user(View view) {
@@ -70,6 +100,23 @@ public class DataUser extends AppCompatActivity {
 		String patronymic = field_patronymic.getText().toString();
 		String age = field_age.getText().toString();
 		String birth = field_birth.getText().toString();
+		String country = field_country.getText().toString();
+		String address = field_address.getText().toString();
+		String index = field_index.getText().toString();
+		String number_phone = field_number_phone.getText().toString();
+		String passport = field_passport.getText().toString();
+		String snils = field_snils.getText().toString();
+		String car = field_car.getText().toString();
+		String education = field_education.getText().toString();
+		String place_work = field_place_work.getText().toString();
+		String email = field_email.getText().toString();
+		String vk = field_vk.getText().toString();
+		String instagram = field_instagram.getText().toString();
+		String telegram = field_telegram.getText().toString();
+		String other_social = field_other_social.getText().toString();
+		String relative = field_relative.getText().toString();
+		String other = field_other.getText().toString();
+
 
 		ArrayList<String> new_data_user = new ArrayList<>();
 		new_data_user.add(first_name);
@@ -77,6 +124,22 @@ public class DataUser extends AppCompatActivity {
 		new_data_user.add(patronymic);
 		new_data_user.add(age);
 		new_data_user.add(birth);
+		new_data_user.add(country);
+		new_data_user.add(address);
+		new_data_user.add(index);
+		new_data_user.add(number_phone);
+		new_data_user.add(passport);
+		new_data_user.add(snils);
+		new_data_user.add(car);
+		new_data_user.add(education);
+		new_data_user.add(place_work);
+		new_data_user.add(email);
+		new_data_user.add(vk);
+		new_data_user.add(instagram);
+		new_data_user.add(telegram);
+		new_data_user.add(other_social);
+		new_data_user.add(relative);
+		new_data_user.add(other);
 
 		database.update_user(new_data_user, name[0], name[1]);
 

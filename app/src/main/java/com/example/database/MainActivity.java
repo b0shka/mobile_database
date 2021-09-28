@@ -1,8 +1,6 @@
 package com.example.database;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -22,35 +20,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
 	private ListView list_users;
 	private EditText line_search;
-	private Button search, filter, open_db, create_db, settings;
+	private Button search, filter, open_db, create_db, save_db, settings;
 	private FloatingActionButton add_user;
 	private Database database;
 	private static final int ACTIVITY_CHOOSE_FILE = 123;
-
-	private RecyclerView menu_recycler;
-	private MenuAdapter menu_adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		List<Menu> menuList = new ArrayList<>();
-		menuList.add(new Menu(1, "Фильтры"));
-		menuList.add(new Menu(2, "Открыть"));
-		menuList.add(new Menu(3, "Создать"));
-		menuList.add(new Menu(4, "Закрыть"));
-		menuList.add(new Menu(5, "Настройки"));
-
-		setMenuRecycler(menuList);
 
 		line_search = findViewById(R.id.line_search);
 		search = findViewById(R.id.search);
@@ -58,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 		filter = findViewById(R.id.filter);
 		open_db = findViewById(R.id.open_db);
 		create_db = findViewById(R.id.create_db);
+		save_db = findViewById(R.id.save_db);
 		settings = findViewById(R.id.settings);
 		add_user = findViewById(R.id.add_user);
 
@@ -99,24 +84,32 @@ public class MainActivity extends AppCompatActivity {
 			}
 		);
 
+		save_db.setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						if (Variable.g_status_db == 0)
+							Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+						else {
+							if (Variable.g_status_db == 1) {
+								try {
+									database.copy_db("from_data");
+									Toast.makeText(MainActivity.this, "БД успешно скопирована", Toast.LENGTH_SHORT).show();
+								} catch (IOException e) {
+									e.printStackTrace();
+									Toast.makeText(MainActivity.this, "Ошибка при копировании БД", Toast.LENGTH_SHORT).show();
+								}
+							}
+						}
+					}
+				}
+		);
+
 		settings.setOnClickListener(
 			new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
-					else {
-						if (Variable.g_status_db == 1) {
-							try {
-								database.copy_db("from_data");
-								Toast.makeText(MainActivity.this, "Copy DB complete", Toast.LENGTH_SHORT).show();
-							} catch (IOException e) {
-								e.printStackTrace();
-								Toast.makeText(MainActivity.this, "Error copy db", Toast.LENGTH_SHORT).show();
-							}
-						}
-						//Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
-					}
+						Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
 				}
 			}
 		);
@@ -134,15 +127,6 @@ public class MainActivity extends AppCompatActivity {
 				}
 			}
 		);
-	}
-
-	private void setMenuRecycler(List<Menu> menuList) {
-		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-		menu_recycler = findViewById(R.id.menu);
-		menu_recycler.setLayoutManager(layoutManager);
-
-		menu_adapter = new MenuAdapter(this, menuList);
-		menu_recycler.setAdapter(menu_adapter);
 	}
 
 	@Override
