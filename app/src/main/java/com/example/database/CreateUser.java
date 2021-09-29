@@ -71,7 +71,7 @@ public class CreateUser extends AppCompatActivity {
 	public void create_user(View view) {
 		String first_name = field_first_name.getText().toString();
 		if (first_name == "")
-			Toast.makeText(CreateUser.this, "Вы не написали имя", Toast.LENGTH_SHORT).show();
+			Toast.makeText(CreateUser.this, R.string.empty_first_name, Toast.LENGTH_SHORT).show();
 		else {
 			String last_name = field_last_name.getText().toString();
 			String patronymic = field_patronymic.getText().toString();
@@ -122,7 +122,7 @@ public class CreateUser extends AppCompatActivity {
 			data_user.add(other);
 
 			database.add_user(data_user);
-			Toast.makeText(CreateUser.this, "Запись успешно создана", Toast.LENGTH_SHORT).show();
+			Toast.makeText(CreateUser.this, R.string.success_create_data, Toast.LENGTH_SHORT).show();
 
 			try {
 				Intent intent = new Intent(CreateUser.this, MainActivity.class);

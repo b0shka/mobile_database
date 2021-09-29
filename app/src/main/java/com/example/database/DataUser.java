@@ -151,14 +151,14 @@ public class DataUser extends AppCompatActivity {
 
 		database.update_user(new_data_user, name[0], name[1]);
 
-		Toast.makeText(DataUser.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
+		Toast.makeText(DataUser.this, R.string.success_update_data, Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(DataUser.this, MainActivity.class);
 		startActivity(intent);
 	}
 
 	public void delete(View view) {
 		AlertDialog.Builder accept_window = new AlertDialog.Builder(DataUser.this);
-		accept_window.setMessage("Вы уверевы?").setCancelable(false)
+		accept_window.setMessage(R.string.you_sure).setCancelable(false)
 				.setPositiveButton("Да", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
@@ -173,12 +173,12 @@ public class DataUser extends AppCompatActivity {
 
 						database.delete_user(delete_data_user);
 
-						Toast.makeText(DataUser.this, "Данные удалены", Toast.LENGTH_SHORT).show();
+						Toast.makeText(DataUser.this, R.string.success_delete_data, Toast.LENGTH_SHORT).show();
 						Intent intent = new Intent(DataUser.this, MainActivity.class);
 						startActivity(intent);
 					}
 				})
-				.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						dialogInterface.cancel();
@@ -186,7 +186,7 @@ public class DataUser extends AppCompatActivity {
 				});
 
 		AlertDialog alert = accept_window.create();
-		alert.setTitle("Удаление записи");
+		alert.setTitle(R.string.title_delete_data);
 		alert.show();
 	}
 

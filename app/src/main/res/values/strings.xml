@@ -3,6 +3,7 @@
 
 	<string name="button_search">Поиск</string>
 	<string name="button_filter">Фильтры</string>
+	<string name="button_update">Обновить</string>
 	<string name="button_open">Открыть</string>
 	<string name="button_create">Создать</string>
 	<string name="button_settings">Настройки</string>
@@ -16,11 +17,22 @@
 	<string name="symbol_close">×</string>
 
 	<string name="hint_line_search">Введите данные...</string>
-	<string name="empty_line">Вы ничего не ввели</string>
 	<string name="title_data_user">Информация о пользователе</string>
 	<string name="title_create_user">Создание пользователя</string>
 	<string name="title_create_db">Создание БД</string>
 	<string name="hint_name_db">Введите название БД</string>
+	<string name="title_delete_data">Удаление записи</string>
+	<string name="you_sure">Вы уверены?</string>
+
+	<string name="empty_line">Вы ничего не ввели</string>
+	<string name="empty_first_name">Вы не ввели имя</string>
+	<string name="first_open_db">Для начала откройте или создайте БД</string>
+	<string name="choice_file">Выберите файл БД</string>
+	<string name="success_copy">БД успешно скопирована</string>
+	<string name="error_copy">Ошибка при копировании БД</string>
+	<string name="success_delete_data">Запись удалена</string>
+	<string name="success_update_data">Запись обновлена</string>
+	<string name="success_create_data">Запись создана</string>
 
 	<string name="first_name">Имя</string>
 	<string name="last_name">Фамилия</string>

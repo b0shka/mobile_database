@@ -24,13 +24,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
 	private ListView list_users;
 	private EditText line_search;
-	private Button search, filter, open_db, create_db, save_db, close_db, settings;
+	private Button search, filter, update, open_db, create_db, save_db, close_db, settings;
 	private FloatingActionButton add_user;
 	private Database database;
 	private static final int ACTIVITY_CHOOSE_FILE = 123;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 		search = findViewById(R.id.search);
 		list_users = findViewById(R.id.list_users);
 		filter = findViewById(R.id.filter);
+		update = findViewById(R.id.update);
 		open_db = findViewById(R.id.open_db);
 		create_db = findViewById(R.id.create_db);
 		save_db = findViewById(R.id.save_db);
@@ -54,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 		if (Variable.g_db_name != "")
 			database = new Database(MainActivity.this);
 
-		// Действие при нажатии на item
 		list_users.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				String name_item = list_users.getItemAtPosition(position).toString();
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View view) {
 					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						Intent intent = new Intent(MainActivity.this, Filter.class);
 						startActivity(intent);
@@ -79,11 +81,23 @@ public class MainActivity extends AppCompatActivity {
 			}
 		);
 
+		update.setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						if (Variable.g_status_db == 0)
+							Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
+						else
+							add_users_to_list(database.get_users());
+					}
+				}
+		);
+
 		open_db.setOnClickListener(
 			new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					Toast.makeText(MainActivity.this, "Выберите файл БД", Toast.LENGTH_SHORT).show();
+					Toast.makeText(MainActivity.this, R.string.choice_file, Toast.LENGTH_SHORT).show();
 					onBrowse();
 				}
 			}
@@ -94,15 +108,15 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View view) {
 					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						if (Variable.g_status_db == 1) {
 							try {
 								database.copy_db("from_data");
-								Toast.makeText(MainActivity.this, "БД успешно скопирована", Toast.LENGTH_SHORT).show();
+								Toast.makeText(MainActivity.this, R.string.success_copy, Toast.LENGTH_SHORT).show();
 							} catch (IOException e) {
 								e.printStackTrace();
-								Toast.makeText(MainActivity.this, "Ошибка при копировании БД", Toast.LENGTH_SHORT).show();
+								Toast.makeText(MainActivity.this, R.string.error_copy, Toast.LENGTH_SHORT).show();
 							}
 						}
 					}
@@ -115,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View view) {
 					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						database.close_db();
 						list_users.setAdapter(null);
@@ -131,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View view) {
 					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
 					}
@@ -144,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View view) {
 					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						Intent intent = new Intent(MainActivity.this, CreateUser.class);
 						startActivity(intent);
@@ -160,29 +174,61 @@ public class MainActivity extends AppCompatActivity {
 
 		if (Variable.g_status_db == 1) {
 			database.open_db();
-			add_users_to_list();
+			add_users_to_list(database.get_users());
 		}
 	}
 
-	// Действие при нажатии на кнопку поиска
 	public void on_search(View view) {
 		if (Variable.g_status_db == 0)
-			Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 		else {
-			if (line_search.getText().toString().trim().equals(""))
-				Toast.makeText(MainActivity.this, R.string.empty_line, Toast.LENGTH_LONG).show();
+			String text_search = line_search.getText().toString();
+
+			if (text_search.equals(""))
+				add_users_to_list(database.get_users());
 			else {
-				String text_search = line_search.getText().toString();
-				Toast.makeText(MainActivity.this, text_search, Toast.LENGTH_SHORT).show();
+				ArrayList<String> list_data_users = database.get_users();
+				ArrayList<String> list_result_search = new ArrayList<>();
+
+				for (String i : list_data_users) {
+					String[] name_user = i.split(" ");
+
+					if (check_error(text_search.toLowerCase(), name_user[0].toLowerCase()) == 1 || check_error(text_search.toLowerCase(), name_user[1].toLowerCase()) == 1)
+						list_result_search.add(name_user[0] + " " + name_user[1]);
+
+					else if (name_user[0].equals(text_search) || name_user[1].equals(text_search))
+						list_result_search.add(name_user[0] + " " + name_user[1]);
+				}
+
+				add_users_to_list(list_result_search);
 			}
 
 			line_search.setText("");
 		}
 	}
 
-	public void add_users_to_list() {
+	public int check_error(String search, String text_main) {
+		if (search.length() > 4)
+		{
+			int count = 0;
+			for (int j = 0; j < search.length(); j++)
+			{
+				if (text_main.charAt(j) != search.charAt(j))
+					count++;
+			}
+			if (count <= 1)
+				return 1;
+			else if (count <= 2 && (text_main.length() - search.length()) < 5)
+				return 1;
+			else
+				return 0;
+		}
+		return 0;
+	}
+
+	public void add_users_to_list(ArrayList<String> list_data_users) {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, database.get_users());
+				android.R.layout.simple_list_item_1, list_data_users);
 		list_users.setAdapter(adapter);
 	}
 
@@ -212,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
 			String[] list_file_path = file_path.split("/");
 			String file_name = list_file_path[list_file_path.length - 1];
 			Variable.g_db_name = file_name;
-			Variable.g_db_path = file_path;
+			Variable.g_db_path = file_path.replaceFirst(file_name, "");
 
 			database = new Database(MainActivity.this);
 			database.open_db();
@@ -223,8 +269,7 @@ public class MainActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 
-			add_users_to_list();
-			Toast.makeText(MainActivity.this, "База данных открыта", Toast.LENGTH_SHORT).show();
+			add_users_to_list(database.get_users());
 
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
@@ -254,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
 					Variable.g_db_name = text_name_db;
 					database = new Database(MainActivity.this);
 					database.open_db();
-					add_users_to_list();
+					list_users.setAdapter(null);
 
 					Toast.makeText(MainActivity.this, "База данных успешно создана", Toast.LENGTH_SHORT).show();
 					//create_file();
@@ -297,6 +342,14 @@ public class MainActivity extends AppCompatActivity {
 		super.onDestroy();
 
 		if (Variable.g_status_db == 1) {
+			try {
+				database.copy_db("from_data");
+				Toast.makeText(MainActivity.this, R.string.success_copy, Toast.LENGTH_SHORT).show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				Toast.makeText(MainActivity.this, R.string.error_copy, Toast.LENGTH_SHORT).show();
+			}
+
 			database.close_db();
 		}
 	}

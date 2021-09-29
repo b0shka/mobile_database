@@ -5,9 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -16,8 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Database extends SQLiteOpenHelper {
@@ -102,14 +100,19 @@ public class Database extends SQLiteOpenHelper {
 	public void copy_db(String mode) throws IOException {
 		File sourceFile = null;
 		File destFile = null;
+		File sourceFile_journal = null;
 
 		if (mode == "to_data") {
-			sourceFile = new File(Variable.g_db_path + Variable.g_db_path);
+			sourceFile = new File(Variable.g_db_path + Variable.g_db_name);
 			destFile = new File(DB_PATH + Variable.g_db_name);
 		} else if (mode == "from_data") {
 			sourceFile = new File(DB_PATH + Variable.g_db_name);
+			sourceFile_journal = new File(DB_PATH + Variable.g_db_name + "-journal");
 			destFile = new File(Variable.g_db_path + Variable.g_db_name);
 		}
+
+		if (destFile.exists())
+			destFile.delete();
 
 		InputStream in = new FileInputStream(sourceFile);
 		OutputStream out = new FileOutputStream(destFile);
@@ -118,6 +121,12 @@ public class Database extends SQLiteOpenHelper {
 		int len;
 		while ((len = in.read(buffer)) > 0){
 			out.write(buffer, 0, len);
+		}
+
+		if (mode == "from_data") {
+			sourceFile.delete();
+			if (sourceFile_journal.exists())
+				sourceFile_journal.delete();
 		}
 
 		out.flush();
@@ -174,7 +183,7 @@ public class Database extends SQLiteOpenHelper {
 	}
 
 	public ArrayList<String> get_users() {
-		ArrayList<String> data_user = new ArrayList<>();
+		ArrayList<String> data_user = new ArrayList();
 		Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
