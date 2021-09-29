@@ -8,10 +8,12 @@
 	<string name="button_settings">Настройки</string>
 	<string name="button_add">+</string>
 	<string name="button_save">Сохранить</string>
+	<string name="button_close">Закрыть</string>
 	<string name="button_add_user">Добавить</string>
 	<string name="button_back">Назад</string>
 	<string name="button_cancel">Отмена</string>
 	<string name="button_delete">Удалить</string>
+	<string name="symbol_close">×</string>
 
 	<string name="hint_line_search">Введите данные...</string>
 	<string name="empty_line">Вы ничего не ввели</string>
@@ -29,6 +31,7 @@
 	<string name="address">Адрес</string>
 	<string name="index">Индекс</string>
 	<string name="number_phone">Номер телефона</string>
+	<string name="phone">Телефон</string>
 	<string name="passport">Паспорт</string>
 	<string name="snils">Снилс</string>
 	<string name="car">Машина</string>
@@ -40,6 +43,7 @@
 	<string name="telegram">Телеграм</string>
 	<string name="other_social">Другие соц. сети</string>
 	<string name="relative">Родственники</string>
+	<string name="hobby">Хобби</string>
 	<string name="other">Остальное</string>
 
 </resources>

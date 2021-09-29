@@ -4,14 +4,28 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_button_menu.xml" value="0.26851851851851855" />
+        <entry key="app/src/main/res/drawable/ic_close.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.26851851851851855" />
-        <entry key="app/src/main/res/layout/activity_create_db.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-large/activity_create_db.xml" value="0.337890625" />
+        <entry key="app/src/main/res/layout-large/activity_create_user.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-large/activity_data_user.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-large/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-normal/activity_create_db.xml" value="0.337890625" />
+        <entry key="app/src/main/res/layout-normal/activity_create_user.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-normal/activity_data_user.xml" value="0.287962962962963" />
+        <entry key="app/src/main/res/layout-normal/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-small/activity_create_db.xml" value="1.1" />
+        <entry key="app/src/main/res/layout-small/activity_create_user.xml" value="1.0238095238095237" />
+        <entry key="app/src/main/res/layout-small/activity_data_user.xml" value="1.5" />
+        <entry key="app/src/main/res/layout-small/activity_main.xml" value="1.25" />
+        <entry key="app/src/main/res/layout/activity_create_db.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_create_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_data_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_filter.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3353846153846154" />
         <entry key="app/src/main/res/layout/data_user.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/menu_item.xml" value="0.33" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3765625" />
       </map>
     </option>
   </component>

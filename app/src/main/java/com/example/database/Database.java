@@ -30,10 +30,11 @@ public class Database extends SQLiteOpenHelper {
 	private static final String COLUMN_PATRONYMIC = "patronymic";
 	private static final String COLUMN_AGE = "age";
 	private static final String COLUMN_BIRTH = "birth";
-	private static final String COLUMN_COUNTRY = "country";
+	private static final String COLUMN_COUNTRY = "country_city";
 	private static final String COLUMN_ADDRESS = "address";
 	private static final String COLUMN_INDEX = "index_";
 	private static final String COLUMN_NUMBER_PHONE = "number_phone";
+	private static final String COLUMN_PHONE = "phone";
 	private static final String COLUMN_PASSPORT = "passport";
 	private static final String COLUMN_SNILS = "snils";
 	private static final String COLUMN_CAR = "car";
@@ -44,7 +45,8 @@ public class Database extends SQLiteOpenHelper {
 	private static final String COLUMN_INSTAGRAM = "instagram";
 	private static final String COLUMN_TELEGRAM = "telegram";
 	private static final String COLUMN_OTHER_SOCIAL = "other_social";
-	private static final String COLUMN_RELATIVE = "relative";
+	private static final String COLUMN_HOBBY = "hobby";
+	private static final String COLUMN_RELATIVE = "relatives";
 	private static final String COLUMN_OTHER = "other";
 
 	private Context context;
@@ -71,6 +73,7 @@ public class Database extends SQLiteOpenHelper {
 				COLUMN_ADDRESS + " VARCHAR(255)," +
 				COLUMN_INDEX + " VARCHAR(255)," +
 				COLUMN_NUMBER_PHONE + " VARCHAR(255)," +
+				COLUMN_PHONE + " VARCHAR(255)," +
 				COLUMN_PASSPORT + " TEXT," +
 				COLUMN_SNILS + " VARCHAR(255)," +
 				COLUMN_CAR + " VARCHAR(255)," +
@@ -82,6 +85,7 @@ public class Database extends SQLiteOpenHelper {
 				COLUMN_TELEGRAM + " VARCHAR(255)," +
 				COLUMN_OTHER_SOCIAL + " TEXT," +
 				COLUMN_RELATIVE + " TEXT," +
+				COLUMN_HOBBY + " TEXT," +
 				COLUMN_OTHER + " TEXT);");
 	}
 
@@ -132,18 +136,20 @@ public class Database extends SQLiteOpenHelper {
 		content.put(COLUMN_ADDRESS, list_data.get(6));
 		content.put(COLUMN_INDEX, list_data.get(7));
 		content.put(COLUMN_NUMBER_PHONE, list_data.get(8));
-		content.put(COLUMN_PASSPORT, list_data.get(9));
-		content.put(COLUMN_SNILS, list_data.get(10));
-		content.put(COLUMN_CAR, list_data.get(11));
-		content.put(COLUMN_EDUCATION, list_data.get(12));
-		content.put(COLUMN_PLACE_WORK, list_data.get(13));
-		content.put(COLUMN_EMAIL, list_data.get(14));
-		content.put(COLUMN_VK, list_data.get(15));
-		content.put(COLUMN_INSTAGRAM, list_data.get(16));
-		content.put(COLUMN_TELEGRAM, list_data.get(17));
-		content.put(COLUMN_OTHER_SOCIAL, list_data.get(18));
-		content.put(COLUMN_RELATIVE, list_data.get(19));
-		content.put(COLUMN_OTHER, list_data.get(20));
+		content.put(COLUMN_PHONE, list_data.get(9));
+		content.put(COLUMN_PASSPORT, list_data.get(10));
+		content.put(COLUMN_SNILS, list_data.get(11));
+		content.put(COLUMN_CAR, list_data.get(12));
+		content.put(COLUMN_EDUCATION, list_data.get(13));
+		content.put(COLUMN_PLACE_WORK, list_data.get(14));
+		content.put(COLUMN_EMAIL, list_data.get(15));
+		content.put(COLUMN_VK, list_data.get(16));
+		content.put(COLUMN_INSTAGRAM, list_data.get(17));
+		content.put(COLUMN_TELEGRAM, list_data.get(18));
+		content.put(COLUMN_OTHER_SOCIAL, list_data.get(19));
+		content.put(COLUMN_RELATIVE, list_data.get(20));
+		content.put(COLUMN_HOBBY, list_data.get(21));
+		content.put(COLUMN_OTHER, list_data.get(22));
 
 		return content;
 	}
@@ -186,7 +192,7 @@ public class Database extends SQLiteOpenHelper {
 		ArrayList<String> list_data_user = new ArrayList<>();
 
 		try {
-			String[] get_columns = {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH, COLUMN_COUNTRY, COLUMN_ADDRESS, COLUMN_INDEX, COLUMN_NUMBER_PHONE, COLUMN_PASSPORT, COLUMN_SNILS, COLUMN_CAR, COLUMN_EDUCATION, COLUMN_PLACE_WORK, COLUMN_EMAIL, COLUMN_VK, COLUMN_INSTAGRAM, COLUMN_TELEGRAM, COLUMN_OTHER_SOCIAL, COLUMN_RELATIVE, COLUMN_OTHER};
+			String[] get_columns = {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH, COLUMN_COUNTRY, COLUMN_ADDRESS, COLUMN_INDEX, COLUMN_NUMBER_PHONE, COLUMN_PHONE, COLUMN_PASSPORT, COLUMN_SNILS, COLUMN_CAR, COLUMN_EDUCATION, COLUMN_PLACE_WORK, COLUMN_EMAIL, COLUMN_VK, COLUMN_INSTAGRAM, COLUMN_TELEGRAM, COLUMN_OTHER_SOCIAL, COLUMN_RELATIVE, COLUMN_HOBBY, COLUMN_OTHER};
 			Cursor cursor = db.query(TABLE_NAME,
 					get_columns,
 					COLUMN_FIRST_NAME + " = ? AND " + COLUMN_LAST_NAME + " = ?",
@@ -203,6 +209,7 @@ public class Database extends SQLiteOpenHelper {
 				@SuppressLint("Range") String address = cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS));
 				@SuppressLint("Range") String index = cursor.getString(cursor.getColumnIndex(COLUMN_INDEX));
 				@SuppressLint("Range") String number_phone = cursor.getString(cursor.getColumnIndex(COLUMN_NUMBER_PHONE));
+				@SuppressLint("Range") String phone = cursor.getString(cursor.getColumnIndex(COLUMN_PHONE));
 				@SuppressLint("Range") String passport = cursor.getString(cursor.getColumnIndex(COLUMN_PASSPORT));
 				@SuppressLint("Range") String snils = cursor.getString(cursor.getColumnIndex(COLUMN_SNILS));
 				@SuppressLint("Range") String car = cursor.getString(cursor.getColumnIndex(COLUMN_CAR));
@@ -214,6 +221,7 @@ public class Database extends SQLiteOpenHelper {
 				@SuppressLint("Range") String telegram = cursor.getString(cursor.getColumnIndex(COLUMN_TELEGRAM));
 				@SuppressLint("Range") String other_social = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER_SOCIAL));
 				@SuppressLint("Range") String relative = cursor.getString(cursor.getColumnIndex(COLUMN_RELATIVE));
+				@SuppressLint("Range") String hobby = cursor.getString(cursor.getColumnIndex(COLUMN_HOBBY));
 				@SuppressLint("Range") String other = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER));
 
 				list_data_user.add(patronymic);
@@ -223,6 +231,7 @@ public class Database extends SQLiteOpenHelper {
 				list_data_user.add(address);
 				list_data_user.add(index);
 				list_data_user.add(number_phone);
+				list_data_user.add(phone);
 				list_data_user.add(passport);
 				list_data_user.add(snils);
 				list_data_user.add(car);
@@ -234,6 +243,7 @@ public class Database extends SQLiteOpenHelper {
 				list_data_user.add(telegram);
 				list_data_user.add(other_social);
 				list_data_user.add(relative);
+				list_data_user.add(hobby);
 				list_data_user.add(other);
 			}
 

@@ -4,15 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private ListView list_users;
 	private EditText line_search;
-	private Button search, filter, open_db, create_db, save_db, settings;
+	private Button search, filter, open_db, create_db, save_db, close_db, settings;
 	private FloatingActionButton add_user;
 	private Database database;
 	private static final int ACTIVITY_CHOOSE_FILE = 123;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 		open_db = findViewById(R.id.open_db);
 		create_db = findViewById(R.id.create_db);
 		save_db = findViewById(R.id.save_db);
+		close_db = findViewById(R.id.close_db);
 		settings = findViewById(R.id.settings);
 		add_user = findViewById(R.id.add_user);
 
@@ -85,31 +90,51 @@ public class MainActivity extends AppCompatActivity {
 		);
 
 		save_db.setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						if (Variable.g_status_db == 0)
-							Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
-						else {
-							if (Variable.g_status_db == 1) {
-								try {
-									database.copy_db("from_data");
-									Toast.makeText(MainActivity.this, "БД успешно скопирована", Toast.LENGTH_SHORT).show();
-								} catch (IOException e) {
-									e.printStackTrace();
-									Toast.makeText(MainActivity.this, "Ошибка при копировании БД", Toast.LENGTH_SHORT).show();
-								}
+			new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (Variable.g_status_db == 0)
+						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+					else {
+						if (Variable.g_status_db == 1) {
+							try {
+								database.copy_db("from_data");
+								Toast.makeText(MainActivity.this, "БД успешно скопирована", Toast.LENGTH_SHORT).show();
+							} catch (IOException e) {
+								e.printStackTrace();
+								Toast.makeText(MainActivity.this, "Ошибка при копировании БД", Toast.LENGTH_SHORT).show();
 							}
 						}
 					}
 				}
+			}
+		);
+
+		close_db.setOnClickListener(
+			new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (Variable.g_status_db == 0)
+						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+					else {
+						database.close_db();
+						list_users.setAdapter(null);
+						Variable.g_status_db = 0;
+
+					}
+				}
+			}
 		);
 
 		settings.setOnClickListener(
 			new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					if (Variable.g_status_db == 0)
+						Toast.makeText(MainActivity.this, "Для начала откройте или создайте БД", Toast.LENGTH_SHORT).show();
+					else {
 						Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		);
@@ -208,29 +233,36 @@ public class MainActivity extends AppCompatActivity {
 
 	public void on_create_db(View view) {
 		Dialog dialog = new Dialog(MainActivity.this);
-		dialog.setCancelable(false);
-		dialog.setTitle("Создание БД");
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.activity_create_db);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		dialog.setCancelable(false);
+
+		TextView close_dialog = (TextView) dialog.findViewById(R.id.close_dialog);
 		Button create_new_db = (Button) dialog.findViewById(R.id.create_new_db);
-		Button cancel_create_db = (Button) dialog.findViewById(R.id.cancel_create);
 		EditText name_db = (EditText) dialog.findViewById(R.id.name_db);
 
 		create_new_db.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Variable.g_db_name = name_db.getText().toString() + ".db";
-				dialog.dismiss();
+				String text_name_db = name_db.getText().toString() + ".db";
+				if (text_name_db == "")
+					Toast.makeText(MainActivity.this, "Вы ничего не ввели", Toast.LENGTH_SHORT).show();
+				else {
+					dialog.dismiss();
 
-				database = new Database(MainActivity.this);
-				database.open_db();
-				add_users_to_list();
+					Variable.g_db_name = text_name_db;
+					database = new Database(MainActivity.this);
+					database.open_db();
+					add_users_to_list();
 
-				Toast.makeText(MainActivity.this, "База данных успешно создана", Toast.LENGTH_SHORT).show();
-				//create_file();
+					Toast.makeText(MainActivity.this, "База данных успешно создана", Toast.LENGTH_SHORT).show();
+					//create_file();
+				}
 			}
 		});
 
-		cancel_create_db.setOnClickListener(new View.OnClickListener() {
+		close_dialog.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				dialog.dismiss();

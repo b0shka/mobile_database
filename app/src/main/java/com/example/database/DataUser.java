@@ -15,7 +15,7 @@ import android.app.AlertDialog;
 
 public class DataUser extends AppCompatActivity {
 
-	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_other;
+	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_hobby, field_other;
 	private Button back;
 	private Database database;
 	String[] name;
@@ -34,6 +34,7 @@ public class DataUser extends AppCompatActivity {
 		field_address = findViewById(R.id.address);
 		field_index = findViewById(R.id.index);
 		field_number_phone = findViewById(R.id.number_phone);
+		field_phone = findViewById(R.id.phone);
 		field_passport = findViewById(R.id.passport);
 		field_snils = findViewById(R.id.snils);
 		field_car = findViewById(R.id.car);
@@ -45,6 +46,7 @@ public class DataUser extends AppCompatActivity {
 		field_telegram = findViewById(R.id.telegram);
 		field_other_social = findViewById(R.id.other_social);
 		field_relative = findViewById(R.id.relative);
+		field_hobby = findViewById(R.id.hobby);
 		field_other = findViewById(R.id.other);
 
 		back = findViewById(R.id.back_from_data_user);
@@ -80,18 +82,20 @@ public class DataUser extends AppCompatActivity {
 		field_address.setText(list_data_user.get(4));
 		field_index.setText(list_data_user.get(5));
 		field_number_phone.setText(list_data_user.get(6));
-		field_passport.setText(list_data_user.get(7));
-		field_snils.setText(list_data_user.get(8));
-		field_car.setText(list_data_user.get(9));
-		field_education.setText(list_data_user.get(10));
-		field_place_work.setText(list_data_user.get(11));
-		field_email.setText(list_data_user.get(12));
-		field_vk.setText(list_data_user.get(13));
-		field_instagram.setText(list_data_user.get(14));
-		field_telegram.setText(list_data_user.get(15));
-		field_other_social.setText(list_data_user.get(16));
-		field_relative.setText(list_data_user.get(17));
-		field_other.setText(list_data_user.get(18));
+		field_phone.setText(list_data_user.get(7));
+		field_passport.setText(list_data_user.get(8));
+		field_snils.setText(list_data_user.get(9));
+		field_car.setText(list_data_user.get(10));
+		field_education.setText(list_data_user.get(11));
+		field_place_work.setText(list_data_user.get(12));
+		field_email.setText(list_data_user.get(13));
+		field_vk.setText(list_data_user.get(14));
+		field_instagram.setText(list_data_user.get(15));
+		field_telegram.setText(list_data_user.get(16));
+		field_other_social.setText(list_data_user.get(17));
+		field_relative.setText(list_data_user.get(18));
+		field_hobby.setText(list_data_user.get(19));
+		field_other.setText(list_data_user.get(20));
 	}
 
 	public void save_user(View view) {
@@ -104,6 +108,7 @@ public class DataUser extends AppCompatActivity {
 		String address = field_address.getText().toString();
 		String index = field_index.getText().toString();
 		String number_phone = field_number_phone.getText().toString();
+		String phone = field_phone.getText().toString();
 		String passport = field_passport.getText().toString();
 		String snils = field_snils.getText().toString();
 		String car = field_car.getText().toString();
@@ -115,6 +120,7 @@ public class DataUser extends AppCompatActivity {
 		String telegram = field_telegram.getText().toString();
 		String other_social = field_other_social.getText().toString();
 		String relative = field_relative.getText().toString();
+		String hobby = field_hobby.getText().toString();
 		String other = field_other.getText().toString();
 
 
@@ -128,6 +134,7 @@ public class DataUser extends AppCompatActivity {
 		new_data_user.add(address);
 		new_data_user.add(index);
 		new_data_user.add(number_phone);
+		new_data_user.add(phone);
 		new_data_user.add(passport);
 		new_data_user.add(snils);
 		new_data_user.add(car);
@@ -139,6 +146,7 @@ public class DataUser extends AppCompatActivity {
 		new_data_user.add(telegram);
 		new_data_user.add(other_social);
 		new_data_user.add(relative);
+		new_data_user.add(hobby);
 		new_data_user.add(other);
 
 		database.update_user(new_data_user, name[0], name[1]);

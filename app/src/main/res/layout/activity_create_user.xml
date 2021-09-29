@@ -7,35 +7,6 @@
 	android:background="@color/main_color"
 	tools:context=".CreateUser">
 
-	<Button
-		android:id="@+id/create_user"
-		android:layout_width="120dp"
-		android:layout_height="45dp"
-		android:layout_marginEnd="10dp"
-		android:layout_marginBottom="10dp"
-		android:background="@drawable/custom_button"
-		android:fontFamily="@font/montserrat_bold"
-		android:onClick="create_user"
-		android:text="@string/button_add_user"
-		android:textColor="@color/white"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent" />
-
-	<TextView
-		android:id="@+id/title_create"
-		android:layout_width="0dp"
-		android:layout_height="40dp"
-		android:layout_marginStart="15dp"
-		android:layout_marginTop="16dp"
-		android:layout_marginEnd="15dp"
-		android:fontFamily="@font/montserrat_bold"
-		android:text="@string/title_create_user"
-		android:textColor="@color/white"
-		android:textSize="25dp"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
-
 	<ScrollView
 		android:layout_width="0dp"
 		android:layout_height="0dp"
@@ -186,6 +157,20 @@
 					tools:ignore="TouchTargetSizeCheck" />
 
 				<EditText
+					android:id="@+id/phone"
+					android:layout_width="match_parent"
+					android:layout_height="45dp"
+					android:layout_marginTop="10dp"
+					android:background="@drawable/custom_line"
+					android:ems="10"
+					android:fontFamily="@font/montserrat"
+					android:hint="@string/phone"
+					android:inputType="textPersonName"
+					android:paddingLeft="10dp"
+					android:textColor="@color/white"
+					tools:ignore="TouchTargetSizeCheck" />
+
+				<EditText
 					android:id="@+id/passport"
 					android:layout_width="180dp"
 					android:layout_height="45dp"
@@ -213,18 +198,11 @@
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_marginLeft="10dp"
-				android:orientation="vertical">
-
 				<EditText
 					android:id="@+id/car"
-					android:layout_width="200dp"
+					android:layout_width="180dp"
 					android:layout_height="45dp"
+					android:layout_marginTop="10dp"
 					android:background="@drawable/custom_line"
 					android:ems="10"
 					android:fontFamily="@font/montserrat"
@@ -235,22 +213,8 @@
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
 				<EditText
-					android:id="@+id/education"
-					android:layout_width="200dp"
-					android:layout_height="45dp"
-					android:layout_marginTop="10dp"
-					android:background="@drawable/custom_line"
-					android:ems="10"
-					android:fontFamily="@font/montserrat"
-					android:hint="@string/education"
-					android:inputType="textPersonName"
-					android:paddingLeft="10dp"
-					android:textColor="@color/white"
-					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
-
-				<EditText
 					android:id="@+id/place_work"
-					android:layout_width="200dp"
+					android:layout_width="180dp"
 					android:layout_height="45dp"
 					android:layout_marginTop="10dp"
 					android:background="@drawable/custom_line"
@@ -258,6 +222,29 @@
 					android:fontFamily="@font/montserrat"
 					android:hint="@string/place_work"
 					android:inputType="textPersonName"
+					android:paddingLeft="10dp"
+					android:textColor="@color/white"
+					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_marginLeft="10dp"
+				android:orientation="vertical">
+
+				<EditText
+					android:id="@+id/education"
+					android:layout_width="200dp"
+					android:layout_height="100dp"
+
+					android:background="@drawable/custom_line"
+					android:ems="10"
+					android:fontFamily="@font/montserrat"
+					android:gravity="top"
+					android:hint="@string/education"
+					android:inputType="textMultiLine"
 					android:paddingLeft="10dp"
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
@@ -321,13 +308,14 @@
 				<EditText
 					android:id="@+id/other_social"
 					android:layout_width="200dp"
-					android:layout_height="45dp"
+					android:layout_height="100dp"
 					android:layout_marginTop="10dp"
 					android:background="@drawable/custom_line"
 					android:ems="10"
 					android:fontFamily="@font/montserrat"
+					android:gravity="top"
 					android:hint="@string/other_social"
-					android:inputType="textPersonName"
+					android:inputType="textMultiLine"
 					android:paddingLeft="10dp"
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
@@ -335,13 +323,29 @@
 				<EditText
 					android:id="@+id/relative"
 					android:layout_width="200dp"
-					android:layout_height="45dp"
+					android:layout_height="100dp"
 					android:layout_marginTop="10dp"
 					android:background="@drawable/custom_line"
 					android:ems="10"
 					android:fontFamily="@font/montserrat"
+					android:gravity="top"
 					android:hint="@string/relative"
-					android:inputType="textPersonName"
+					android:inputType="textMultiLine"
+					android:paddingLeft="10dp"
+					android:textColor="@color/white"
+					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+				<EditText
+					android:id="@+id/hobby"
+					android:layout_width="match_parent"
+					android:layout_height="100dp"
+					android:layout_marginTop="10dp"
+					android:background="@drawable/custom_line"
+					android:ems="10"
+					android:fontFamily="@font/montserrat"
+					android:gravity="top"
+					android:hint="@string/hobby"
+					android:inputType="textMultiLine"
 					android:paddingLeft="10dp"
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
@@ -349,13 +353,14 @@
 				<EditText
 					android:id="@+id/other"
 					android:layout_width="200dp"
-					android:layout_height="45dp"
+					android:layout_height="100dp"
 					android:layout_marginTop="10dp"
 					android:background="@drawable/custom_line"
 					android:ems="10"
 					android:fontFamily="@font/montserrat"
+					android:gravity="top"
 					android:hint="@string/other"
-					android:inputType="textPersonName"
+					android:inputType="textMultiLine"
 					android:paddingLeft="10dp"
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
@@ -365,8 +370,35 @@
 	</ScrollView>
 
 	<Button
+		android:id="@+id/create_user"
+		android:layout_width="wrap_content"
+		android:layout_height="45dp"
+		android:layout_marginEnd="10dp"
+		android:layout_marginBottom="10dp"
+		android:background="@drawable/custom_button"
+		android:fontFamily="@font/montserrat_bold"
+		android:onClick="create_user"
+		android:text="@string/button_add_user"
+		android:textColor="@color/white"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
+
+	<TextView
+		android:id="@+id/title_create"
+		android:layout_width="wrap_content"
+		android:layout_height="40dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="16dp"
+		android:fontFamily="@font/montserrat_bold"
+		android:text="@string/title_create_user"
+		android:textColor="@color/white"
+		android:textSize="24dp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<Button
 		android:id="@+id/back_from_create"
-		android:layout_width="100dp"
+		android:layout_width="wrap_content"
 		android:layout_height="45dp"
 		android:layout_marginEnd="10dp"
 		android:layout_marginBottom="10dp"

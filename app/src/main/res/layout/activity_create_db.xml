@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_width="350dp"
+	android:layout_height="190dp"
 	android:background="@color/main_color"
 	tools:context=".CreateDB">
 
@@ -35,18 +35,6 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-	<Button
-		android:id="@+id/cancel_create"
-		android:layout_width="40dp"
-		android:layout_height="40dp"
-		android:layout_marginStart="35dp"
-		android:layout_marginTop="16dp"
-		android:background="@drawable/custom_button_menu"
-		android:text="×"
-		android:textSize="15dp"
-		app:layout_constraintStart_toEndOf="@+id/textView"
-		app:layout_constraintTop_toTopOf="parent" />
-
 	<TextView
 		android:id="@+id/textView"
 		android:layout_width="wrap_content"
@@ -59,4 +47,18 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/close_dialog"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:layout_marginEnd="25dp"
+		android:fontFamily="@font/montserrat_bold"
+		android:text="@string/symbol_close"
+		android:textColor="@color/white"
+		android:textSize="30sp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

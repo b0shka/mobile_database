@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class CreateUser extends AppCompatActivity {
 
-	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_other;
+	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_hobby, field_other;
 	private Button back;
 	private Database database;
 
@@ -32,6 +32,7 @@ public class CreateUser extends AppCompatActivity {
 		field_address = findViewById(R.id.address);
 		field_index = findViewById(R.id.index);
 		field_number_phone = findViewById(R.id.number_phone);
+		field_phone = findViewById(R.id.phone);
 		field_passport = findViewById(R.id.passport);
 		field_snils = findViewById(R.id.snils);
 		field_car = findViewById(R.id.car);
@@ -43,6 +44,7 @@ public class CreateUser extends AppCompatActivity {
 		field_telegram = findViewById(R.id.telegram);
 		field_other_social = findViewById(R.id.other_social);
 		field_relative = findViewById(R.id.relative);
+		field_hobby = findViewById(R.id.hobby);
 		field_other = findViewById(R.id.other);
 
 		back = findViewById(R.id.back_from_create);
@@ -79,6 +81,7 @@ public class CreateUser extends AppCompatActivity {
 			String address = field_address.getText().toString();
 			String index = field_index.getText().toString();
 			String number_phone = field_number_phone.getText().toString();
+			String phone = field_phone.getText().toString();
 			String passport = field_passport.getText().toString();
 			String snils = field_snils.getText().toString();
 			String car = field_car.getText().toString();
@@ -90,6 +93,7 @@ public class CreateUser extends AppCompatActivity {
 			String telegram = field_telegram.getText().toString();
 			String other_social = field_other_social.getText().toString();
 			String relative = field_relative.getText().toString();
+			String hobby = field_hobby.getText().toString();
 			String other = field_other.getText().toString();
 
 			ArrayList<String> data_user = new ArrayList<>();
@@ -102,6 +106,7 @@ public class CreateUser extends AppCompatActivity {
 			data_user.add(address);
 			data_user.add(index);
 			data_user.add(number_phone);
+			data_user.add(phone);
 			data_user.add(passport);
 			data_user.add(snils);
 			data_user.add(car);
@@ -113,6 +118,7 @@ public class CreateUser extends AppCompatActivity {
 			data_user.add(telegram);
 			data_user.add(other_social);
 			data_user.add(relative);
+			data_user.add(hobby);
 			data_user.add(other);
 
 			database.add_user(data_user);
