@@ -21,8 +21,8 @@ import java.util.List;
 public class Database extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
 	private static String DB_PATH = "/data/data/com.example.database/databases/";
-	private static final String TABLE_NAME = "users";
-	private static final String COLUMN_ID = "_id";
+	private static final String TABLE_NAME = Variable.g_table_name;
+	private static final String COLUMN_ID = "id";
 	private static final String COLUMN_FIRST_NAME = "first_name";
 	private static final String COLUMN_LAST_NAME = "last_name";
 	private static final String COLUMN_PATRONYMIC = "patronymic";
@@ -61,7 +61,7 @@ public class Database extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
 		sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
 				TABLE_NAME + " (" +
-				COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				COLUMN_ID + " INTEGER PRIMARY KEY," +
 				COLUMN_FIRST_NAME + " VARCHAR(255)," +
 				COLUMN_LAST_NAME + " VARCHAR(255)," +
 				COLUMN_PATRONYMIC + " VARCHAR(255)," +
@@ -136,6 +136,7 @@ public class Database extends SQLiteOpenHelper {
 
 	public ContentValues completion_content(ArrayList<String> list_data) {
 		ContentValues content = new ContentValues();
+		content.put(COLUMN_ID, generate_id());
 		content.put(COLUMN_FIRST_NAME, list_data.get(0));
 		content.put(COLUMN_LAST_NAME, list_data.get(1));
 		content.put(COLUMN_PATRONYMIC, list_data.get(2));
@@ -168,49 +169,91 @@ public class Database extends SQLiteOpenHelper {
 		db.insert(TABLE_NAME, null, content);
 	}
 
-	public void update_user(ArrayList<String> new_data_user, String old_first_name, String old_last_name){
+	public void update_user(ArrayList<String> new_data_user, String user_id){
 		ContentValues content = completion_content(new_data_user);
 		db.update(TABLE_NAME,
 				content,
-				COLUMN_FIRST_NAME + "= ? AND " + COLUMN_LAST_NAME + "= ?",
-				new String[] {old_first_name, old_last_name});
+				COLUMN_ID + "= ?",
+				new String[] {user_id});
 	}
 
-	public void delete_user(ArrayList<String> delete_data_user) {
+	public void delete_user(String user_id) {
 		db.delete(TABLE_NAME,
-				COLUMN_FIRST_NAME + "= ? AND " + COLUMN_LAST_NAME + "= ? AND " + COLUMN_PATRONYMIC + "= ?",
-				new String[] {delete_data_user.get(0), delete_data_user.get(1), delete_data_user.get(2)});
+				COLUMN_ID + "= ?",
+				new String[] {user_id});
 	}
 
 	public ArrayList<String> get_users() {
-		ArrayList<String> data_user = new ArrayList();
-		Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+		ArrayList<String> list_data_user = new ArrayList();
+		String[] get_columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_COUNTRY};
+		Cursor cursor = db.query(TABLE_NAME, get_columns, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
+			@SuppressLint("Range") String user_id = cursor.getString(cursor.getColumnIndex(COLUMN_ID));
 			@SuppressLint("Range") String first_name = cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME));
 			@SuppressLint("Range") String last_name = cursor.getString(cursor.getColumnIndex(COLUMN_LAST_NAME));
+			@SuppressLint("Range") String patronymic = cursor.getString(cursor.getColumnIndex(COLUMN_PATRONYMIC));
+			@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
+			@SuppressLint("Range") String country_city = cursor.getString(cursor.getColumnIndex(COLUMN_COUNTRY));
 
-			data_user.add(first_name + " " + last_name);
+			String result_data = first_name;
+
+			if (!last_name.equals(""))
+				result_data += ";" + last_name;
+
+			if (!patronymic.equals(""))
+				result_data += ";" + patronymic + "//";
+			else
+				result_data += "//";
+
+			result_data += "id: " + user_id;
+
+			if (!age.equals(""))
+				result_data += ", " + age + " лет";
+
+			if (!country_city.equals(""))
+				result_data += ", город: " + country_city;
+
+			list_data_user.add(result_data);
 		}
 
 		cursor.close();
-		return data_user;
+		return list_data_user;
 	}
 
-	public ArrayList<String> get_data_user(String first_name, String last_name) {
+	public int generate_id() {
+		int new_id = 1;
+
+		Cursor cursor = db.query(Variable.g_table_name, new String[]{COLUMN_ID}, null, null, null, null, null);
+
+		while (cursor.moveToNext()) {
+			@SuppressLint("Range") int check_id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+			if (new_id == check_id)
+				new_id++;
+			else
+				break;
+		}
+
+		cursor.close();
+		return new_id;
+	}
+
+	public ArrayList<String> get_data_user(String user_id) {
 		ArrayList<String> list_data_user = new ArrayList<>();
 
 		try {
-			String[] get_columns = {COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH, COLUMN_COUNTRY, COLUMN_ADDRESS, COLUMN_INDEX, COLUMN_NUMBER_PHONE, COLUMN_PHONE, COLUMN_PASSPORT, COLUMN_SNILS, COLUMN_CAR, COLUMN_EDUCATION, COLUMN_PLACE_WORK, COLUMN_EMAIL, COLUMN_VK, COLUMN_INSTAGRAM, COLUMN_TELEGRAM, COLUMN_OTHER_SOCIAL, COLUMN_RELATIVE, COLUMN_HOBBY, COLUMN_OTHER};
+			String[] get_columns = {COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH, COLUMN_COUNTRY, COLUMN_ADDRESS, COLUMN_INDEX, COLUMN_NUMBER_PHONE, COLUMN_PHONE, COLUMN_PASSPORT, COLUMN_SNILS, COLUMN_CAR, COLUMN_EDUCATION, COLUMN_PLACE_WORK, COLUMN_EMAIL, COLUMN_VK, COLUMN_INSTAGRAM, COLUMN_TELEGRAM, COLUMN_OTHER_SOCIAL, COLUMN_RELATIVE, COLUMN_HOBBY, COLUMN_OTHER};
 			Cursor cursor = db.query(TABLE_NAME,
 					get_columns,
-					COLUMN_FIRST_NAME + " = ? AND " + COLUMN_LAST_NAME + " = ?",
-					new String[] {first_name, last_name},
+					COLUMN_ID + " = ?",
+					new String[] {user_id},
 					null, null, null);
 
 			//Cursor cursor = db.rawQuery("SELECT patronymic, age, birth FROM users WHERE first_name = ? AND last_name = ?;", new String[] {first_name, last_name});
 
 			while (cursor.moveToNext()) {
+				@SuppressLint("Range") String first_name = cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME));
+				@SuppressLint("Range") String last_name = cursor.getString(cursor.getColumnIndex(COLUMN_LAST_NAME));
 				@SuppressLint("Range") String patronymic = cursor.getString(cursor.getColumnIndex(COLUMN_PATRONYMIC));
 				@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
 				@SuppressLint("Range") String birth = cursor.getString(cursor.getColumnIndex(COLUMN_BIRTH));
@@ -233,6 +276,8 @@ public class Database extends SQLiteOpenHelper {
 				@SuppressLint("Range") String hobby = cursor.getString(cursor.getColumnIndex(COLUMN_HOBBY));
 				@SuppressLint("Range") String other = cursor.getString(cursor.getColumnIndex(COLUMN_OTHER));
 
+				list_data_user.add(first_name);
+				list_data_user.add(last_name);
 				list_data_user.add(patronymic);
 				list_data_user.add(age);
 				list_data_user.add(birth);

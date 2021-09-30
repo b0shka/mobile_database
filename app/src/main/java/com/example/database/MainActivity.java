@@ -1,14 +1,19 @@
 package com.example.database;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 	private Button search, filter, update, open_db, create_db, save_db, close_db, settings;
 	private FloatingActionButton add_user;
 	private Database database;
+	private MyAdapter adapter;
 	private static final int ACTIVITY_CHOOSE_FILE = 123;
 
 	@Override
@@ -59,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
 
 		list_users.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				String name_item = list_users.getItemAtPosition(position).toString();
+				String addition_data_user = list_users.getItemAtPosition(position).toString();
+				String[] list_addition_data_user = addition_data_user.split(" ");
+				String user_id = list_addition_data_user[1].replaceAll(",", "");
+
 				Intent intent = new Intent(MainActivity.this, DataUser.class);
-				intent.putExtra("id", id);
-				intent.putExtra("name", name_item);
+				intent.putExtra("user_id", user_id);
 				startActivity(intent);
 			}
 		});
@@ -82,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
 		);
 
 		update.setOnClickListener(
-				new View.OnClickListener() {
+			new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						if (Variable.g_status_db == 0)
 							Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 						else
-							add_users_to_list(database.get_users());
+							get_users_from_db();
 					}
 				}
 		);
@@ -110,14 +120,12 @@ public class MainActivity extends AppCompatActivity {
 					if (Variable.g_status_db == 0)
 						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
-						if (Variable.g_status_db == 1) {
-							try {
-								database.copy_db("from_data");
-								Toast.makeText(MainActivity.this, R.string.success_copy, Toast.LENGTH_SHORT).show();
-							} catch (IOException e) {
-								e.printStackTrace();
-								Toast.makeText(MainActivity.this, R.string.error_copy, Toast.LENGTH_SHORT).show();
-							}
+						try {
+							database.copy_db("from_data");
+							Toast.makeText(MainActivity.this, R.string.success_copy, Toast.LENGTH_SHORT).show();
+						} catch (IOException e) {
+							e.printStackTrace();
+							Toast.makeText(MainActivity.this, R.string.error_copy, Toast.LENGTH_SHORT).show();
 						}
 					}
 				}
@@ -131,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
 					if (Variable.g_status_db == 0)
 						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
+						try {
+							database.copy_db("from_data");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						database.close_db();
 						list_users.setAdapter(null);
 						Variable.g_status_db = 0;
@@ -174,7 +187,56 @@ public class MainActivity extends AppCompatActivity {
 
 		if (Variable.g_status_db == 1) {
 			database.open_db();
-			add_users_to_list(database.get_users());
+			get_users_from_db();
+		}
+	}
+
+	public void get_users_from_db() {
+		ArrayList<String> list_data_users = database.get_users();
+		String[] list_data_user;
+		ArrayList<String> title_item = new ArrayList<>();
+		ArrayList<String> description_item = new ArrayList<>();
+
+		for (String i : list_data_users) {
+			list_data_user = i.split("//");
+			title_item.add(list_data_user[0].replaceAll(";", " "));
+			description_item.add(list_data_user[1]);
+		}
+
+		add_users_to_list(title_item, description_item);
+	}
+
+	public void add_users_to_list(ArrayList<String> main_data_users, ArrayList<String> addition_data_users) {
+		adapter = new MyAdapter(this, main_data_users, addition_data_users);
+		list_users.setAdapter(adapter);
+	}
+
+	class MyAdapter extends ArrayAdapter<String> {
+
+		Context context;
+		ArrayList<String> rTitle;
+		ArrayList<String> rDescription;
+
+		MyAdapter(Context context, ArrayList<String> title, ArrayList<String> description) {
+			super(context, R.layout.item, R.id.description_item, description);
+			this.context = context;
+			this.rTitle = title;
+			this.rDescription = description;
+		}
+
+		@NonNull
+		@Override
+		public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+			LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View item = layoutInflater.inflate(R.layout.item, parent, false);
+			TextView title_item = item.findViewById(R.id.title_item);
+			TextView description_item = item.findViewById(R.id.description_item);
+
+			title_item.setText(rTitle.get(position));
+			//Toast.makeText(MainActivity.this, rDescription.get(position), Toast.LENGTH_SHORT).show();
+			description_item.setText(rDescription.get(position));
+
+			return item;
 		}
 	}
 
@@ -185,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
 			String text_search = line_search.getText().toString();
 
 			if (text_search.equals(""))
-				add_users_to_list(database.get_users());
+				get_users_from_db();
 			else {
 				ArrayList<String> list_data_users = database.get_users();
 				ArrayList<String> list_result_search = new ArrayList<>();
@@ -200,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
 						list_result_search.add(name_user[0] + " " + name_user[1]);
 				}
 
-				add_users_to_list(list_result_search);
+				get_users_from_db();
 			}
 
 			line_search.setText("");
@@ -224,12 +286,6 @@ public class MainActivity extends AppCompatActivity {
 				return 0;
 		}
 		return 0;
-	}
-
-	public void add_users_to_list(ArrayList<String> list_data_users) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, list_data_users);
-		list_users.setAdapter(adapter);
 	}
 
 	public void onBrowse() {
@@ -269,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 
-			add_users_to_list(database.get_users());
+			get_users_from_db();
 
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
