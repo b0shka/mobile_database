@@ -7,20 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Database extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
-	private static String DB_PATH = "/data/data/com.example.database/databases/";
 	private static final String TABLE_NAME = Variable.g_table_name;
 	private static final String COLUMN_ID = "id";
 	private static final String COLUMN_FIRST_NAME = "first_name";
@@ -95,43 +86,6 @@ public class Database extends SQLiteOpenHelper {
 
 	public void open_db() {
 		db = this.getWritableDatabase();
-	}
-
-	public void copy_db(String mode) throws IOException {
-		File sourceFile = null;
-		File destFile = null;
-		File sourceFile_journal = null;
-
-		if (mode == "to_data") {
-			sourceFile = new File(Variable.g_db_path + Variable.g_db_name);
-			destFile = new File(DB_PATH + Variable.g_db_name);
-		} else if (mode == "from_data") {
-			sourceFile = new File(DB_PATH + Variable.g_db_name);
-			sourceFile_journal = new File(DB_PATH + Variable.g_db_name + "-journal");
-			destFile = new File(Variable.g_db_path + Variable.g_db_name);
-		}
-
-		if (destFile.exists())
-			destFile.delete();
-
-		InputStream in = new FileInputStream(sourceFile);
-		OutputStream out = new FileOutputStream(destFile);
-
-		byte[] buffer = new byte[1024];
-		int len;
-		while ((len = in.read(buffer)) > 0){
-			out.write(buffer, 0, len);
-		}
-
-		if (mode == "from_data") {
-			sourceFile.delete();
-			if (sourceFile_journal.exists())
-				sourceFile_journal.delete();
-		}
-
-		out.flush();
-		out.close();
-		in.close();
 	}
 
 	public ContentValues completion_content(ArrayList<String> list_data) {

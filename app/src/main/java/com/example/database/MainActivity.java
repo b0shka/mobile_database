@@ -1,38 +1,29 @@
 package com.example.database;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 	private Button search, filter, update, open_db, create_db, save_db, close_db, settings;
 	private FloatingActionButton add_user;
 	private Database database;
-	private MyAdapter adapter;
+	private ItemAdapter itemAdapter;
 	private static final int ACTIVITY_CHOOSE_FILE = 123;
 
 	@Override
@@ -121,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						try {
-							database.copy_db("from_data");
+							copy_db("from_data");
 							Toast.makeText(MainActivity.this, R.string.success_copy, Toast.LENGTH_SHORT).show();
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -140,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
 						try {
-							database.copy_db("from_data");
+							copy_db("from_data");
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -207,37 +198,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void add_users_to_list(ArrayList<String> main_data_users, ArrayList<String> addition_data_users) {
-		adapter = new MyAdapter(this, main_data_users, addition_data_users);
-		list_users.setAdapter(adapter);
-	}
-
-	class MyAdapter extends ArrayAdapter<String> {
-
-		Context context;
-		ArrayList<String> rTitle;
-		ArrayList<String> rDescription;
-
-		MyAdapter(Context context, ArrayList<String> title, ArrayList<String> description) {
-			super(context, R.layout.item, R.id.description_item, description);
-			this.context = context;
-			this.rTitle = title;
-			this.rDescription = description;
-		}
-
-		@NonNull
-		@Override
-		public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-			LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View item = layoutInflater.inflate(R.layout.item, parent, false);
-			TextView title_item = item.findViewById(R.id.title_item);
-			TextView description_item = item.findViewById(R.id.description_item);
-
-			title_item.setText(rTitle.get(position));
-			//Toast.makeText(MainActivity.this, rDescription.get(position), Toast.LENGTH_SHORT).show();
-			description_item.setText(rDescription.get(position));
-
-			return item;
-		}
+		Toast.makeText(MainActivity.this, main_data_users.get(0), Toast.LENGTH_SHORT).show();
+		itemAdapter = new ItemAdapter(this, main_data_users, addition_data_users);
+		list_users.setAdapter(itemAdapter);
 	}
 
 	public void on_search(View view) {
@@ -314,19 +277,17 @@ public class MainActivity extends AppCompatActivity {
 			String[] list_file_path = file_path.split("/");
 			String file_name = list_file_path[list_file_path.length - 1];
 			Variable.g_db_name = file_name;
-			Variable.g_db_path = file_path.replaceFirst(file_name, "");
-
-			database = new Database(MainActivity.this);
-			database.open_db();
+			Variable.g_db_path_user = file_path.replaceFirst(file_name, "");
 
 			try {
-				database.copy_db("to_data");
+				copy_db("to_data");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
+			database = new Database(MainActivity.this);
+			database.open_db();
 			get_users_from_db();
-
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
@@ -393,17 +354,52 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	public void copy_db(String mode) throws IOException {
+		File sourceFile = null;
+		File destFile = null;
+		File sourceFile_journal = null;
+
+		if (mode == "to_data") {
+			sourceFile = new File(Variable.g_db_path_user + Variable.g_db_name);
+			destFile = new File(Variable.g_db_path_app + Variable.g_db_name);
+		} else if (mode == "from_data") {
+			sourceFile = new File(Variable.g_db_path_app + Variable.g_db_name);
+			sourceFile_journal = new File(Variable.g_db_path_app + Variable.g_db_name + "-journal");
+			destFile = new File(Variable.g_db_path_user + Variable.g_db_name);
+		}
+
+		if (destFile.exists())
+			destFile.delete();
+
+		InputStream in = new FileInputStream(sourceFile);
+		OutputStream out = new FileOutputStream(destFile);
+
+		byte[] buffer = new byte[1024];
+		int len;
+		while ((len = in.read(buffer)) > 0){
+			out.write(buffer, 0, len);
+		}
+
+		if (mode == "from_data") {
+			sourceFile.delete();
+			if (sourceFile_journal.exists())
+				sourceFile_journal.delete();
+		}
+
+		out.flush();
+		out.close();
+		in.close();
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 
 		if (Variable.g_status_db == 1) {
 			try {
-				database.copy_db("from_data");
-				Toast.makeText(MainActivity.this, R.string.success_copy, Toast.LENGTH_SHORT).show();
+				copy_db("from_data");
 			} catch (IOException e) {
 				e.printStackTrace();
-				Toast.makeText(MainActivity.this, R.string.error_copy, Toast.LENGTH_SHORT).show();
 			}
 
 			database.close_db();
