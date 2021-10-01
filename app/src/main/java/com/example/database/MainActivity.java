@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View view) {
 					Toast.makeText(MainActivity.this, R.string.choice_file, Toast.LENGTH_SHORT).show();
-					onBrowse();
+					choice_file_db();
 				}
 			}
 		);
@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void add_users_to_list(ArrayList<String> main_data_users, ArrayList<String> addition_data_users) {
-		Toast.makeText(MainActivity.this, main_data_users.get(0), Toast.LENGTH_SHORT).show();
 		itemAdapter = new ItemAdapter(this, main_data_users, addition_data_users);
 		list_users.setAdapter(itemAdapter);
 	}
@@ -251,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 		return 0;
 	}
 
-	public void onBrowse() {
+	public void choice_file_db() {
 		Intent chooseFile;
 		Intent intent;
 		chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
@@ -308,8 +307,9 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				String text_name_db = name_db.getText().toString() + ".db";
-				if (text_name_db == "")
-					Toast.makeText(MainActivity.this, "Вы ничего не ввели", Toast.LENGTH_SHORT).show();
+
+				if (text_name_db.equals(""))
+					Toast.makeText(MainActivity.this, R.string.empty_line, Toast.LENGTH_SHORT).show();
 				else {
 					dialog.dismiss();
 
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 					database.open_db();
 					list_users.setAdapter(null);
 
-					Toast.makeText(MainActivity.this, "База данных успешно создана", Toast.LENGTH_SHORT).show();
+					Toast.makeText(MainActivity.this, R.string.success_create, Toast.LENGTH_SHORT).show();
 					//create_file();
 				}
 			}

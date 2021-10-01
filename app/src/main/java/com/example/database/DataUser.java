@@ -3,12 +3,19 @@ package com.example.database;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import android.app.AlertDialog;
 
@@ -16,10 +23,14 @@ import android.app.AlertDialog;
 public class DataUser extends AppCompatActivity {
 
 	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_hobby, field_other;
-	private TextView field_user_id;
-	private Button back;
+	private TextView field_user_id, name_doc_1, name_doc_2, name_doc_3;
+	private Button back, add_doc, add_photo;
+	private ImageView photo_1, photo_2, photo_3, photo_4;
 	private Database database;
 	String user_id;
+
+	private static final int ACTIVITY_CHOOSE_DOC = 1;
+	private static final int ACTIVITY_CHOOSE_PHOTO = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +62,16 @@ public class DataUser extends AppCompatActivity {
 		field_hobby = findViewById(R.id.hobby);
 		field_other = findViewById(R.id.other);
 
+		name_doc_1 = findViewById(R.id.name_doc_1);
+		name_doc_2 = findViewById(R.id.name_doc_2);
+		name_doc_3 = findViewById(R.id.name_doc_3);
+		photo_1 = findViewById(R.id.photo_1);
+		photo_2 = findViewById(R.id.photo_2);
+		photo_3 = findViewById(R.id.photo_3);
+		photo_4 = findViewById(R.id.photo_4);
+
+		add_doc = findViewById(R.id.add_doc);
+		add_photo = findViewById(R.id.add_photo);
 		back = findViewById(R.id.back_from_data_user);
 
 		database = new Database(DataUser.this);
@@ -63,6 +84,26 @@ public class DataUser extends AppCompatActivity {
 					startActivity(intent);
 				}
 			}
+		);
+
+		add_doc.setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Toast.makeText(DataUser.this, "Выберите файл", Toast.LENGTH_SHORT).show();
+						choice_file("document");
+					}
+				}
+		);
+
+		add_photo.setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Toast.makeText(DataUser.this, "Выберите фотографию", Toast.LENGTH_SHORT).show();
+						choice_file("photo");
+					}
+				}
 		);
 	}
 
@@ -179,6 +220,74 @@ public class DataUser extends AppCompatActivity {
 		AlertDialog alert = accept_window.create();
 		alert.setTitle(R.string.title_delete_data);
 		alert.show();
+	}
+
+	public void choice_file(String type_file) {
+		Intent chooseFile;
+		Intent intent;
+		chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+		chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+		chooseFile.setType("*/*");
+
+		if (type_file.equals("document")) {
+			intent = Intent.createChooser(chooseFile, "Choose a file");
+			startActivityForResult(intent, ACTIVITY_CHOOSE_DOC);
+		}
+		else if (type_file.equals("photo")) {
+			intent = Intent.createChooser(chooseFile, "Choose a photo");
+			startActivityForResult(intent, ACTIVITY_CHOOSE_PHOTO);
+		}
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACTIVITY_CHOOSE_DOC) {
+			if (resultCode != RESULT_OK || data == null) {
+				super.onActivityResult(requestCode, resultCode, data);
+				return;
+			}
+
+			Uri uri = data.getData();
+			if (uri == null) {
+				return;
+			}
+
+			String file_path = uri.getPath().replace(':', '/').replaceFirst("document", "storage/self");
+			String[] list_file_path = file_path.split("/");
+			String file_name = list_file_path[list_file_path.length - 1];
+
+		}
+		else if (requestCode == ACTIVITY_CHOOSE_PHOTO) {
+			if (resultCode != RESULT_OK || data == null) {
+				super.onActivityResult(requestCode, resultCode, data);
+				return;
+			}
+
+			Uri uri = data.getData();
+			if (uri == null) {
+				return;
+			}
+
+			Bitmap bitmap = null;
+
+			try {
+				bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			photo_1.setImageBitmap(bitmap);
+
+			Drawable drawable = photo_1.getDrawable();
+			photo_2.setImageDrawable(drawable);
+
+//			String file_path = uri.getPath().replace(':', '/').replaceFirst("document", "storage/self");
+//			String[] list_file_path = file_path.split("/");
+//			String file_name = list_file_path[list_file_path.length - 1];
+//
+//			photo_1.setImageDrawable(Drawable.createFromPath(file_path));
+		}
+		else {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 	@Override

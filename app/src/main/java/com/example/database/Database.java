@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class Database extends SQLiteOpenHelper {
 	private static final int DB_VERSION = 1;
-	private static final String TABLE_NAME = Variable.g_table_name;
 	private static final String COLUMN_ID = "id";
 	private static final String COLUMN_FIRST_NAME = "first_name";
 	private static final String COLUMN_LAST_NAME = "last_name";
@@ -37,6 +36,16 @@ public class Database extends SQLiteOpenHelper {
 	private static final String COLUMN_HOBBY = "hobby";
 	private static final String COLUMN_RELATIVE = "relatives";
 	private static final String COLUMN_OTHER = "other";
+	private static final String COLUMN_PHOTO_1 = "photo_1";
+	private static final String COLUMN_PHOTO_2 = "photo_2";
+	private static final String COLUMN_PHOTO_3 = "photo_3";
+	private static final String COLUMN_PHOTO_4 = "photo_4";
+	private static final String COLUMN_NAME_DOC_1 = "name_doc_1";
+	private static final String COLUMN_DOC_1 = "doc_1";
+	private static final String COLUMN_NAME_DOC_2 = "name_doc_2";
+	private static final String COLUMN_DOC_2 = "doc_2";
+	private static final String COLUMN_NAME_DOC_3 = "name_doc_3";
+	private static final String COLUMN_DOC_3 = "doc_3";
 
 	private Context context;
 	private SQLiteDatabase db;
@@ -51,7 +60,7 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
 		sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
-				TABLE_NAME + " (" +
+				Variable.g_table_name + " (" +
 				COLUMN_ID + " INTEGER PRIMARY KEY," +
 				COLUMN_FIRST_NAME + " VARCHAR(255)," +
 				COLUMN_LAST_NAME + " VARCHAR(255)," +
@@ -75,12 +84,22 @@ public class Database extends SQLiteOpenHelper {
 				COLUMN_OTHER_SOCIAL + " TEXT," +
 				COLUMN_RELATIVE + " TEXT," +
 				COLUMN_HOBBY + " TEXT," +
-				COLUMN_OTHER + " TEXT);");
+				COLUMN_OTHER + " TEXT," +
+				COLUMN_PHOTO_1 + " BLOB," +
+				COLUMN_PHOTO_2 + " BLOB," +
+				COLUMN_PHOTO_3 + " BLOB," +
+				COLUMN_PHOTO_4 + " BLOB," +
+				COLUMN_NAME_DOC_1 + " TEXT," +
+				COLUMN_DOC_1 + " BLOB," +
+				COLUMN_NAME_DOC_2 + " TEXT," +
+				COLUMN_DOC_2 + " BLOB," +
+				COLUMN_NAME_DOC_3 + " TEXT," +
+				COLUMN_DOC_3 + " BLOB);");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Variable.g_table_name);
 		onCreate(sqLiteDatabase);
 	}
 
@@ -120,19 +139,19 @@ public class Database extends SQLiteOpenHelper {
 
 	public void add_user(ArrayList<String> data_user) {
 		ContentValues content = completion_content(data_user);
-		db.insert(TABLE_NAME, null, content);
+		db.insert(Variable.g_table_name, null, content);
 	}
 
 	public void update_user(ArrayList<String> new_data_user, String user_id){
 		ContentValues content = completion_content(new_data_user);
-		db.update(TABLE_NAME,
+		db.update(Variable.g_table_name,
 				content,
 				COLUMN_ID + "= ?",
 				new String[] {user_id});
 	}
 
 	public void delete_user(String user_id) {
-		db.delete(TABLE_NAME,
+		db.delete(Variable.g_table_name,
 				COLUMN_ID + "= ?",
 				new String[] {user_id});
 	}
@@ -140,7 +159,7 @@ public class Database extends SQLiteOpenHelper {
 	public ArrayList<String> get_users() {
 		ArrayList<String> list_data_user = new ArrayList();
 		String[] get_columns = {COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_COUNTRY};
-		Cursor cursor = db.query(TABLE_NAME, get_columns, null, null, null, null, null);
+		Cursor cursor = db.query(Variable.g_table_name, get_columns, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
 			@SuppressLint("Range") String user_id = cursor.getString(cursor.getColumnIndex(COLUMN_ID));
@@ -197,7 +216,7 @@ public class Database extends SQLiteOpenHelper {
 
 		try {
 			String[] get_columns = {COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_PATRONYMIC, COLUMN_AGE, COLUMN_BIRTH, COLUMN_COUNTRY, COLUMN_ADDRESS, COLUMN_INDEX, COLUMN_NUMBER_PHONE, COLUMN_PHONE, COLUMN_PASSPORT, COLUMN_SNILS, COLUMN_CAR, COLUMN_EDUCATION, COLUMN_PLACE_WORK, COLUMN_EMAIL, COLUMN_VK, COLUMN_INSTAGRAM, COLUMN_TELEGRAM, COLUMN_OTHER_SOCIAL, COLUMN_RELATIVE, COLUMN_HOBBY, COLUMN_OTHER};
-			Cursor cursor = db.query(TABLE_NAME,
+			Cursor cursor = db.query(Variable.g_table_name,
 					get_columns,
 					COLUMN_ID + " = ?",
 					new String[] {user_id},

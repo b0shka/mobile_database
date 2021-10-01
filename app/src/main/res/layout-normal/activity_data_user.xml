@@ -290,6 +290,46 @@
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
+				<Button
+					android:id="@+id/add_doc"
+					android:layout_width="180dp"
+					android:layout_height="45dp"
+					android:layout_marginTop="10dp"
+					android:background="@drawable/custom_button"
+					android:fontFamily="@font/montserrat_bold"
+					android:text="@string/button_add_document"
+					android:textColor="@color/white"/>
+
+				<TextView
+					android:id="@+id/name_doc_1"
+					android:layout_width="180dp"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/montserrat"
+					android:layout_marginTop="10dp"
+					android:text=""
+					android:textColor="@color/silver"
+					android:textSize="17sp" />
+
+				<TextView
+					android:id="@+id/name_doc_2"
+					android:layout_width="180dp"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/montserrat"
+					android:layout_marginTop="10dp"
+					android:text=""
+					android:textColor="@color/silver"
+					android:textSize="17sp" />
+
+				<TextView
+					android:id="@+id/name_doc_3"
+					android:layout_width="180dp"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/montserrat"
+					android:layout_marginTop="10dp"
+					android:text=""
+					android:textColor="@color/silver"
+					android:textSize="17sp" />
+
 			</LinearLayout>
 
 			<LinearLayout
@@ -428,6 +468,64 @@
 					android:paddingLeft="10dp"
 					android:textColor="@color/white"
 					tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+				<Button
+					android:id="@+id/add_photo"
+					android:layout_width="200dp"
+					android:layout_height="45dp"
+					android:layout_marginTop="9dp"
+					android:background="@drawable/custom_button"
+					android:fontFamily="@font/montserrat_bold"
+					android:text="@string/button_add_photo"
+					android:textColor="@color/white" />
+
+				<LinearLayout
+					android:layout_width="200dp"
+					android:layout_height="95dp"
+					android:orientation="horizontal">
+
+					<ImageView
+						android:id="@+id/photo_1"
+						android:layout_width="95dp"
+						android:layout_height="95dp"
+						android:layout_marginTop="10dp"
+						android:scaleType="centerInside"
+						tools:srcCompat="@tools:sample/avatars" />
+
+					<ImageView
+						android:id="@+id/photo_2"
+						android:layout_width="95dp"
+						android:layout_height="95dp"
+						android:layout_marginTop="10dp"
+						android:layout_weight="1"
+						android:scaleType="centerInside"
+						tools:srcCompat="@tools:sample/avatars" />
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="200dp"
+					android:layout_height="95dp"
+					android:orientation="horizontal">
+
+					<ImageView
+						android:id="@+id/photo_3"
+						android:layout_width="95dp"
+						android:layout_height="95dp"
+						android:layout_marginTop="10dp"
+						android:scaleType="centerInside"
+						tools:srcCompat="@tools:sample/avatars" />
+
+					<ImageView
+						android:id="@+id/photo_4"
+						android:layout_width="95dp"
+						android:layout_height="95dp"
+						android:layout_marginTop="10dp"
+						android:layout_weight="1"
+						android:scaleType="centerInside"
+						tools:srcCompat="@tools:sample/avatars" />
+				</LinearLayout>
+
 			</LinearLayout>
 
 		</LinearLayout>

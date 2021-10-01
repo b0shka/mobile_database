@@ -9,15 +9,21 @@
         <entry key="app/src/main/res/layout-large/activity_create_db.xml" value="0.337890625" />
         <entry key="app/src/main/res/layout-large/activity_create_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout-large/activity_data_user.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-large/activity_filter.xml" value="0.1" />
         <entry key="app/src/main/res/layout-large/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-large/item.xml" value="0.33" />
         <entry key="app/src/main/res/layout-normal/activity_create_db.xml" value="0.337890625" />
         <entry key="app/src/main/res/layout-normal/activity_create_user.xml" value="0.33" />
-        <entry key="app/src/main/res/layout-normal/activity_data_user.xml" value="0.287962962962963" />
+        <entry key="app/src/main/res/layout-normal/activity_data_user.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-normal/activity_filter.xml" value="0.13333333333333333" />
         <entry key="app/src/main/res/layout-normal/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-normal/item.xml" value="0.33" />
         <entry key="app/src/main/res/layout-small/activity_create_db.xml" value="1.1" />
         <entry key="app/src/main/res/layout-small/activity_create_user.xml" value="1.0238095238095237" />
         <entry key="app/src/main/res/layout-small/activity_data_user.xml" value="1.5" />
+        <entry key="app/src/main/res/layout-small/activity_filter.xml" value="0.13333333333333333" />
         <entry key="app/src/main/res/layout-small/activity_main.xml" value="2.0" />
+        <entry key="app/src/main/res/layout-small/item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_create_db.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_create_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_data_user.xml" value="0.33" />

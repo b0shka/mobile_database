@@ -13,6 +13,8 @@
     <string name="button_add_user">Добавить</string>
     <string name="button_back">Назад</string>
     <string name="button_cancel">Отмена</string>
+    <string name="button_add_document">Добавить файл</string>
+    <string name="button_add_photo">Добавить фото</string>
     <string name="button_delete">Удалить</string>
     <string name="symbol_close">×</string>
 
@@ -29,6 +31,7 @@
     <string name="first_open_db">Для начала откройте или создайте БД</string>
     <string name="choice_file">Выберите файл БД</string>
     <string name="success_copy">БД успешно скопирована</string>
+    <string name="success_create">БД успешно создана</string>
     <string name="error_copy">Ошибка при копировании БД</string>
     <string name="success_delete_data">Запись удалена</string>
     <string name="success_update_data">Запись обновлена</string>
