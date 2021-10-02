@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
 		for (String i : list_data_users) {
 			list_data_user = i.split("//");
-			title_item.add(list_data_user[0].replaceAll(";", " "));
+			title_item.add(list_data_user[0].replaceAll(";", " ").replaceAll("  ", " "));
 			description_item.add(list_data_user[1]);
 		}
 
@@ -209,24 +210,66 @@ public class MainActivity extends AppCompatActivity {
 			Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 		else {
 			String text_search = line_search.getText().toString();
+			String[] count_text_search = text_search.split(" ");
 
 			if (text_search.equals(""))
 				get_users_from_db();
 			else {
 				ArrayList<String> list_data_users = database.get_users();
-				ArrayList<String> list_result_search = new ArrayList<>();
+				String[] list_data_user, list_main_data_user, list_description_data_user;
+				ArrayList<String> title_item = new ArrayList<>();
+				ArrayList<String> description_item = new ArrayList<>();
+
+				boolean isId = TextUtils.isDigitsOnly(text_search);
 
 				for (String i : list_data_users) {
-					String[] name_user = i.split(" ");
+					list_data_user = i.split("//");
 
-					if (check_error(text_search.toLowerCase(), name_user[0].toLowerCase()) == 1 || check_error(text_search.toLowerCase(), name_user[1].toLowerCase()) == 1)
-						list_result_search.add(name_user[0] + " " + name_user[1]);
+					if (isId) {
+						list_description_data_user = list_data_user[1].split(" ");
 
-					else if (name_user[0].equals(text_search) || name_user[1].equals(text_search))
-						list_result_search.add(name_user[0] + " " + name_user[1]);
+						if (text_search.equals(list_description_data_user[1])) {
+							title_item.add(list_data_user[0].replaceAll(";", " "));
+							description_item.add(list_data_user[1]);
+						}
+					}
+					else {
+						list_main_data_user = list_data_user[0].split(";");
+
+						if (count_text_search.length == 1) {
+							for (String j : list_main_data_user) {
+								if (text_search.equals(j)) {
+									title_item.add(list_data_user[0].replaceAll(";", " "));
+									description_item.add(list_data_user[1]);
+								}
+							}
+						}
+						else if (count_text_search.length == 2) {
+							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0]) || text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1])) {
+								title_item.add(list_data_user[0].replaceAll(";", " "));
+								description_item.add(list_data_user[1]);
+							}
+						}
+						else if (count_text_search.length == 3) {
+							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0])) {
+								title_item.add(list_data_user[0].replaceAll(";", " "));
+								description_item.add(list_data_user[1]);
+							}
+						}
+					}
 				}
 
-				get_users_from_db();
+				add_users_to_list(title_item, description_item);
+
+//				for (String i : list_data_users) {
+//					String[] name_user = i.split(" ");
+//
+//					if (check_error(text_search.toLowerCase(), name_user[0].toLowerCase()) == 1 || check_error(text_search.toLowerCase(), name_user[1].toLowerCase()) == 1)
+//						list_result_search.add(name_user[0] + " " + name_user[1]);
+//
+//					else if (name_user[0].equals(text_search) || name_user[1].equals(text_search))
+//						list_result_search.add(name_user[0] + " " + name_user[1]);
+//				}
 			}
 
 			line_search.setText("");

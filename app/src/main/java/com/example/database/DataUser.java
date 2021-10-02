@@ -35,7 +35,7 @@ public class DataUser extends AppCompatActivity {
 	private ImageView photo_1, photo_2, photo_3, photo_4;
 	private Database database;
 	private String user_id, name_doc_1, name_doc_2, name_doc_3;
-	private byte[] byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4;
+	private byte[] byte_photo_1 = null, byte_photo_2 = null, byte_photo_3 = null, byte_photo_4 = null;
 	private static final int ACTIVITY_CHOOSE_DOC = 1;
 	private static final int ACTIVITY_CHOOSE_PHOTO = 2;
 	private String MODE;
@@ -281,17 +281,17 @@ public class DataUser extends AppCompatActivity {
 			data_user.add(hobby);
 			data_user.add(other);
 
-			Bitmap bitmap_1 = ((BitmapDrawable) photo_1.getDrawable()).getBitmap();
-			byte_photo_1 = convertToByte(bitmap_1);
-
-			Bitmap bitmap_2 = ((BitmapDrawable) photo_2.getDrawable()).getBitmap();
-			byte_photo_2 = convertToByte(bitmap_2);
-
-			Bitmap bitmap_3 = ((BitmapDrawable) photo_3.getDrawable()).getBitmap();
-			byte_photo_3 = convertToByte(bitmap_3);
-
-			Bitmap bitmap_4 = ((BitmapDrawable) photo_4.getDrawable()).getBitmap();
-			byte_photo_4 = convertToByte(bitmap_4);
+//			Bitmap bitmap_1 = ((BitmapDrawable) photo_1.getDrawable()).getBitmap();
+//			byte_photo_1 = convertToByte(bitmap_1);
+//
+//			Bitmap bitmap_2 = ((BitmapDrawable) photo_2.getDrawable()).getBitmap();
+//			byte_photo_2 = convertToByte(bitmap_2);
+//
+//			Bitmap bitmap_3 = ((BitmapDrawable) photo_3.getDrawable()).getBitmap();
+//			byte_photo_3 = convertToByte(bitmap_3);
+//
+//			Bitmap bitmap_4 = ((BitmapDrawable) photo_4.getDrawable()).getBitmap();
+//			byte_photo_4 = convertToByte(bitmap_4);
 
 			if (MODE.equals("data")) {
 				database.update_user(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
@@ -387,19 +387,19 @@ public class DataUser extends AppCompatActivity {
 				e.printStackTrace();
 			}
 			if (photo_1.getDrawable() == null || photo_4.getDrawable() != null) {
-				//byte_photo_1 = convertToByte(bitmap);
+				byte_photo_1 = convertToByte(bitmap);
 				photo_1.setImageBitmap(bitmap);
 			}
 			else if (photo_2.getDrawable() == null) {
-				//byte_photo_2 = convertToByte(bitmap);
+				byte_photo_2 = convertToByte(bitmap);
 				photo_2.setImageBitmap(bitmap);
 			}
 			else if (photo_3.getDrawable() == null) {
-				//byte_photo_3 = convertToByte(bitmap);
+				byte_photo_3 = convertToByte(bitmap);
 				photo_3.setImageBitmap(bitmap);
 			}
 			else if (photo_4.getDrawable() == null) {
-				//byte_photo_4 = convertToByte(bitmap);
+				byte_photo_4 = convertToByte(bitmap);
 				photo_4.setImageBitmap(bitmap);
 			}
 

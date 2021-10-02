@@ -180,19 +180,21 @@ public class Database extends SQLiteOpenHelper {
 
 			if (!last_name.equals(""))
 				result_data += ";" + last_name;
+			else
+				result_data += "; ";
 
 			if (!patronymic.equals(""))
 				result_data += ";" + patronymic + "//";
 			else
-				result_data += "//";
+				result_data += "; //";
 
 			result_data += "id: " + user_id;
 
 			if (!age.equals(""))
-				result_data += ", " + age + " лет";
+				result_data += " " + age + " лет";
 
 			if (!country_city.equals(""))
-				result_data += ", город: " + country_city;
+				result_data += " город: " + country_city;
 
 			list_data_user.add(result_data);
 		}
