@@ -8,7 +8,7 @@
 	tools:context=".DataUser">
 
 	<Button
-		android:id="@+id/save_user"
+		android:id="@+id/save_create_user"
 		android:layout_width="wrap_content"
 		android:layout_height="45dp"
 		android:layout_marginEnd="10dp"
@@ -57,7 +57,7 @@
 		android:onClick="delete"
 		android:text="@string/button_delete"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toStartOf="@+id/save_user" />
+		app:layout_constraintEnd_toStartOf="@+id/save_create_user" />
 
 	<ScrollView
 		android:layout_width="0dp"
@@ -68,7 +68,7 @@
 
 		android:layout_marginBottom="10dp"
 		android:scrollbars="none"
-		app:layout_constraintBottom_toTopOf="@+id/save_user"
+		app:layout_constraintBottom_toTopOf="@+id/save_create_user"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/title_data_user">

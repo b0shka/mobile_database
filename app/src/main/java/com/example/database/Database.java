@@ -6,7 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
+
+import java.sql.Blob;
 import java.util.ArrayList;
 
 
@@ -107,9 +110,9 @@ public class Database extends SQLiteOpenHelper {
 		db = this.getWritableDatabase();
 	}
 
-	public ContentValues completion_content(ArrayList<String> list_data) {
+	public ContentValues completion_content(ArrayList<String> list_data, String user_id, byte[] byte_photo_1, byte[] byte_photo_2, byte[] byte_photo_3, byte[] byte_photo_4) {
 		ContentValues content = new ContentValues();
-		content.put(COLUMN_ID, generate_id());
+		content.put(COLUMN_ID, user_id);
 		content.put(COLUMN_FIRST_NAME, list_data.get(0));
 		content.put(COLUMN_LAST_NAME, list_data.get(1));
 		content.put(COLUMN_PATRONYMIC, list_data.get(2));
@@ -133,17 +136,21 @@ public class Database extends SQLiteOpenHelper {
 		content.put(COLUMN_RELATIVE, list_data.get(20));
 		content.put(COLUMN_HOBBY, list_data.get(21));
 		content.put(COLUMN_OTHER, list_data.get(22));
+		content.put(COLUMN_PHOTO_1, byte_photo_1);
+		content.put(COLUMN_PHOTO_2, byte_photo_2);
+		content.put(COLUMN_PHOTO_3, byte_photo_3);
+		content.put(COLUMN_PHOTO_4, byte_photo_4);
 
 		return content;
 	}
 
-	public void add_user(ArrayList<String> data_user) {
-		ContentValues content = completion_content(data_user);
+	public void add_user(ArrayList<String> data_user, String user_id, byte[] byte_photo_1, byte[] byte_photo_2, byte[] byte_photo_3, byte[] byte_photo_4) {
+		ContentValues content = completion_content(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
 		db.insert(Variable.g_table_name, null, content);
 	}
 
-	public void update_user(ArrayList<String> new_data_user, String user_id){
-		ContentValues content = completion_content(new_data_user);
+	public void update_user(ArrayList<String> new_data_user, String user_id, byte[] byte_photo_1, byte[] byte_photo_2, byte[] byte_photo_3, byte[] byte_photo_4){
+		ContentValues content = completion_content(new_data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
 		db.update(Variable.g_table_name,
 				content,
 				COLUMN_ID + "= ?",
@@ -197,7 +204,7 @@ public class Database extends SQLiteOpenHelper {
 	public int generate_id() {
 		int new_id = 1;
 
-		Cursor cursor = db.query(Variable.g_table_name, new String[]{COLUMN_ID}, null, null, null, null, null);
+		Cursor cursor = db.query(Variable.g_table_name, new String[] {COLUMN_ID}, null, null, null, null, null);
 
 		while (cursor.moveToNext()) {
 			@SuppressLint("Range") int check_id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
@@ -221,8 +228,6 @@ public class Database extends SQLiteOpenHelper {
 					COLUMN_ID + " = ?",
 					new String[] {user_id},
 					null, null, null);
-
-			//Cursor cursor = db.rawQuery("SELECT patronymic, age, birth FROM users WHERE first_name = ? AND last_name = ?;", new String[] {first_name, last_name});
 
 			while (cursor.moveToNext()) {
 				@SuppressLint("Range") String first_name = cursor.getString(cursor.getColumnIndex(COLUMN_FIRST_NAME));
@@ -283,6 +288,39 @@ public class Database extends SQLiteOpenHelper {
 		}
 
 		return list_data_user;
+	}
+
+	public ArrayList<byte[]> get_bytes_photo(String user_id) {
+		ArrayList<byte[]> list_bytes_photo = new ArrayList<>();
+		Blob blob;
+
+		try {
+			String[] get_columns = {COLUMN_PHOTO_1, COLUMN_PHOTO_2, COLUMN_PHOTO_3, COLUMN_PHOTO_4};
+			Cursor cursor = db.query(Variable.g_table_name,
+					get_columns,
+					COLUMN_ID + " = ?",
+					new String[] {user_id},
+					null, null, null);
+
+			while (cursor.moveToNext()) {
+				byte[] bytes_photo_1 = cursor.getBlob(0);
+				byte[] bytes_photo_2 = cursor.getBlob(1);
+				byte[] bytes_photo_3 = cursor.getBlob(2);
+				byte[] bytes_photo_4 = cursor.getBlob(3);
+
+				list_bytes_photo.add(bytes_photo_1);
+				list_bytes_photo.add(bytes_photo_2);
+				list_bytes_photo.add(bytes_photo_3);
+				list_bytes_photo.add(bytes_photo_4);
+			}
+
+			cursor.close();
+
+		} catch (Exception e) {
+			list_bytes_photo.add(null);
+		}
+
+		return list_bytes_photo;
 	}
 
 	public void close_db() {

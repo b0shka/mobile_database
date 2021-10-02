@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 				Intent intent = new Intent(MainActivity.this, DataUser.class);
 				intent.putExtra("user_id", user_id);
+				intent.putExtra("mode", "data");
 				startActivity(intent);
 			}
 		});
@@ -164,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
 					if (Variable.g_status_db == 0)
 						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 					else {
-						Intent intent = new Intent(MainActivity.this, CreateUser.class);
+						Intent intent = new Intent(MainActivity.this, DataUser.class);
+						intent.putExtra("mode", "create");
 						startActivity(intent);
 					}
 				}
@@ -299,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		dialog.setCancelable(false);
 
-		TextView close_dialog = (TextView) dialog.findViewById(R.id.close_dialog);
+		TextView close_dialog = (TextView) dialog.findViewById(R.id.close_action_photo);
 		Button create_new_db = (Button) dialog.findViewById(R.id.create_new_db);
 		EditText name_db = (EditText) dialog.findViewById(R.id.name_db);
 

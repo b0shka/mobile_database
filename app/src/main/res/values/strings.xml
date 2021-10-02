@@ -11,6 +11,7 @@
     <string name="button_save">Сохранить</string>
     <string name="button_close">Закрыть</string>
     <string name="button_add_user">Добавить</string>
+    <string name="button_download">Скачать</string>
     <string name="button_back">Назад</string>
     <string name="button_cancel">Отмена</string>
     <string name="button_add_document">Добавить файл</string>
@@ -22,6 +23,7 @@
     <string name="title_data_user">Информация о пользователе</string>
     <string name="title_create_user">Создание пользователя</string>
     <string name="title_create_db">Создание БД</string>
+    <string name="title_choice_action">Выберите действие</string>
     <string name="hint_name_db">Введите название БД</string>
     <string name="title_delete_data">Удаление записи</string>
     <string name="you_sure">Вы уверены?</string>

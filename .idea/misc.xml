@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/ic_button_menu.xml" value="0.26851851851851855" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.26851851851851855" />
+        <entry key="app/src/main/res/drawable/rounded_conturs.xml" value="0.25925925925925924" />
         <entry key="app/src/main/res/layout-large/activity_create_db.xml" value="0.337890625" />
         <entry key="app/src/main/res/layout-large/activity_create_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout-large/activity_data_user.xml" value="0.33" />
@@ -24,6 +25,7 @@
         <entry key="app/src/main/res/layout-small/activity_filter.xml" value="0.13333333333333333" />
         <entry key="app/src/main/res/layout-small/activity_main.xml" value="2.0" />
         <entry key="app/src/main/res/layout-small/item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_action_photo.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_create_db.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_create_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_data_user.xml" value="0.33" />
