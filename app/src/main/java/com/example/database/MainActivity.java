@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -220,12 +223,10 @@ public class MainActivity extends AppCompatActivity {
 				ArrayList<String> title_item = new ArrayList<>();
 				ArrayList<String> description_item = new ArrayList<>();
 
-				boolean isId = TextUtils.isDigitsOnly(text_search);
-
 				for (String i : list_data_users) {
 					list_data_user = i.split("//");
 
-					if (isId) {
+					if (TextUtils.isDigitsOnly(text_search)) {
 						list_description_data_user = list_data_user[1].split(" ");
 
 						if (text_search.equals(list_description_data_user[1])) {
@@ -242,57 +243,102 @@ public class MainActivity extends AppCompatActivity {
 									title_item.add(list_data_user[0].replaceAll(";", " "));
 									description_item.add(list_data_user[1]);
 								}
+
+								else if (check_word_in_word(text_search, j) == 1) {
+									title_item.add(list_data_user[0].replaceAll(";", " "));
+									description_item.add(list_data_user[1]);
+								}
 							}
 						}
 						else if (count_text_search.length == 2) {
-							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0]) || text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1])) {
+							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1]) ||
+								text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0]) ||
+								text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2]) ||
+								text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0]) ||
+								text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2]) ||
+								text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1])) {
+								title_item.add(list_data_user[0].replaceAll(";", " "));
+								description_item.add(list_data_user[1]);
+							}
+							else if (check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[1]) == 1 ||
+									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[1], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[0]) == 1 ||
+									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[0], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[2]) == 1 ||
+									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[2], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[0]) == 1 ||
+									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[0], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[2]) == 1 ||
+									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[2], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[1]) == 1 ||
+									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[1], text_search) == 1) {
 								title_item.add(list_data_user[0].replaceAll(";", " "));
 								description_item.add(list_data_user[1]);
 							}
 						}
 						else if (count_text_search.length == 3) {
-							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]) || text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]) || text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0])) {
+							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]) ||
+									text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]) ||
+									text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]) ||
+									text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]) ||
+									text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]) ||
+									text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0])) {
 								title_item.add(list_data_user[0].replaceAll(";", " "));
 								description_item.add(list_data_user[1]);
+							}
+
+							else if (check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]) == 1 ||
+									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]) == 1 ||
+									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]) == 1 ||
+									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]) == 1 ||
+									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]) == 1 ||
+									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1], text_search) == 1 ||
+									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0]) == 1 ||
+									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0], text_search) == 1) {
+								title_item.add(list_data_user[0].replaceAll(";", " "));
+								description_item.add(list_data_user[1]);
+							}
+						}
+						else {
+							for (String j : list_main_data_user) {
+								if (text_search.equals(j)) {
+									title_item.add(list_data_user[0].replaceAll(";", " "));
+									description_item.add(list_data_user[1]);
+								}
+
+								else if (check_word_in_word(text_search, j) == 1) {
+									title_item.add(list_data_user[0].replaceAll(";", " "));
+									description_item.add(list_data_user[1]);
+								}
 							}
 						}
 					}
 				}
 
-				add_users_to_list(title_item, description_item);
-
-//				for (String i : list_data_users) {
-//					String[] name_user = i.split(" ");
-//
-//					if (check_error(text_search.toLowerCase(), name_user[0].toLowerCase()) == 1 || check_error(text_search.toLowerCase(), name_user[1].toLowerCase()) == 1)
-//						list_result_search.add(name_user[0] + " " + name_user[1]);
-//
-//					else if (name_user[0].equals(text_search) || name_user[1].equals(text_search))
-//						list_result_search.add(name_user[0] + " " + name_user[1]);
-//				}
+				add_users_to_list(clear_list_duplicate(title_item), clear_list_duplicate(description_item));
 			}
 
 			line_search.setText("");
 		}
 	}
 
-	public int check_error(String search, String text_main) {
-		if (search.length() > 4)
-		{
-			int count = 0;
-			for (int j = 0; j < search.length(); j++)
-			{
-				if (text_main.charAt(j) != search.charAt(j))
-					count++;
-			}
-			if (count <= 1)
-				return 1;
-			else if (count <= 2 && (text_main.length() - search.length()) < 5)
-				return 1;
-			else
-				return 0;
-		}
-		return 0;
+	int check_word_in_word(String search, String text_main) {
+		if (text_main.contains(search) || search.contains(text_main))
+			return 1;
+		else
+			return 0;
+	}
+
+	public ArrayList<String> clear_list_duplicate(ArrayList<String> list_data) {
+		Set<String> list_data_set = new LinkedHashSet<>(list_data);
+		list_data.clear();
+		list_data.addAll(list_data_set);
+
+		return list_data;
 	}
 
 	public void choice_file_db() {
