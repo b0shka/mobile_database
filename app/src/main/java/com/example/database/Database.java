@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.sql.Array;
 import java.sql.Blob;
 import java.util.ArrayList;
 
@@ -102,7 +103,7 @@ public class Database extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Variable.g_table_name);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Variable.g_table_name + ";");
 		onCreate(sqLiteDatabase);
 	}
 
@@ -191,7 +192,7 @@ public class Database extends SQLiteOpenHelper {
 			result_data += "id: " + user_id;
 
 			if (!age.equals(""))
-				result_data += " " + age + " лет";
+				result_data += "age: " + age;
 
 			if (!country_city.equals(""))
 				result_data += " город: " + country_city;
@@ -325,7 +326,120 @@ public class Database extends SQLiteOpenHelper {
 		return list_bytes_photo;
 	}
 
+	@SuppressLint("Range")
+	public ArrayList<String> get_tables() {
+		ArrayList<String> list_tables = new ArrayList<>();
+		Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table';", null);
+
+		while (cursor.moveToNext()) {
+			@SuppressLint("Range") String table = cursor.getString(cursor.getColumnIndex("name"));
+			if (!table.equals("android_metadata"))
+				list_tables.add(table);
+		}
+
+		cursor.close();
+		return list_tables;
+	}
+
+	public void create_new_table(String name_table) {
+		db.execSQL("CREATE TABLE IF NOT EXISTS " +
+				name_table + " (" +
+				COLUMN_ID + " INTEGER PRIMARY KEY," +
+				COLUMN_FIRST_NAME + " VARCHAR(255)," +
+				COLUMN_LAST_NAME + " VARCHAR(255)," +
+				COLUMN_PATRONYMIC + " VARCHAR(255)," +
+				COLUMN_AGE + " VARCHAR(255)," +
+				COLUMN_BIRTH + " VARCHAR(255)," +
+				COLUMN_COUNTRY + " VARCHAR(255)," +
+				COLUMN_ADDRESS + " VARCHAR(255)," +
+				COLUMN_INDEX + " VARCHAR(255)," +
+				COLUMN_NUMBER_PHONE + " VARCHAR(255)," +
+				COLUMN_PHONE + " VARCHAR(255)," +
+				COLUMN_PASSPORT + " TEXT," +
+				COLUMN_SNILS + " VARCHAR(255)," +
+				COLUMN_CAR + " VARCHAR(255)," +
+				COLUMN_EDUCATION + " VARCHAR(255)," +
+				COLUMN_PLACE_WORK + " VARCHAR(255)," +
+				COLUMN_EMAIL + " VARCHAR(255)," +
+				COLUMN_VK + " VARCHAR(255)," +
+				COLUMN_INSTAGRAM + " VARCHAR(255)," +
+				COLUMN_TELEGRAM + " VARCHAR(255)," +
+				COLUMN_OTHER_SOCIAL + " TEXT," +
+				COLUMN_RELATIVE + " TEXT," +
+				COLUMN_HOBBY + " TEXT," +
+				COLUMN_OTHER + " TEXT," +
+				COLUMN_PHOTO_1 + " BLOB," +
+				COLUMN_PHOTO_2 + " BLOB," +
+				COLUMN_PHOTO_3 + " BLOB," +
+				COLUMN_PHOTO_4 + " BLOB," +
+				COLUMN_NAME_DOC_1 + " TEXT," +
+				COLUMN_DOC_1 + " BLOB," +
+				COLUMN_NAME_DOC_2 + " TEXT," +
+				COLUMN_DOC_2 + " BLOB," +
+				COLUMN_NAME_DOC_3 + " TEXT," +
+				COLUMN_DOC_3 + " BLOB);");
+	}
+
+	public void delete_table(String name_table) {
+		db.execSQL("DROP TABLE IF EXISTS " + name_table + ";");
+	}
+
+	public void change_name_table(String new_name) {
+		db.execSQL("ALTER TABLE " + Variable.g_table_name + " RENAME TO " + new_name + ";");
+	}
+
+	public ArrayList<String> get_city() {
+		ArrayList<String> list_city = new ArrayList();
+		Cursor cursor = db.query(Variable.g_table_name, new String[] {COLUMN_COUNTRY}, null, null, null, null, null);
+
+		while (cursor.moveToNext()) {
+			@SuppressLint("Range") String city = cursor.getString(cursor.getColumnIndex(COLUMN_COUNTRY));
+			list_city.add(city);
+		}
+
+		cursor.close();
+		return list_city;
+	}
+
+	public void get_global_table() {
+		ArrayList<String> list_table = get_tables();
+		if (list_table.size() != 0)
+			Variable.g_table_name = list_table.get(0);
+		else
+			Variable.g_table_name = "users";
+	}
+
+	public void get_data_filter() {
+		get_global_table();
+
+		ArrayList<String> list_age = new ArrayList<>();
+		Cursor cursor = db.query(Variable.g_table_name, new String[] {COLUMN_AGE}, null, null, null, null, null);
+
+		while (cursor.moveToNext()) {
+			@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
+			list_age.add(age);
+
+			if (Integer.parseInt(age) > Variable.g_age_max)
+				Variable.g_age_max = Integer.parseInt(age);
+		}
+
+		if (list_age.size() > 0) {
+			Variable.g_age_min = Integer.parseInt(list_age.get(0));
+
+			for (int i = 0; i < list_age.size(); i++) {
+				if (Integer.parseInt(list_age.get(i)) < Variable.g_age_min)
+					Variable.g_age_min = Integer.parseInt(list_age.get(i));
+			}
+		}
+		else
+			Variable.g_age_min = 0;
+
+		cursor.close();
+	}
+
 	public void close_db() {
 		this.close();
+		Variable.g_db_name = "";
+		Variable.g_status_db = 0;
 	}
 }

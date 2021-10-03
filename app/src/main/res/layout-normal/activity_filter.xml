@@ -7,4 +7,211 @@
 	android:background="@color/main_color"
 	tools:context=".Filter">
 
+	<TextView
+		android:id="@+id/title_filter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="16dp"
+		android:fontFamily="@font/montserrat_bold"
+		android:text="@string/title_filter"
+		android:textColor="@color/white"
+		android:textSize="24sp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/title_table"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="30dp"
+		android:fontFamily="@font/montserrat"
+		android:text="@string/title_table"
+		android:textColor="@color/white"
+		android:textSize="20sp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/title_filter" />
+
+	<TextView
+		android:id="@+id/title_table2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="25dp"
+		android:fontFamily="@font/montserrat"
+		android:text="@string/title_age_min"
+		android:textColor="@color/white"
+		android:textSize="20sp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/new_change_name_table" />
+
+	<TextView
+		android:id="@+id/title_city"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="25dp"
+		android:fontFamily="@font/montserrat"
+		android:text="@string/title_city"
+		android:textColor="@color/white"
+		android:textSize="20sp"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/title_table2" />
+
+	<TextView
+		android:id="@+id/title_age_max"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="10dp"
+		android:fontFamily="@font/montserrat"
+		android:text="@string/title_age_max"
+		android:textColor="@color/white"
+		android:textSize="20sp"
+		app:layout_constraintBottom_toBottomOf="@+id/title_table2"
+		app:layout_constraintStart_toEndOf="@+id/age_min" />
+
+	<Button
+		android:id="@+id/save_filter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="15dp"
+		android:layout_marginBottom="16dp"
+		android:background="@drawable/custom_button"
+		android:onClick="apply_filter"
+		android:text="@string/button_save_change"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
+
+	<Button
+		android:id="@+id/back_from_filter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="10dp"
+		android:layout_marginBottom="16dp"
+		android:background="@drawable/custom_button"
+		android:text="@string/button_back"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@+id/save_filter" />
+
+	<EditText
+		android:id="@+id/name_new_table"
+		android:layout_width="300dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="20dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:hint="@string/hint_name_table"
+		android:inputType="textPersonName"
+		android:paddingStart="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/title_table"
+		tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+		android:importantForAutofill="no" />
+
+	<EditText
+		android:id="@+id/age_min"
+		android:layout_width="50dp"
+		android:layout_height="40dp"
+		android:layout_marginStart="10dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:importantForAutofill="no"
+		android:inputType="number"
+		android:paddingStart="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintBottom_toBottomOf="@+id/title_table2"
+		app:layout_constraintStart_toEndOf="@+id/title_table2"
+		tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+	<EditText
+		android:id="@+id/age_max"
+		android:layout_width="50dp"
+		android:layout_height="40dp"
+		android:layout_marginStart="10dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:importantForAutofill="no"
+		android:inputType="number"
+		android:paddingStart="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintBottom_toBottomOf="@+id/title_table2"
+		app:layout_constraintStart_toEndOf="@+id/title_age_max"
+		tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+	<EditText
+		android:id="@+id/new_change_name_table"
+		android:layout_width="300dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="15dp"
+		android:layout_marginTop="15dp"
+		android:background="@drawable/custom_line"
+		android:ems="10"
+		android:fontFamily="@font/montserrat"
+		android:importantForAutofill="no"
+		android:inputType="textPersonName"
+		android:paddingStart="10dp"
+		android:textColor="@color/white"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/name_new_table"
+		tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+	<Button
+		android:id="@+id/create_new_table"
+		android:layout_width="55dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="10dp"
+		android:background="@drawable/custom_button"
+		android:onClick="new_table"
+		app:icon="@drawable/ic_ok"
+		app:layout_constraintBottom_toBottomOf="@+id/name_new_table"
+		app:layout_constraintStart_toEndOf="@+id/name_new_table"
+		tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+	<Button
+		android:id="@+id/change_name_table"
+		android:layout_width="55dp"
+		android:layout_height="45dp"
+		android:layout_marginStart="10dp"
+		android:background="@drawable/custom_button"
+		android:onClick="change_name"
+		app:icon="@drawable/ic_ok"
+		app:layout_constraintBottom_toBottomOf="@+id/new_change_name_table"
+		app:layout_constraintStart_toEndOf="@+id/new_change_name_table"
+		tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+	<Button
+		android:id="@+id/delete_table_db"
+		android:layout_width="55dp"
+		android:layout_height="40dp"
+		android:background="@drawable/custom_button"
+		android:onClick="delete_table"
+		app:icon="@drawable/ic_close"
+		app:layout_constraintBottom_toBottomOf="@+id/list_table"
+		app:layout_constraintEnd_toEndOf="@+id/create_new_table"
+		tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+	<Spinner
+		android:id="@+id/list_table"
+		android:layout_width="205dp"
+		android:layout_height="40dp"
+		android:layout_marginEnd="10dp"
+		android:background="@drawable/custom_sprinner"
+		app:layout_constraintBottom_toBottomOf="@+id/title_table"
+		app:layout_constraintEnd_toStartOf="@+id/delete_table_db" />
+
+	<Spinner
+		android:id="@+id/list_city"
+		android:layout_width="205dp"
+		android:layout_height="40dp"
+		android:layout_marginStart="10dp"
+		android:background="@drawable/custom_sprinner"
+		app:layout_constraintBottom_toBottomOf="@+id/title_city"
+		app:layout_constraintStart_toEndOf="@+id/title_city" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

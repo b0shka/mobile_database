@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Database">
+
         <activity
             android:name=".ActionPhoto"
             android:exported="true" />

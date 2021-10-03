@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 	private FloatingActionButton add_user;
 	private Database database;
 	private ItemAdapter itemAdapter;
-	private static final int ACTIVITY_CHOOSE_FILE = 123;
+	private static final int ACTIVITY_CHOOSE_FILE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +206,36 @@ public class MainActivity extends AppCompatActivity {
 	public void add_users_to_list(ArrayList<String> main_data_users, ArrayList<String> addition_data_users) {
 		itemAdapter = new ItemAdapter(this, main_data_users, addition_data_users);
 		list_users.setAdapter(itemAdapter);
+	}
+
+	public ArrayList<String> check_filter(ArrayList<String> addition_data_users) {
+		ArrayList<String> list_filter_users = new ArrayList<>();
+		String city = "";
+		int age_user = 0;;
+
+		for (int i = 0; i < addition_data_users.size(); i++) {
+			String[] list_addition_data_user = addition_data_users.get(i).split(":");
+
+			if (list_addition_data_user.length == 4) {
+				city = list_addition_data_user[4];
+				age_user = Integer.parseInt(list_addition_data_user[3].split(" ")[0]);
+			}
+			else if (list_addition_data_user.length == 3) {
+				String text_city = "город";
+				if (text_city.contains(list_addition_data_user[2])) {
+					age_user = Integer.parseInt(list_addition_data_user[3].split(" ")[0]);
+				}
+				else {
+					city = list_addition_data_user[4];
+				}
+			}
+
+			if (age_user >= Variable.g_age_min && age_user <= Variable.g_age_max) {
+				list_filter_users.add(addition_data_users.get(i));
+			}
+		}
+
+		return list_filter_users;
 	}
 
 	public void on_search(View view) {
@@ -377,6 +407,7 @@ public class MainActivity extends AppCompatActivity {
 
 			database = new Database(MainActivity.this);
 			database.open_db();
+			database.get_data_filter();
 			get_users_from_db();
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
@@ -407,6 +438,7 @@ public class MainActivity extends AppCompatActivity {
 					Variable.g_db_name = text_name_db;
 					database = new Database(MainActivity.this);
 					database.open_db();
+					database.get_data_filter();
 					list_users.setAdapter(null);
 
 					Toast.makeText(MainActivity.this, R.string.success_create, Toast.LENGTH_SHORT).show();
@@ -423,26 +455,6 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		dialog.show();
-	}
-
-	public void create_file() {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(new File(getExternalFilesDir(null), Variable.g_db_name));
-			Toast.makeText(this, "Файл сохранен", Toast.LENGTH_SHORT).show();
-		}
-		catch(IOException ex) {
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-		}
-		finally{
-			try{
-				if(fos!=null)
-					fos.close();
-			}
-			catch(IOException ex){
-				Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-			}
-		}
 	}
 
 	public void copy_db(String mode) throws IOException {

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Database</string>
 
+    <!--Buttons-->
     <string name="button_search">Поиск</string>
     <string name="button_filter">Фильтры</string>
     <string name="button_update">Обновить</string>
@@ -9,6 +10,7 @@
     <string name="button_settings">Настройки</string>
     <string name="button_add">+</string>
     <string name="button_save">Сохранить</string>
+    <string name="button_save_change">Сохранить изменения</string>
     <string name="button_close">Закрыть</string>
     <string name="button_add_user">Добавить</string>
     <string name="button_download">Скачать</string>
@@ -19,15 +21,27 @@
     <string name="button_delete">Удалить</string>
     <string name="symbol_close">×</string>
 
+    <!--Hint-->
     <string name="hint_line_search">Введите данные...</string>
+    <string name="hint_name_db">Введите название БД</string>
+    <string name="hint_name_table">Введите название таблицы</string>
+
+    <!--Title-->
     <string name="title_data_user">Информация о пользователе</string>
     <string name="title_create_user">Создание пользователя</string>
     <string name="title_create_db">Создание БД</string>
     <string name="title_choice_action">Выберите действие</string>
-    <string name="hint_name_db">Введите название БД</string>
+    <string name="title_filter">Фильтры</string>
     <string name="title_delete_data">Удаление записи</string>
     <string name="you_sure">Вы уверены?</string>
 
+    <!--TextView-->
+    <string name="title_table">Таблицы</string>
+    <string name="title_age_min">Возраст от</string>
+    <string name="title_age_max">до</string>
+    <string name="title_city">Город</string>
+
+    <!--Message for Toats-->
     <string name="empty_line">Вы ничего не ввели</string>
     <string name="empty_first_name">Вы не ввели имя</string>
     <string name="first_open_db">Для начала откройте или создайте БД</string>
@@ -38,7 +52,10 @@
     <string name="success_delete_data">Запись удалена</string>
     <string name="success_update_data">Запись обновлена</string>
     <string name="success_create_data">Запись создана</string>
+    <string name="success_create_table">Таблица успешно создана</string>
+    <string name="success_delete_table">Таблица успешно удалена</string>
 
+    <!--Fields-->
     <string name="first_name">Имя</string>
     <string name="last_name">Фамилия</string>
     <string name="patronymic">Отчество</string>
@@ -62,5 +79,12 @@
     <string name="relative">Родственники</string>
     <string name="hobby">Хобби</string>
     <string name="other">Остальное</string>
+
+    <string-array name="animals">
+        <item>Кот</item>
+        <item>Кошка</item>
+        <item>Котёнок</item>
+        <item>Животное</item>
+    </string-array>
 
 </resources>
