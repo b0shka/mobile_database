@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 		if (Variable.g_status_db == 0)
 			Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
 		else {
-			String text_search = line_search.getText().toString();
+			String text_search = line_search.getText().toString().toLowerCase();
 			String[] count_text_search = text_search.split(" ");
 
 			if (text_search.equals(""))
@@ -269,78 +269,78 @@ public class MainActivity extends AppCompatActivity {
 
 						if (count_text_search.length == 1) {
 							for (String j : list_main_data_user) {
-								if (text_search.equals(j)) {
+								if (text_search.equals(j.toLowerCase())) {
 									title_item.add(list_data_user[0].replaceAll(";", " "));
 									description_item.add(list_data_user[1]);
 								}
 
-								else if (check_word_in_word(text_search, j) == 1) {
+								else if (check_word_in_word(text_search, j.toLowerCase()) == 1) {
 									title_item.add(list_data_user[0].replaceAll(";", " "));
 									description_item.add(list_data_user[1]);
 								}
 							}
 						}
 						else if (count_text_search.length == 2) {
-							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1]) ||
-								text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0]) ||
-								text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2]) ||
-								text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0]) ||
-								text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2]) ||
-								text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1])) {
+							if (text_search.equals((list_main_data_user[0] + " " + list_main_data_user[1]).toLowerCase()) ||
+								text_search.equals((list_main_data_user[1] + " " + list_main_data_user[0]).toLowerCase()) ||
+								text_search.equals((list_main_data_user[0] + " " + list_main_data_user[2]).toLowerCase()) ||
+								text_search.equals((list_main_data_user[2] + " " + list_main_data_user[0]).toLowerCase()) ||
+								text_search.equals((list_main_data_user[1] + " " + list_main_data_user[2]).toLowerCase()) ||
+								text_search.equals((list_main_data_user[2] + " " + list_main_data_user[1]).toLowerCase())) {
 								title_item.add(list_data_user[0].replaceAll(";", " "));
 								description_item.add(list_data_user[1]);
 							}
-							else if (check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[1]) == 1 ||
-									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[1], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[0]) == 1 ||
-									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[0], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[2]) == 1 ||
-									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[2], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[0]) == 1 ||
-									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[0], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[2]) == 1 ||
-									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[2], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[1]) == 1 ||
-									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[1], text_search) == 1) {
+							else if (check_word_in_word(text_search, (list_main_data_user[0] + " " + list_main_data_user[1]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[0] + " " + list_main_data_user[1]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[1] + " " + list_main_data_user[0]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[1] + " " + list_main_data_user[0]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[0] + " " + list_main_data_user[2]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[0] + " " + list_main_data_user[2]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[2] + " " + list_main_data_user[0]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[2] + " " + list_main_data_user[0]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[1] + " " + list_main_data_user[2]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[1] + " " + list_main_data_user[2]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[2] + " " + list_main_data_user[1]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[2] + " " + list_main_data_user[1]).toLowerCase(), text_search) == 1) {
 								title_item.add(list_data_user[0].replaceAll(";", " "));
 								description_item.add(list_data_user[1]);
 							}
 						}
 						else if (count_text_search.length == 3) {
-							if (text_search.equals(list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]) ||
-									text_search.equals(list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]) ||
-									text_search.equals(list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]) ||
-									text_search.equals(list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]) ||
-									text_search.equals(list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]) ||
-									text_search.equals(list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0])) {
+							if (text_search.equals((list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]).toLowerCase()) ||
+									text_search.equals((list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]).toLowerCase()) ||
+									text_search.equals((list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]).toLowerCase()) ||
+									text_search.equals((list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]).toLowerCase()) ||
+									text_search.equals((list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]).toLowerCase()) ||
+									text_search.equals((list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0]).toLowerCase())) {
 								title_item.add(list_data_user[0].replaceAll(";", " "));
 								description_item.add(list_data_user[1]);
 							}
 
-							else if (check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]) == 1 ||
-									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]) == 1 ||
-									check_word_in_word(list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]) == 1 ||
-									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]) == 1 ||
-									check_word_in_word(list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]) == 1 ||
-									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1], text_search) == 1 ||
-									check_word_in_word(text_search, list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0]) == 1 ||
-									check_word_in_word(list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0], text_search) == 1) {
+							else if (check_word_in_word(text_search, (list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[0] + " " + list_main_data_user[1] + " " + list_main_data_user[2]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[0] + " " + list_main_data_user[2] + " " + list_main_data_user[1]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[1] + " " + list_main_data_user[0] + " " + list_main_data_user[2]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[1] + " " + list_main_data_user[2] + " " + list_main_data_user[0]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[2] + " " + list_main_data_user[0] + " " + list_main_data_user[1]).toLowerCase(), text_search) == 1 ||
+									check_word_in_word(text_search, (list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0]).toLowerCase()) == 1 ||
+									check_word_in_word((list_main_data_user[2] + " " + list_main_data_user[1] + " " + list_main_data_user[0]).toLowerCase(), text_search) == 1) {
 								title_item.add(list_data_user[0].replaceAll(";", " "));
 								description_item.add(list_data_user[1]);
 							}
 						}
 						else {
 							for (String j : list_main_data_user) {
-								if (text_search.equals(j)) {
+								if (text_search.equals(j.toLowerCase())) {
 									title_item.add(list_data_user[0].replaceAll(";", " "));
 									description_item.add(list_data_user[1]);
 								}
 
-								else if (check_word_in_word(text_search, j) == 1) {
+								else if (check_word_in_word(text_search, j.toLowerCase()) == 1) {
 									title_item.add(list_data_user[0].replaceAll(";", " "));
 									description_item.add(list_data_user[1]);
 								}
