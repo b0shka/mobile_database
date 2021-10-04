@@ -14,4 +14,6 @@ public class Variable {
     public static int g_age_max = 0;
     public static int g_age_min = 0;
     public static String g_city = "";
+    public static int g_status_apply_filter_age = 0;
+    public static int g_status_apply_filter_city = 0;
 }

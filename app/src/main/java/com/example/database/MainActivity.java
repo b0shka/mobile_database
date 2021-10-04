@@ -204,41 +204,60 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void add_users_to_list(ArrayList<String> main_data_users, ArrayList<String> addition_data_users) {
-		itemAdapter = new ItemAdapter(this, main_data_users, addition_data_users);
-		list_users.setAdapter(itemAdapter);
+		if (Variable.g_status_apply_filter_age == 0 && Variable.g_status_apply_filter_city == 0) {
+			itemAdapter = new ItemAdapter(this, main_data_users, addition_data_users);
+			list_users.setAdapter(itemAdapter);
+		}
+		else if (Variable.g_status_apply_filter_age == 1 || Variable.g_status_apply_filter_city == 1) {
+			ArrayList<String> filter_array_addition_data_user = check_filter(addition_data_users);
 
-		ArrayList<String> test_list = check_filter(addition_data_users);
-		Toast.makeText(MainActivity.this, String.valueOf(test_list.size()), Toast.LENGTH_SHORT).show();
+			itemAdapter = new ItemAdapter(this, main_data_users, filter_array_addition_data_user);
+			list_users.setAdapter(itemAdapter);
+		}
 	}
 
 	public ArrayList<String> check_filter(ArrayList<String> addition_data_users) {
 		ArrayList<String> list_filter_users = new ArrayList<>();
-		String city = "";
+		String city_user = "";
 		int age_user = 0;;
 
 		for (int i = 0; i < addition_data_users.size(); i++) {
 			String[] list_addition_data_user = addition_data_users.get(i).split(":");
 
 			if (list_addition_data_user.length == 4) {
-				city = list_addition_data_user[3];
+				city_user = list_addition_data_user[3].replaceFirst(" ", "");
 				String[] list_age = list_addition_data_user[2].split(" ");
-				if (!list_age[0].equals(""))
-					age_user = Integer.parseInt(list_age[0]);
+				if (!list_age[1].equals(""))
+					age_user = Integer.parseInt(list_age[1]);
 			}
 			else if (list_addition_data_user.length == 3) {
 				String text_city = "город";
 				if (text_city.contains(list_addition_data_user[2])) {
 					String[] list_age = list_addition_data_user[2].split(" ");
-					if (!list_age[0].equals(""))
-						age_user = Integer.parseInt(list_age[0]);
+					if (!list_age[1].equals(""))
+						age_user = Integer.parseInt(list_age[1]);
 				}
 				else {
-					city = list_addition_data_user[2];
+					city_user = list_addition_data_user[2].replaceFirst(" ", "");
 				}
 			}
 
-			if (age_user >= Variable.g_age_min && age_user <= Variable.g_age_max && city.equals(Variable.g_city)) {
-				list_filter_users.add(addition_data_users.get(i));
+			if (Variable.g_status_apply_filter_age == 1) {
+				if (Variable.g_status_apply_filter_city == 1) {
+					if (age_user >= Variable.g_age_min && age_user <= Variable.g_age_max && city_user.equals(Variable.g_city))
+						list_filter_users.add(addition_data_users.get(i));
+				}
+				else if (Variable.g_status_apply_filter_city == 0) {
+					if (age_user >= Variable.g_age_min && age_user <= Variable.g_age_max)
+						list_filter_users.add(addition_data_users.get(i));
+				}
+			}
+
+			else if (Variable.g_status_apply_filter_age == 0) {
+				if (city_user.equals(Variable.g_city)) {
+					Toast.makeText(MainActivity.this, Variable.g_city + " " + city_user, Toast.LENGTH_SHORT).show();
+					list_filter_users.add(addition_data_users.get(i));
+				}
 			}
 		}
 

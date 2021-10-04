@@ -10,7 +10,7 @@
     <string name="button_settings">Настройки</string>
     <string name="button_add">+</string>
     <string name="button_save">Сохранить</string>
-    <string name="button_save_change">Сохранить изменения</string>
+    <string name="button_drop_filter">Сбросить</string>
     <string name="button_close">Закрыть</string>
     <string name="button_add_user">Добавить</string>
     <string name="button_download">Скачать</string>
@@ -40,6 +40,8 @@
     <string name="title_age_min">Возраст от</string>
     <string name="title_age_max">до</string>
     <string name="title_city">Город</string>
+    <string name="title_checkbox_age">Использовать фильтр по возрасту</string>
+    <string name="title_checkbox_city">Использовать фильтр по городу</string>
 
     <!--Message for Toats-->
     <string name="empty_line">Вы ничего не ввели</string>
