@@ -5,8 +5,9 @@ public class Variable {
     public static String g_db_name = "";
     public static String g_table_name = "users";
 
-    public static String g_db_path_user = "/storage/self/primary/Android/data/com.example.database/files/";
+    public static String g_db_path_user = "";
     public static String g_db_path_app = "/data/data/com.example.database/databases/";
+    public static final String g_const_db_path_user = "/storage/self/primary/Android/data/com.example.database/files/";
 
     public static final String TAG = "APP_LOGS";
 

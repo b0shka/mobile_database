@@ -57,6 +57,7 @@ public class Database extends SQLiteOpenHelper {
 	public Database(Context context) {
 		super(context, Variable.g_db_name, null, DB_VERSION);
 		this.context = context;
+		Variable.g_db_path_app = context.getApplicationInfo().dataDir + "/databases/";
 
 		Variable.g_status_db = 1;
 	}
@@ -109,6 +110,7 @@ public class Database extends SQLiteOpenHelper {
 
 	public void open_db() {
 		db = this.getWritableDatabase();
+		get_global_table();
 	}
 
 	public ContentValues completion_content(ArrayList<String> list_data, String user_id, byte[] byte_photo_1, byte[] byte_photo_2, byte[] byte_photo_3, byte[] byte_photo_4) {
@@ -192,7 +194,7 @@ public class Database extends SQLiteOpenHelper {
 			result_data += "id: " + user_id;
 
 			if (!age.equals(""))
-				result_data += "age: " + age;
+				result_data += " age: " + age;
 
 			if (!country_city.equals(""))
 				result_data += " город: " + country_city;
@@ -418,21 +420,33 @@ public class Database extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			@SuppressLint("Range") String age = cursor.getString(cursor.getColumnIndex(COLUMN_AGE));
 			list_age.add(age);
-
-			if (Integer.parseInt(age) > Variable.g_age_max)
-				Variable.g_age_max = Integer.parseInt(age);
 		}
 
 		if (list_age.size() > 0) {
-			Variable.g_age_min = Integer.parseInt(list_age.get(0));
+			Variable.g_age_min = 0;
+			for (int i = 0; i < list_age.size(); i++) {
+				if (!list_age.get(i).equals("")) {
+					Variable.g_age_min = Integer.parseInt(list_age.get(i));
+					break;
+				}
+			}
+
+			Variable.g_age_max = 0;
 
 			for (int i = 0; i < list_age.size(); i++) {
-				if (Integer.parseInt(list_age.get(i)) < Variable.g_age_min)
-					Variable.g_age_min = Integer.parseInt(list_age.get(i));
+				if (!list_age.get(i).equals("")) {
+					if (Integer.parseInt(list_age.get(i)) < Variable.g_age_min)
+						Variable.g_age_min = Integer.parseInt(list_age.get(i));
+
+					if (Integer.parseInt(list_age.get(i)) > Variable.g_age_max)
+						Variable.g_age_max = Integer.parseInt(list_age.get(i));
+				}
 			}
 		}
-		else
+		else {
 			Variable.g_age_min = 0;
+			Variable.g_age_max = 0;
+		}
 
 		cursor.close();
 	}

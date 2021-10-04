@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Filter extends AppCompatActivity {
 
@@ -38,6 +40,7 @@ public class Filter extends AppCompatActivity {
 		database.open_db();
 
 		add_table();
+		add_age();
 		add_city();
 
 		new_change_name_table.setText(Variable.g_table_name);
@@ -68,8 +71,18 @@ public class Filter extends AppCompatActivity {
 		list_tables.setSelection(adapter.getPosition(Variable.g_table_name));
 	}
 
+	public void add_age() {
+		age_min.setText(String.valueOf(Variable.g_age_min));
+		age_max.setText(String.valueOf(Variable.g_age_max));
+	}
+
 	public void add_city() {
 		ArrayList<String> array_users_city = database.get_city();
+
+		Set<String> array_data_set = new LinkedHashSet<>(array_users_city);
+		array_users_city.clear();
+		array_users_city.addAll(array_data_set);
+
 		String[] list_users_city = new String[array_users_city.size()];
 
 		for (int i = 0; i < array_users_city.size(); i++) {
@@ -118,8 +131,10 @@ public class Filter extends AppCompatActivity {
 		if (!number_age_max.equals(""))
 			Variable.g_age_max = Integer.parseInt(number_age_max);
 
-		String city = list_city.getSelectedItem().toString();
-		Variable.g_city = city;
+		if (!list_city.getSelectedItem().toString().equals("")) {
+			String city = list_city.getSelectedItem().toString();
+			Variable.g_city = city;
+		}
 
 		Intent intent = new Intent(Filter.this, MainActivity.class);
 		startActivity(intent);

@@ -199,23 +199,23 @@ public class DataUser extends AppCompatActivity {
 			field_hobby.setText(list_data_user.get(21));
 			field_other.setText(list_data_user.get(22));
 
-			ArrayList<byte[]> list_bytes_photo = database.get_bytes_photo(user_id);
-			byte_photo_1 = list_bytes_photo.get(0);
-			byte_photo_2 = list_bytes_photo.get(1);
-			byte_photo_3 = list_bytes_photo.get(2);
-			byte_photo_4 = list_bytes_photo.get(3);
-
-			if (byte_photo_1 != null)
-				photo_1.setImageBitmap(convertToBitmap(byte_photo_1));
-
-			if (byte_photo_2 != null)
-				photo_2.setImageBitmap(convertToBitmap(byte_photo_2));
-
-			if (byte_photo_3 != null)
-				photo_3.setImageBitmap(convertToBitmap(byte_photo_3));
-
-			if (byte_photo_4 != null)
-				photo_4.setImageBitmap(convertToBitmap(byte_photo_4));
+//			ArrayList<byte[]> list_bytes_photo = database.get_bytes_photo(user_id);
+//			byte_photo_1 = list_bytes_photo.get(0);
+//			byte_photo_2 = list_bytes_photo.get(1);
+//			byte_photo_3 = list_bytes_photo.get(2);
+//			byte_photo_4 = list_bytes_photo.get(3);
+//
+//			if (byte_photo_1 != null)
+//				photo_1.setImageBitmap(convertToBitmap(byte_photo_1));
+//
+//			if (byte_photo_2 != null)
+//				photo_2.setImageBitmap(convertToBitmap(byte_photo_2));
+//
+//			if (byte_photo_3 != null)
+//				photo_3.setImageBitmap(convertToBitmap(byte_photo_3));
+//
+//			if (byte_photo_4 != null)
+//				photo_4.setImageBitmap(convertToBitmap(byte_photo_4));
 		}
 		else if (MODE.equals("create")) {
 			field_title_data_user.setText(R.string.title_create_user);
@@ -301,6 +301,8 @@ public class DataUser extends AppCompatActivity {
 				database.add_user(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
 				Toast.makeText(DataUser.this, R.string.success_create_data, Toast.LENGTH_SHORT).show();
 			}
+
+			database.get_data_filter();
 
 			Intent intent = new Intent(DataUser.this, MainActivity.class);
 			startActivity(intent);

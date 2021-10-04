@@ -206,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
 	public void add_users_to_list(ArrayList<String> main_data_users, ArrayList<String> addition_data_users) {
 		itemAdapter = new ItemAdapter(this, main_data_users, addition_data_users);
 		list_users.setAdapter(itemAdapter);
+
+		ArrayList<String> test_list = check_filter(addition_data_users);
+		Toast.makeText(MainActivity.this, String.valueOf(test_list.size()), Toast.LENGTH_SHORT).show();
 	}
 
 	public ArrayList<String> check_filter(ArrayList<String> addition_data_users) {
@@ -217,20 +220,24 @@ public class MainActivity extends AppCompatActivity {
 			String[] list_addition_data_user = addition_data_users.get(i).split(":");
 
 			if (list_addition_data_user.length == 4) {
-				city = list_addition_data_user[4];
-				age_user = Integer.parseInt(list_addition_data_user[3].split(" ")[0]);
+				city = list_addition_data_user[3];
+				String[] list_age = list_addition_data_user[2].split(" ");
+				if (!list_age[0].equals(""))
+					age_user = Integer.parseInt(list_age[0]);
 			}
 			else if (list_addition_data_user.length == 3) {
 				String text_city = "город";
 				if (text_city.contains(list_addition_data_user[2])) {
-					age_user = Integer.parseInt(list_addition_data_user[3].split(" ")[0]);
+					String[] list_age = list_addition_data_user[2].split(" ");
+					if (!list_age[0].equals(""))
+						age_user = Integer.parseInt(list_age[0]);
 				}
 				else {
-					city = list_addition_data_user[4];
+					city = list_addition_data_user[2];
 				}
 			}
 
-			if (age_user >= Variable.g_age_min && age_user <= Variable.g_age_max) {
+			if (age_user >= Variable.g_age_min && age_user <= Variable.g_age_max && city.equals(Variable.g_city)) {
 				list_filter_users.add(addition_data_users.get(i));
 			}
 		}
@@ -442,7 +449,6 @@ public class MainActivity extends AppCompatActivity {
 					list_users.setAdapter(null);
 
 					Toast.makeText(MainActivity.this, R.string.success_create, Toast.LENGTH_SHORT).show();
-					//create_file();
 				}
 			}
 		});
@@ -468,11 +474,16 @@ public class MainActivity extends AppCompatActivity {
 		} else if (mode == "from_data") {
 			sourceFile = new File(Variable.g_db_path_app + Variable.g_db_name);
 			sourceFile_journal = new File(Variable.g_db_path_app + Variable.g_db_name + "-journal");
-			destFile = new File(Variable.g_db_path_user + Variable.g_db_name);
+			destFile = new File(Variable.g_const_db_path_user + Variable.g_db_name);
 		}
 
 		if (destFile.exists())
-			destFile.delete();
+			if (mode == "from_data") {
+				if (sourceFile.exists())
+					destFile.delete();
+			}
+			else
+				destFile.delete();
 
 		InputStream in = new FileInputStream(sourceFile);
 		OutputStream out = new FileOutputStream(destFile);
@@ -484,7 +495,8 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		if (mode == "from_data") {
-			sourceFile.delete();
+			if (sourceFile.exists())
+				sourceFile.delete();
 			if (sourceFile_journal.exists())
 				sourceFile_journal.delete();
 		}
