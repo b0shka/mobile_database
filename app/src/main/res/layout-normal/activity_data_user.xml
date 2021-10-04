@@ -12,7 +12,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="45dp"
 		android:layout_marginEnd="10dp"
-		android:layout_marginBottom="10dp"
+		android:layout_marginBottom="8dp"
 		android:background="@drawable/custom_button"
 		android:fontFamily="@font/montserrat_bold"
 		android:onClick="save_or_create_user"
@@ -29,7 +29,7 @@
 		android:layout_marginTop="16dp"
 		android:fontFamily="@font/montserrat_bold"
 		android:textColor="@color/white"
-		android:textSize="24dp"
+		android:textSize="23sp"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,21 +52,36 @@
 		android:layout_marginEnd="10dp"
 		android:layout_marginBottom="8dp"
 		android:background="@drawable/custom_button"
+		android:textColor="@color/white"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toStartOf="@+id/save_create_user"
 		tools:ignore="TouchTargetSizeCheck" />
 
 	<Button
-		android:id="@+id/delete_user"
+		android:id="@+id/convert_user"
 		android:layout_width="wrap_content"
 		android:layout_height="45dp"
 		android:layout_marginEnd="10dp"
 		android:layout_marginBottom="8dp"
 		android:background="@drawable/custom_button"
-		android:onClick="delete"
-		android:text="@string/button_delete"
+		android:onClick="convert_to_txt"
+		android:text="@string/button_convert"
+		app:icon="@drawable/ic_text_file"
 		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toStartOf="@+id/back_from_data_user" />
+		app:layout_constraintEnd_toStartOf="@+id/back_from_data_user"
+		tools:ignore="TouchTargetSizeCheck" />
+
+	<Button
+		android:id="@+id/delete_user"
+		android:layout_width="55dp"
+		android:layout_height="45dp"
+		android:layout_marginTop="15dp"
+		android:layout_marginEnd="10dp"
+		android:background="@drawable/custom_button"
+		android:onClick="delete"
+		app:icon="@drawable/ic_delete"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
 	<ScrollView
 		android:layout_width="0dp"
@@ -337,6 +352,24 @@
 						app:layout_constraintStart_toStartOf="parent"
 						app:layout_constraintTop_toBottomOf="@+id/name_doc_2" />
 
+				</androidx.constraintlayout.widget.ConstraintLayout>
+
+				<androidx.constraintlayout.widget.ConstraintLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginTop="10dp">
+
+					<Spinner
+						android:id="@+id/list_tables"
+						android:layout_width="178dp"
+						android:layout_height="45dp"
+						android:layout_marginStart="1dp"
+						android:layout_marginEnd="1dp"
+						android:background="@drawable/custom_sprinner"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent"
+						tools:ignore="MissingConstraints" />
 				</androidx.constraintlayout.widget.ConstraintLayout>
 
 			</LinearLayout>

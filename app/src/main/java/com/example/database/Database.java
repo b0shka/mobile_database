@@ -57,8 +57,8 @@ public class Database extends SQLiteOpenHelper {
 	public Database(Context context) {
 		super(context, Variable.g_db_name, null, DB_VERSION);
 		this.context = context;
-		Variable.g_db_path_app = context.getApplicationInfo().dataDir + "/databases/";
 
+		Variable.g_db_path_app = context.getApplicationInfo().dataDir + "/databases/";
 		Variable.g_status_db = 1;
 	}
 
@@ -110,7 +110,10 @@ public class Database extends SQLiteOpenHelper {
 
 	public void open_db() {
 		db = this.getWritableDatabase();
-		get_global_table();
+		if (Variable.g_status_first_start == 0) {
+			get_global_table();
+			Variable.g_status_first_start = 1;
+		}
 	}
 
 	public ContentValues completion_content(ArrayList<String> list_data, String user_id, byte[] byte_photo_1, byte[] byte_photo_2, byte[] byte_photo_3, byte[] byte_photo_4) {

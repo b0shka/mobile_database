@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class Filter extends AppCompatActivity {
 
-	private Spinner list_tables, list_city;
+	private Spinner list_table, list_city;
 	private Button save_filter, back, drop_filter_to_start;
 	private EditText name_new_table, new_change_name_table, age_min, age_max;
 	private CheckBox use_filter_age, use_filter_city;
@@ -29,7 +29,7 @@ public class Filter extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_filter);
 
-		list_tables = findViewById(R.id.list_table);
+		list_table = findViewById(R.id.list_table);
 		list_city = findViewById(R.id.list_city);
 		name_new_table = findViewById(R.id.name_new_table);
 		new_change_name_table = findViewById(R.id.new_change_name_table);
@@ -72,9 +72,9 @@ public class Filter extends AppCompatActivity {
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list_name_table);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		list_tables.setAdapter(adapter);
+		list_table.setAdapter(adapter);
 
-		list_tables.setSelection(adapter.getPosition(Variable.g_table_name));
+		list_table.setSelection(adapter.getPosition(Variable.g_table_name));
 	}
 
 	public void add_age() {
@@ -116,7 +116,7 @@ public class Filter extends AppCompatActivity {
 	}
 
 	public void delete_table(View view) {
-		String name_table = list_tables.getSelectedItem().toString();
+		String name_table = list_table.getSelectedItem().toString();
 		database.delete_table(name_table);
 		Toast.makeText(Filter.this, R.string.success_delete_table, Toast.LENGTH_SHORT).show();
 
@@ -154,13 +154,17 @@ public class Filter extends AppCompatActivity {
 	}
 
 	public void apply_filter(View view) {
-		String name_table = list_tables.getSelectedItem().toString();
-		Variable.g_table_name = name_table;
+		int check_filter = 1;
 
 		if (use_filter_age.isChecked()) {
 			Variable.g_status_apply_filter_age = 1;
 			String number_age_min = String.valueOf(age_min.getText().toString());
 			String number_age_max = String.valueOf(age_max.getText().toString());
+
+			if (Integer.parseInt(number_age_min) > Integer.parseInt(number_age_max)) {
+				check_filter = 0;
+				Toast.makeText(Filter.this, R.string.error_filter_age, Toast.LENGTH_SHORT).show();
+			}
 			if (!number_age_min.equals(""))
 				Variable.g_age_min = Integer.parseInt(number_age_min);
 			if (!number_age_max.equals(""))
@@ -172,17 +176,20 @@ public class Filter extends AppCompatActivity {
 		}
 		if (use_filter_city.isChecked()) {
 			Variable.g_status_apply_filter_city = 1;
-			if (!list_city.getSelectedItem().toString().equals("")) {
-				String city = list_city.getSelectedItem().toString();
-				Variable.g_city = city;
-			}
+			if (!list_city.getSelectedItem().toString().equals(""))
+				Variable.g_city = list_city.getSelectedItem().toString();;
 		}
 		else {
 			Variable.g_status_apply_filter_city = 0;
 			Variable.g_city = "";
 		}
 
-		Intent intent = new Intent(Filter.this, MainActivity.class);
-		startActivity(intent);
+		if (check_filter == 1) {
+			Variable.g_table_name = list_table.getSelectedItem().toString();
+
+			Intent intent = new Intent(Filter.this, MainActivity.class);
+			startActivity(intent);
+			Toast.makeText(Filter.this, R.string.success_filter, Toast.LENGTH_SHORT).show();
+		}
 	}
 }

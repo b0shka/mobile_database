@@ -180,7 +180,7 @@
 		android:layout_marginStart="10dp"
 		android:background="@drawable/custom_button"
 		android:onClick="new_table"
-		app:icon="@drawable/ic_ok"
+		app:icon="@drawable/ic_add"
 		app:layout_constraintBottom_toBottomOf="@+id/name_new_table"
 		app:layout_constraintStart_toEndOf="@+id/name_new_table"
 		tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />

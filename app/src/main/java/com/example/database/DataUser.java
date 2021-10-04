@@ -15,13 +15,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import android.app.AlertDialog;
@@ -31,10 +35,11 @@ public class DataUser extends AppCompatActivity {
 
 	private EditText field_first_name, field_last_name, field_patronymic, field_age, field_birth, field_country, field_address, field_index, field_number_phone, field_phone, field_passport, field_snils, field_car, field_education, field_place_work, field_email, field_vk, field_instagram, field_telegram, field_other_social, field_relative, field_hobby, field_other;
 	private TextView field_title_data_user, field_user_id, field_name_doc_1, field_name_doc_2, field_name_doc_3;
-	private Button back, add_doc, add_photo, delete, save_create_user;
+	private Button back, add_doc, add_photo, delete, save_create_user, convert_user;
 	private ImageView photo_1, photo_2, photo_3, photo_4;
 	private Database database;
 	private String user_id, name_doc_1, name_doc_2, name_doc_3;
+	private Spinner list_tables;
 	private byte[] byte_photo_1 = null, byte_photo_2 = null, byte_photo_3 = null, byte_photo_4 = null;
 	private static final int ACTIVITY_CHOOSE_DOC = 1;
 	private static final int ACTIVITY_CHOOSE_PHOTO = 2;
@@ -87,6 +92,10 @@ public class DataUser extends AppCompatActivity {
 		back = findViewById(R.id.back_from_data_user);
 		delete = findViewById(R.id.delete_user);
 		save_create_user = findViewById(R.id.save_create_user);
+		convert_user = findViewById(R.id.convert_user);
+
+		// выпадающие списки
+		list_tables = findViewById(R.id.list_tables);
 
 		database = new Database(DataUser.this);
 
@@ -224,80 +233,102 @@ public class DataUser extends AppCompatActivity {
 			user_id = String.valueOf(database.generate_id());
 			field_user_id.setText("#" + user_id);
 			delete.setVisibility(View.INVISIBLE);
+			convert_user.setVisibility(View.INVISIBLE);
 		}
+
+		add_table();
+	}
+
+	public void add_table() {
+		ArrayList<String> array_name_tables = database.get_tables();
+		String[] list_name_table = new String[array_name_tables.size()];
+
+		for (int i = 0; i < array_name_tables.size(); i++) {
+			list_name_table[i] = array_name_tables.get(i);
+		}
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list_name_table);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		list_tables.setAdapter(adapter);
+
+		list_tables.setSelection(adapter.getPosition(Variable.g_table_name));
+	}
+
+	public ArrayList<String> get_data_user() {
+		String first_name = field_first_name.getText().toString();
+		String last_name = field_last_name.getText().toString();
+		String patronymic = field_patronymic.getText().toString();
+		String age = field_age.getText().toString();
+		String birth = field_birth.getText().toString();
+		String country = field_country.getText().toString();
+		String address = field_address.getText().toString();
+		String index = field_index.getText().toString();
+		String number_phone = field_number_phone.getText().toString();
+		String phone = field_phone.getText().toString();
+		String passport = field_passport.getText().toString();
+		String snils = field_snils.getText().toString();
+		String car = field_car.getText().toString();
+		String education = field_education.getText().toString();
+		String place_work = field_place_work.getText().toString();
+		String email = field_email.getText().toString();
+		String vk = field_vk.getText().toString();
+		String instagram = field_instagram.getText().toString();
+		String telegram = field_telegram.getText().toString();
+		String other_social = field_other_social.getText().toString();
+		String relative = field_relative.getText().toString();
+		String hobby = field_hobby.getText().toString();
+		String other = field_other.getText().toString();
+
+		ArrayList<String> data_user = new ArrayList<>();
+		data_user.add(first_name);
+		data_user.add(last_name);
+		data_user.add(patronymic);
+		data_user.add(age);
+		data_user.add(birth);
+		data_user.add(country);
+		data_user.add(address);
+		data_user.add(index);
+		data_user.add(number_phone);
+		data_user.add(phone);
+		data_user.add(passport);
+		data_user.add(snils);
+		data_user.add(car);
+		data_user.add(education);
+		data_user.add(place_work);
+		data_user.add(email);
+		data_user.add(vk);
+		data_user.add(instagram);
+		data_user.add(telegram);
+		data_user.add(other_social);
+		data_user.add(relative);
+		data_user.add(hobby);
+		data_user.add(other);
+
+		return data_user;
 	}
 
 	// добавление или сохранение изменений записи
 	public void save_or_create_user(View view) {
-		String first_name = field_first_name.getText().toString();
-		if (first_name == "")
+		ArrayList<String> data_user = get_data_user();
+		String name_table = list_tables.getSelectedItem().toString();
+
+		if (data_user.get(0).equals(""))
 			Toast.makeText(DataUser.this, R.string.empty_first_name, Toast.LENGTH_SHORT).show();
 		else {
-			String last_name = field_last_name.getText().toString();
-			String patronymic = field_patronymic.getText().toString();
-			String age = field_age.getText().toString();
-			String birth = field_birth.getText().toString();
-			String country = field_country.getText().toString();
-			String address = field_address.getText().toString();
-			String index = field_index.getText().toString();
-			String number_phone = field_number_phone.getText().toString();
-			String phone = field_phone.getText().toString();
-			String passport = field_passport.getText().toString();
-			String snils = field_snils.getText().toString();
-			String car = field_car.getText().toString();
-			String education = field_education.getText().toString();
-			String place_work = field_place_work.getText().toString();
-			String email = field_email.getText().toString();
-			String vk = field_vk.getText().toString();
-			String instagram = field_instagram.getText().toString();
-			String telegram = field_telegram.getText().toString();
-			String other_social = field_other_social.getText().toString();
-			String relative = field_relative.getText().toString();
-			String hobby = field_hobby.getText().toString();
-			String other = field_other.getText().toString();
-
-			ArrayList<String> data_user = new ArrayList<>();
-			data_user.add(first_name);
-			data_user.add(last_name);
-			data_user.add(patronymic);
-			data_user.add(age);
-			data_user.add(birth);
-			data_user.add(country);
-			data_user.add(address);
-			data_user.add(index);
-			data_user.add(number_phone);
-			data_user.add(phone);
-			data_user.add(passport);
-			data_user.add(snils);
-			data_user.add(car);
-			data_user.add(education);
-			data_user.add(place_work);
-			data_user.add(email);
-			data_user.add(vk);
-			data_user.add(instagram);
-			data_user.add(telegram);
-			data_user.add(other_social);
-			data_user.add(relative);
-			data_user.add(hobby);
-			data_user.add(other);
-
-//			Bitmap bitmap_1 = ((BitmapDrawable) photo_1.getDrawable()).getBitmap();
-//			byte_photo_1 = convertToByte(bitmap_1);
-//
-//			Bitmap bitmap_2 = ((BitmapDrawable) photo_2.getDrawable()).getBitmap();
-//			byte_photo_2 = convertToByte(bitmap_2);
-//
-//			Bitmap bitmap_3 = ((BitmapDrawable) photo_3.getDrawable()).getBitmap();
-//			byte_photo_3 = convertToByte(bitmap_3);
-//
-//			Bitmap bitmap_4 = ((BitmapDrawable) photo_4.getDrawable()).getBitmap();
-//			byte_photo_4 = convertToByte(bitmap_4);
-
 			if (MODE.equals("data")) {
-				database.update_user(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
-				Toast.makeText(DataUser.this, R.string.success_update_data, Toast.LENGTH_SHORT).show();
+				if (!Variable.g_table_name.equals(name_table)) {
+					database.delete_user(user_id);
+					Variable.g_table_name = name_table;
+					database.add_user(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
+					Toast.makeText(DataUser.this, R.string.success_move_data, Toast.LENGTH_SHORT).show();
+				}
+				else {
+					database.update_user(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
+					Toast.makeText(DataUser.this, R.string.success_update_data, Toast.LENGTH_SHORT).show();
+				}
 			}
 			else if (MODE.equals("create")) {
+				Variable.g_table_name = name_table;
 				database.add_user(data_user, user_id, byte_photo_1, byte_photo_2, byte_photo_3, byte_photo_4);
 				Toast.makeText(DataUser.this, R.string.success_create_data, Toast.LENGTH_SHORT).show();
 			}
@@ -332,6 +363,47 @@ public class DataUser extends AppCompatActivity {
 		AlertDialog alert = accept_window.create();
 		alert.setTitle(R.string.title_delete_data);
 		alert.show();
+	}
+
+	// конвертация записи в .txt файл
+	public void convert_to_txt(View view) {
+		ArrayList<String> data_user = get_data_user();
+
+		if (data_user.get(0).equals(""))
+			Toast.makeText(DataUser.this, R.string.empty_first_name, Toast.LENGTH_SHORT).show();
+		else {
+			File file_data = new File(Variable.g_const_db_path_user + data_user.get(0) + "_" + data_user.get(1) + ".txt");
+			FileWriter file_txt = null;
+
+			try {
+				file_txt = new FileWriter(file_data);
+
+				file_txt.write(data_user.get(0) + " " + data_user.get(1) + " " + data_user.get(2) + ":\n");
+				file_txt.write("Дата роджения: " + data_user.get(4) + " (" + data_user.get(3) + ")\n");
+				file_txt.write(data_user.get(5) + "\n");
+				file_txt.write("Адрес: " + data_user.get(6) + " " + data_user.get(7) + "\n");
+				file_txt.write("Номер телефона: " + data_user.get(8) + "\n");
+				file_txt.write("Телефон: " + data_user.get(9) + "\n");
+				file_txt.write("Паспорт: " + data_user.get(10) + "\n");
+				file_txt.write("Снилс: " + data_user.get(11) + "\n");
+				file_txt.write("Машина: " + data_user.get(12) + "\n");
+				file_txt.write("Образование: " + data_user.get(13) + "\n");
+				file_txt.write("Место работы/учебы: " + data_user.get(14) + "\n\n");
+				file_txt.write("Социальные сети:\nПочта: " + data_user.get(15) + "\n");
+				file_txt.write("Вконтакте: " + data_user.get(16) + "\n");
+				file_txt.write("Инстаграм: " + data_user.get(17) + "\n");
+				file_txt.write("Телеграм: " + data_user.get(18) + "\n");
+				file_txt.write("Другие соц. сети:\n" + data_user.get(19) + "\n\n");
+				file_txt.write("Родственники:\n" + data_user.get(20) + "\n\n");
+				file_txt.write("Хобби:\n" + data_user.get(21) + "\n\n");
+				file_txt.write("Другое:\n" + data_user.get(22));
+
+				file_txt.close();
+				Toast.makeText(DataUser.this, R.string.success_convert_user, Toast.LENGTH_SHORT).show();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// выбор фото или документа

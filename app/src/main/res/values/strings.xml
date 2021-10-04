@@ -19,6 +19,7 @@
     <string name="button_add_document">Добавить файл</string>
     <string name="button_add_photo">Добавить фото</string>
     <string name="button_delete">Удалить</string>
+    <string name="button_convert">txt</string>
     <string name="symbol_close">×</string>
 
     <!--Hint-->
@@ -54,8 +55,14 @@
     <string name="success_delete_data">Запись удалена</string>
     <string name="success_update_data">Запись обновлена</string>
     <string name="success_create_data">Запись создана</string>
+    <string name="success_move_data">Запись перемещена</string>
     <string name="success_create_table">Таблица успешно создана</string>
     <string name="success_delete_table">Таблица успешно удалена</string>
+    <string name="success_filter">Фильтры успешно применены</string>
+    <string name="error_filter_age">Минимальный возраст больше максимального</string>
+    <string name="success_convert_user">Конвертация завершена</string>
+    <string name="success_copy_user">Запись успешно скопирована</string>
+    <string name="success_move_user">Запись успешно перемешена</string>
 
     <!--Fields-->
     <string name="first_name">Имя</string>
