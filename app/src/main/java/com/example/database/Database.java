@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.File;
 import java.sql.Array;
 import java.sql.Blob;
 import java.util.ArrayList;

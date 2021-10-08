@@ -28,8 +28,8 @@
     <string name="hint_name_table">Введите название таблицы</string>
 
     <!--Title-->
-    <string name="title_data_user">Информация о пользователе</string>
-    <string name="title_create_user">Создание пользователя</string>
+    <string name="title_data_user">Информация</string>
+    <string name="title_create_user">Создание</string>
     <string name="title_create_db">Создание БД</string>
     <string name="title_choice_action">Выберите действие</string>
     <string name="title_filter">Фильтры</string>
@@ -41,8 +41,8 @@
     <string name="title_age_min">Возраст от</string>
     <string name="title_age_max">до</string>
     <string name="title_city">Город</string>
-    <string name="title_checkbox_age">Использовать фильтр по возрасту</string>
-    <string name="title_checkbox_city">Использовать фильтр по городу</string>
+    <string name="title_checkbox_age">Использовать фильтр возраста</string>
+    <string name="title_checkbox_city">Использовать фильтр города</string>
 
     <!--Message for Toats-->
     <string name="empty_line">Вы ничего не ввели</string>

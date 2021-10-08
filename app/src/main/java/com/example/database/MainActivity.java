@@ -3,6 +3,8 @@ package com.example.database;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private ListView list_users;
 	private EditText line_search;
-	private Button search, filter, update, open_db, create_db, save_db, close_db, settings;
+	private Button search, filter, update, open_db, save_db, close_db, settings;
 	private FloatingActionButton add_user;
 	private Database database;
 	private ItemAdapter itemAdapter;
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 		filter = findViewById(R.id.filter);
 		update = findViewById(R.id.update);
 		open_db = findViewById(R.id.open_db);
-		create_db = findViewById(R.id.create_db);
 		save_db = findViewById(R.id.save_db);
 		close_db = findViewById(R.id.close_db);
 		settings = findViewById(R.id.settings);
@@ -74,17 +76,17 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		filter.setOnClickListener(
-			new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					if (Variable.g_status_db == 0)
-						Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
-					else {
-						Intent intent = new Intent(MainActivity.this, Filter.class);
-						startActivity(intent);
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						if (Variable.g_status_db == 0)
+							Toast.makeText(MainActivity.this, R.string.first_open_db, Toast.LENGTH_SHORT).show();
+						else {
+							Intent intent = new Intent(MainActivity.this, Filter.class);
+							startActivity(intent);
+						}
 					}
 				}
-			}
 		);
 
 		update.setOnClickListener(
@@ -509,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
 
 		byte[] buffer = new byte[1024];
 		int len;
-		while ((len = in.read(buffer)) > 0){
+		while ((len = in.read(buffer)) > 0) {
 			out.write(buffer, 0, len);
 		}
 
